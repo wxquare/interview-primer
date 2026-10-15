@@ -96,6 +96,12 @@
 
 入门先练 1–20、36–40、46–49 和 89；应用工程重点练 21–35、56–74、81–94；资深岗位再练 75–80 和 95–100。每轮组合一道机制题、一道失败处理题和一道核心案例。
 
+## 面经扩展与编号对照
+
+本次将 [AI 与 Agent 面试题汇总](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md) 中与工程实践直接相关的 **206 条题目**归入现有 **69 道题**，保留 1–100 的题号、题目和分类；未建立直接对应的 38 条底层算法、训练细节或手写题继续保留在来源汇总中。每题新增的“面经扩展”列出来源 AI 编号、原题与回答补充，便于从真实问法进入已有答案骨架。
+
+本题库的第 N 题与来源的 AI-NNN 属于两套独立编号，不能按数字直接对应。来源汇总逐题附本题库编号与链接；对应关系表示主要练习入口，不代表一道工程题已覆盖来源题的所有实现细节。扩展回答是本题库的学习补充，不是原面经作者的回答，也不改变来源记录的真实性与版本限制。跨仓库链接要求两仓库位于同一父目录，单独发布任一仓库时需使用题号和文件路径定位。
+
 ## 100 题总览
 
 题型与优先级见每题正文；总览用于定位题目与核对覆盖。
@@ -205,6 +211,8 @@
 
 ## 1. LLM 基础与技术选型
 
+<a id="q-1"></a>
+
 #### 1. Transformer 核心组成与工程影响
 
 **题型：** 专项题，P0
@@ -227,6 +235,30 @@
 ##### 常见失分点
 
 把所有 Transformer 都说成自回归模型；只背模块名称；忽略位置、Mask 和实现差异。
+
+##### 面经扩展
+
+- **[AI-157](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-157)** · Transformer 的整体架构是什么？Encoder 与 Decoder 分别是什么？
+- **[AI-160](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-160)** · 为什么多头注意力能提升表达能力？
+- **[AI-161](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-161)** · Self-Attention 如何实现？为什么拆成 Q、K、V？如何计算？
+- **[AI-162](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-162)** · QKV 中 K 起什么作用？能否省略 K，直接使用 V？
+- **[AI-163](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-163)** · MHA、GQA、MLA 的设计思路与差异是什么？
+- **[AI-164](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-164)** · 为什么使用 RMSNorm？与 LayerNorm 有什么差异？
+- **[AI-165](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-165)** · BatchNorm、LayerNorm、RMSNorm 有什么区别？
+- **[AI-166](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-166)** · 常见位置编码有哪些？各有什么特点？
+- **[AI-167](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-167)** · 为什么 Decoder-only 架构比 Encoder-decoder 更流行？
+- **[AI-168](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-168)** · LLaMA 与 BERT 有什么不同？
+- **[AI-169](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-169)** · T5 与 GPT-2 在架构上有什么差异？
+
+**回答补充：**
+
+1. 先写 Attention(Q,K,V)=softmax(QKᵀ/√dₖ)V，再解释多头的不同投影；Q、K 用于匹配，V 提供聚合内容，直接用 V 替代 K 会改变参数化与匹配空间。
+2. MHA 每个查询头有独立 KV，GQA 让一组查询头共享 KV，MLA 以潜变量压缩 KV，具体缓存与解码实现需按模型核实。
+3. LayerNorm 对特征减均值再缩放，RMSNorm 按均方根缩放而不减均值；BatchNorm 使用批统计，与序列任务的归一化轴不同。
+4. 比较绝对位置、相对位置与 RoPE 的位置表达及长度外推边界。
+5. BERT 类侧重双向编码，GPT-2 类侧重因果生成，T5 为编码器—解码器；Decoder-only 的统一生成接口和训练扩展便利不代表其他架构失去适用场景。
+
+<a id="q-2"></a>
 
 #### 2. Token 与可用上下文窗口
 
@@ -251,6 +283,14 @@
 
 只计算用户消息；按字符数精确计费；把标称窗口全部用于输入。
 
+##### 面经扩展
+
+- **[AI-158](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-158)** · 大模型分词器是什么？
+
+**回答补充：** 使用目标 Tokenizer 展示中文、代码、空格和特殊标记的计数差异；输入预算包含规则、工具声明、历史与证据，不能用字符数固定换算 Token。
+
+<a id="q-3"></a>
+
 #### 3. Embedding 与文本相似度
 
 **题型：** 专项题，P0
@@ -273,6 +313,15 @@
 ##### 常见失分点
 
 把维度当质量指标；所有向量都强制归一化；把相似度当置信概率。
+
+##### 面经扩展
+
+- **[AI-093](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-093)** · 为什么要向量化？直接做文本匹配不行吗？
+- **[AI-159](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-159)** · Embedding 是什么？项目使用了什么模型？
+
+**回答补充：** 区分关键词精确匹配和语义近邻：产品 ID、稀有术语适合倒排补充，改写和同义表达常受益于向量。说明项目编码器的语言、长度、维度与相似度约定，用实际查询证明选型。
+
+<a id="q-4"></a>
 
 #### 4. LLM 生成的 Prefill 与 Decode
 
@@ -298,6 +347,8 @@
 
 把流式等同于推理加速；混淆 TTFT 与总耗时；忽略排队。
 
+<a id="q-5"></a>
+
 #### 5. 幻觉、忠实度与拒答
 
 **题型：** 专项题，P0
@@ -321,6 +372,17 @@
 
 只降低温度；用模型自信替代证据；把引用存在当成支持结论。
 
+##### 面经扩展
+
+- **[AI-127](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-127)** · 高准确性场景下如何控制幻觉？
+- **[AI-128](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-128)** · 幻觉率与引用错误率如何衡量？业务上能接受多少？
+- **[AI-129](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-129)** · 如何定义幻觉与引用错误？
+- **[AI-133](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-133)** · 如何评估生成内容的真实性？
+
+**回答补充：** 分别定义事实错误、缺少证据支持、引用不存在与引用不支持结论，给出按主张或回答统计的分母。业务阈值按风险与人工成本制定；生成内容真实性需外部事实核验，不能由流畅度或裁判自信代替。
+
+<a id="q-6"></a>
+
 #### 6. 采样参数与可复现性
 
 **题型：** 专项题，P1
@@ -343,6 +405,14 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 ##### 常见失分点
 
 把 Seed 当承诺；认为低温保证正确；只比较文本而忽略业务结果。
+
+##### 面经扩展
+
+- **[AI-064](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-064)** · Temperature、top-p、top-k 分别是什么？不同场景如何设置？
+
+**回答补充：** Temperature 调整 logits 分布，top-k 保留固定数量候选，top-p 保留达到累计概率的候选集合；不同 API 的支持与组合顺序需核实。用同一任务的多次采样评估多样性、正确率与稳定性，不能把低温等同于事实正确。
+
+<a id="q-7"></a>
 
 #### 7. Prompt、RAG 与 Fine-tuning 的取舍
 
@@ -368,6 +438,29 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 
 用微调代替实时查询；声称任何微调都不影响知识；缺少数据和评测依据。
 
+##### 面经扩展
+
+- **[AI-091](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-091)** · 微调与 RAG 各有什么优缺点？如何选用和组合？
+- **[AI-156](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-156)** · 大模型是如何训练出来的？
+- **[AI-173](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-173)** · Function Calling 能力如何训练？
+- **[AI-174](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-174)** · SFT 的流程是什么？数据集如何构建与筛选？
+- **[AI-175](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-175)** · SFT 后的 Post-Training 包含哪些方法？各自优化什么目标？
+- **[AI-176](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-176)** · LoRA 原理是什么？推理时是否仍需加载额外 Adapter？
+- **[AI-177](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-177)** · LoRA 与 Prompt Tuning 有什么区别？分别适合什么场景？
+- **[AI-178](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-178)** · LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何比较？
+- **[AI-179](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-179)** · 中文领域做 Instruction Tuning，需要注意哪些数据问题？
+- **[AI-180](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-180)** · 模型微调过拟合时如何处理？
+
+**回答补充：**
+
+1. 区分预训练学习通用分布、SFT 学习指令行为，以及偏好优化或强化学习等后训练方法；后训练与 SFT 的阶段命名依体系说明。
+2. Function Calling 的训练样本包含工具定义、调用与参数、结果和后续回应，还需无工具、错误与拒绝样本。
+3. LoRA 以 ΔW=BA 学习低秩增量，部署可加载 Adapter 或在兼容条件下合并，量化和多 Adapter 切换另行验证；Prompt Tuning 学习输入侧连续提示。
+4. 全参 SFT 与 LoRA、小模型与大模型应在同等任务与资源约束下比较。
+5. 中文数据检查授权、去重、语言质量、术语、模板分布和训练验收隔离；过拟合时先排查泄漏与数据分布，再调整数据、训练步数和正则化，保留通用与工具行为回归。
+
+<a id="q-8"></a>
+
 #### 8. KV Cache 与长上下文
 
 **题型：** 专项题，P1
@@ -391,6 +484,15 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 
 把 KV Cache 等同于答案缓存；认为 Batching 自动共享历史；只估权重。
 
+##### 面经扩展
+
+- **[AI-189](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-189)** · KV Cache 如何起作用？为什么对长上下文推理关键？
+- **[AI-192](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-192)** · PagedAttention 的原理与工作方式是什么？
+
+**回答补充：** PagedAttention 将逻辑 KV 块映射到物理块，降低连续大块分配的浪费并支持灵活管理；分页本身不保证任意历史共享。比较长上下文下 KV 占用、碎片、并发和尾延迟，区分 KV 缓存、前缀缓存和答案缓存。
+
+<a id="q-9"></a>
+
 #### 9. 模型选型与业务基线
 
 **题型：** 专项题，P1
@@ -413,6 +515,15 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 ##### 常见失分点
 
 只按参数量；平均分掩盖风险切片；忽略运行成本。
+
+##### 面经扩展
+
+- **[AI-010](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-010)** · 模型选型时，如何权衡能力、稳定性和成本？
+- **[AI-171](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-171)** · MoE 与 Dense 模型有什么区别？各有什么优缺点？
+
+**回答补充：** Dense 模型通常每个 Token 使用全部主要参数，MoE 按路由激活部分专家；比较总参数、激活参数、显存、路由负载与通信开销，不能仅凭激活参数推算端到端成本。模型选型仍以目标任务成功率、工具可靠性与每成功任务成本为依据。
+
+<a id="q-10"></a>
 
 #### 10. 自托管与模型 API 的边界
 
@@ -439,6 +550,8 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 
 ## 2. Prompt、上下文与模型调用
 
+<a id="q-11"></a>
+
 #### 11. 消息结构与信任层级
 
 **题型：** 专项题，P0
@@ -461,6 +574,16 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 ##### 常见失分点
 
 把工具结果伪装成指令；依赖角色标签完成安全隔离。
+
+##### 面经扩展
+
+- **[AI-036](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-036)** · Function Call 与 Tool Result 如何重新进入模型上下文？
+- **[AI-060](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-060)** · 提示词模板是如何构建的？
+- **[AI-061](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-061)** · 编写 Prompt 时有哪些实践经验或设计原则？
+
+**回答补充：** 模板显式区分固定规则、用户输入、检索证据和工具消息，变量保留来源并按接口正确转义。Function Call 与 Tool Result 通过调用 ID 关联后进入下一轮，不能把结果拼成更高信任指令；模板还应定义缺字段、拒绝和截断行为。
+
+<a id="q-12"></a>
 
 #### 12. Few-shot 与分步推理
 
@@ -486,6 +609,15 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 
 认为“逐步思考”必然有效；推理文本当证明；堆砌示例。
 
+##### 面经扩展
+
+- **[AI-022](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-022)** · 反思机制如何实现？为什么需要反思？
+- **[AI-062](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-062)** · CoT 是什么？为什么有效？有什么缺点？
+
+**回答补充：** CoT 通过中间步骤分解复杂问题，但额外推理可能增加成本并传播早期错误，效果依模型与任务验证。反思使用测试、检索证据或独立检查反馈，限制次数；自我复述并不提供新证据，也不应要求完整内部思维链作为验收依据。
+
+<a id="q-13"></a>
+
 #### 13. 结构化输出与业务校验
 
 **题型：** 专项题，P0
@@ -508,6 +640,14 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 ##### 常见失分点
 
 用正则作主解析方案；合法结构当合法动作；无限重试。
+
+##### 面经扩展
+
+- **[AI-059](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-059)** · 如何约束模型输出格式，使生成内容能与后续工具代码对接？
+
+**回答补充：** 声明下游所需 Schema、枚举和字段语义，解析后做业务校验；分别处理无效 JSON、合法但语义错误、拒绝和输出截断。仅在有界修复通过后进入工具执行。
+
+<a id="q-14"></a>
 
 #### 14. Function Calling 的执行责任
 
@@ -532,6 +672,14 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 
 建议当执行成功；模型判断权限；遗漏结果关联。
 
+##### 面经扩展
+
+- **[AI-035](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-035)** · 模型如何判断是否需要调用工具？
+
+**回答补充：** 把是否调用、选哪个工具、参数是否完整分成独立判断；用工具适用描述、不调用负例与任务评测改善选择。模型提出调用不代表已获得授权或已执行。
+
+<a id="q-15"></a>
+
 #### 15. SSE 流式输出协议
 
 **题型：** 专项题，P1
@@ -554,6 +702,8 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 ##### 常见失分点
 
 TCP 分片当事件；断线当取消；只有增量无终态。
+
+<a id="q-16"></a>
 
 #### 16. Prompt 版本管理与 A/B
 
@@ -578,6 +728,14 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 无版本直接改线上；只保留最终模板；每一步取最新版本。
 
+##### 面经扩展
+
+- **[AI-065](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-065)** · Prompt 如何迭代优化？如何验证优化效果？
+
+**回答补充：** 固定样本与其他配置，对 Prompt 改动做配对比较并多次运行；同时观察质量、工具错误、Token 和耗时，再按会话稳定灰度与回滚，避免只挑改善样例。
+
+<a id="q-17"></a>
+
 #### 17. 上下文预算与动态组装
 
 **题型：** 专项题，P0
@@ -600,6 +758,20 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 ##### 常见失分点
 
 机械按时间截断；无输出预留；删除未闭合工具消息。
+
+##### 面经扩展
+
+- **[AI-003](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-003)** · Prompt Engineering、Context Engineering、Harness Engineering 有什么区别？
+- **[AI-029](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-029)** · 多个 Agent 如何处理输入？动态上下文使用什么数据结构？
+- **[AI-066](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-066)** · Coding Agent 如何做会话管理与上下文管理？Token 如何计算，为什么这样算？
+- **[AI-067](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-067)** · 上下文越来越长，超过模型限制时有哪些处理方法？
+- **[AI-072](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-072)** · 项目规则文件应保存哪些不能在压缩时丢失的信息？
+- **[AI-073](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-073)** · 上下文工程中的 To-do List 为什么能让模型更聚焦？如何实现？
+- **[AI-172](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-172)** · 多轮 Agent 对话中，Attention 有哪些局限？
+
+**回答补充：** Prompt Engineering 设计指令与示例，Context Engineering 决定每轮纳入哪些状态、证据和工具信息，Harness Engineering 提供执行、权限、恢复与验证环境。动态上下文可用带类型、来源、版本和优先级的片段记录与消息序列；待办表保存步骤 ID、依赖、状态与完成条件。规则文件保留项目约束和验证入口，当前任务目标独立保存；Attention 能处理长窗口不代表可靠关注每项约束，仍需控制位置、噪声与预算。
+
+<a id="q-18"></a>
 
 #### 18. 历史压缩与信息保真
 
@@ -624,6 +796,20 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 只衡量压缩率；删除来源；从摘要推导新授权。
 
+##### 面经扩展
+
+- **[AI-068](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-068)** · 压缩上下文时保留哪些信息？如何判断哪些内容可以丢弃？
+- **[AI-069](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-069)** · 压缩后如何判断没有破坏当前任务？有什么校验标准？
+- **[AI-070](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-070)** · 任务摘要、文件摘要、过程笔记如何生成和维护，避免关键内容被压掉？
+- **[AI-071](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-071)** · 压缩摘要遗漏关键约束并导致后续出错时，如何发现和纠正？
+- **[AI-078](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-078)** · 记忆滚动更新、摘要压缩、结构化压缩分别如何实现？
+- **[AI-083](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-083)** · 为什么可以用小模型做记忆管理与上下文压缩？相比大模型有什么优势？
+- **[AI-084](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-084)** · 为什么工具调用链应属于高优先级记忆？
+
+**回答补充：** 任务摘要记录目标、限制、已完成事实、未决动作与下一步；文件摘要绑定路径、版本和范围，过程笔记保留证据引用。压缩前后检查关键实体、数值、禁止动作、未闭合调用与待办，并在同一任务上做继续执行对照。发现遗漏时由原始记录重建并失效错误摘要。工具链优先保留副作用、操作 ID、未知结果与证据，无需保留所有原始大结果；小模型只在保真评测达标时承担压缩和记忆抽取。
+
+<a id="q-19"></a>
+
 #### 19. 大量工具与大结果的上下文治理
 
 **题型：** 专项题，P1
@@ -646,6 +832,24 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 ##### 常见失分点
 
 全部 Schema 塞每轮；无标记截断；摘要代替精确汇总。
+
+##### 面经扩展
+
+- **[AI-048](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-048)** · Skill 底层如何实现？渐进式披露的原理是什么？
+- **[AI-049](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-049)** · Skills 如何管理和加载？
+- **[AI-050](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-050)** · Skill 与 Tool 有什么区别？
+- **[AI-051](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-051)** · Skill 与 MCP 的核心区别是什么？为什么选择自封装工具而不使用 MCP？
+- **[AI-052](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-052)** · Skills 与子 Agent 有什么区别？不同场景如何选择？
+- **[AI-053](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-053)** · 为什么组合使用 MCP 与 Skill，而不是脚本或命令行？
+- **[AI-054](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-054)** · Skill 的目录结构是什么？相比 MCP 有什么优点？
+- **[AI-055](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-055)** · Skill 是知识库，还是融合在 Agent 内部？在什么阶段获取？
+- **[AI-056](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-056)** · 工具很多时，如何避免工具描述使 Prompt 过长？
+- **[AI-057](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-057)** · 工具返回结果过大，超过上下文窗口时如何处理？
+- **[AI-058](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-058)** · 现有 Skill 无法解决问题时，Agent 应如何处理？
+
+**回答补充：** Skill 通常是可检索的说明、流程和脚本资源，具体目录与加载约定由宿主定义；渐进披露可先提供名称与适用范围，再按需读取正文和引用。Tool 提供可执行契约，MCP 提供标准接入，子 Agent 提供独立任务执行上下文；三者可以组合。脚本或 CLI 已满足需求时不必强加协议。比较 Skill 目录中的入口、资源和脚本如何版本化、校验与授权，不能假定所有平台结构相同；Skill 不是自动成为知识库或模型权重。能力缺失时继续按权限发现工具、请求必要输入或报告缺口，不能虚构能力或自行扩权。
+
+<a id="q-20"></a>
 
 #### 20. 多模态输入的工程处理
 
@@ -670,7 +874,16 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 默认 OCR 准确；丢弃位置；认为图片无法注入。
 
+##### 面经扩展
+
+- **[AI-236](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-236)** · 长视频问答中，如何检索相关片段并组装 Prompt？
+- **[AI-237](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-237)** · 如何支持跨多个视频的资源库检索？
+
+**回答补充：** 长视频先保留视频 ID、时间戳、转写、关键帧和各模态来源，按片段建立可过滤检索；跨视频检索先定位资源再补上下文。Prompt 携带与问题有关的片段、时间邻域和引用，限制帧数、时长与 Token；评估片段召回与答案证据覆盖，避免把转写当作完整视觉信息。
+
 ## 3. RAG 与知识工程
+
+<a id="q-21"></a>
 
 #### 21. 企业 RAG 全链路设计
 
@@ -705,6 +918,15 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 区分内容、权限、索引与答案责任，说明失败承诺及重建验证。
 
+##### 面经扩展
+
+- **[AI-088](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-088)** · 完整介绍 RAG 从文档入库到检索、生成的流程。
+- **[AI-234](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-234)** · 设计百万或千万级商品知识库问答系统。
+
+**回答补充：** 百万或千万商品场景先区分商品数、文档数、Chunk 数与向量数，再估计增量更新、索引容量、召回扇出和重排预算。静态说明进入索引，价格与库存由权威接口读取；按实体 ID、版本与权限关联，避免大规模检索质量掩盖事实过期。
+
+<a id="q-22"></a>
+
 #### 22. 文档解析与数据血缘
 
 **题型：** 专项题，P1
@@ -727,6 +949,14 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 ##### 常见失分点
 
 只提取纯文本；无失败状态；无血缘。
+
+##### 面经扩展
+
+- **[AI-098](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-098)** · 带表格、标题的 PDF 与 Word 复杂文档如何处理？多路召回如何设计？
+
+**回答补充：** PDF 与 Word 提取需保留标题层次、页码、表头和单元格关系；扫描页使用 OCR 并记录置信与失败。文本、表格和必要的视觉信息可分别召回，再按来源去重融合；解析错误先修复，不能只调向量参数。
+
+<a id="q-23"></a>
 
 #### 23. 分块策略与父子检索
 
@@ -751,6 +981,18 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 更大 Overlap 当万能；破坏表格；无元数据。
 
+##### 面经扩展
+
+- **[AI-094](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-094)** · RAG 的文档切分粒度如何确定？具体怎么实现？
+- **[AI-095](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-095)** · Chunk 大小和重叠度如何设置？如何对比参数效果？
+- **[AI-096](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-096)** · 文档切割有哪些策略？如何避免破坏语义？
+- **[AI-097](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-097)** · Markdown 文档没有标题时如何切分？
+- **[AI-099](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-099)** · 给定一部长篇小说，如何做文档切割？
+
+**回答补充：** 有标题时按章节与段落切分，无标题 Markdown 按段落、列表、代码围栏和长度兜底，避免切断表格与代码。小说按章节、场景、人物和时间线保存层级，局部问答与全书总结采用不同扩展范围。以答案跨度分布比较 Chunk 大小和重叠度，记录召回、证据覆盖、重复率与生成成本，不能给出通用最优长度。
+
+<a id="q-24"></a>
+
 #### 24. Embedding 模型选型
 
 **题型：** 专项题，P1
@@ -773,6 +1015,15 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 ##### 常见失分点
 
 榜单直接选型；只看维度；忽略编码约定。
+
+##### 面经扩展
+
+- **[AI-092](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-092)** · Embedding 模型如何选型？
+- **[AI-100](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-100)** · 短 Query 与长 Chunk 向量化后如何比较？
+
+**回答补充：** 短 Query 与长 Chunk 使用配套的查询／文档编码方式，确认是否采用非对称训练、任务前缀与归一化。检查长文本截断和主题稀释，用难负例与不同长度切片验证；必要时细分文档并在召回后补父块。
+
+<a id="q-25"></a>
 
 #### 25. 向量库与索引选型
 
@@ -798,6 +1049,16 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 向量库自动租户隔离；只测无过滤；无恢复。
 
+##### 面经扩展
+
+- **[AI-102](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-102)** · 向量检索使用什么索引类型？
+- **[AI-104](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-104)** · 如何对比向量数据库？Qdrant 的性能、数据量级与瓶颈如何？
+- **[AI-106](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-106)** · RAG 的索引可以做哪些优化？
+
+**回答补充：** 比较 Qdrant 等候选的索引、过滤、更新删除、可见性和运维能力，在相同维度、数据量、查询分布与硬件下测试 Recall@K、吞吐和 P95/P99。HNSW 调参、IVF 候选范围与 PQ 压缩都应量化召回和资源取舍，不能直接引用产品标称性能作为项目结论。
+
+<a id="q-26"></a>
+
 #### 26. 混合检索与 Rerank
 
 **题型：** 专项题，P0
@@ -820,6 +1081,15 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 ##### 常见失分点
 
 直接加分数；无候选上限；视作所有场景标配。
+
+##### 面经扩展
+
+- **[AI-101](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-101)** · 关键词检索与向量检索各有什么优缺点？两路结果如何融合？
+- **[AI-103](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-103)** · Rerank 如何实现？排序特征权重如何分配？
+
+**回答补充：** 融合前区分 BM25 与向量分数尺度；可用 RRF 或校准后的加权融合，权重在独立验证集选择。Rerank 可用交叉编码器或模型评分，限制候选数量与长度，分别验证召回不足和排序错误，不能用权重调优补回未召回文档。
+
+<a id="q-27"></a>
 
 #### 27. 查询改写与多跳检索
 
@@ -844,6 +1114,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 假定无损；无限扩展；丢失意图。
 
+<a id="q-28"></a>
+
 #### 28. 检索置信与无答案处理
 
 **题型：** 专项题，P0
@@ -866,6 +1138,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 ##### 常见失分点
 
 通用固定阈值；失败都返回通用答案；只优化回答率。
+
+<a id="q-29"></a>
 
 #### 29. 引用生成与证据校验
 
@@ -890,6 +1164,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 只检查 URL；自由生成来源；无版本。
 
+<a id="q-30"></a>
+
 #### 30. 知识更新与一致性
 
 **题型：** 专项题，P1
@@ -912,6 +1188,14 @@ V3 发布后 V2 任务晚到，如何防止覆盖？
 ##### 常见失分点
 
 只靠 TTL；无乱序保护；删除只移除源文件。
+
+##### 面经扩展
+
+- **[AI-111](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-111)** · 商品价格、描述动态更新时，知识库设计应考虑什么？
+
+**回答补充：** 价格、库存等强时效字段保留权威查询路径，描述更新通过变更事件驱动重建并拒绝旧版本覆盖。索引与缓存注明版本和新鲜度，删除、下架与权限收紧优先阻断可见路径。
+
+<a id="q-31"></a>
 
 #### 31. RAG 权限过滤与撤权
 
@@ -936,6 +1220,8 @@ V3 发布后 V2 任务晚到，如何防止覆盖？
 
 只前端隐藏；不区分后过滤发生位置；忽略缓存。
 
+<a id="q-32"></a>
+
 #### 32. RAG 分层评测
 
 **题型：** 专项题，P0
@@ -958,6 +1244,20 @@ Recall@K 提高而满意度下降，如何定位？
 ##### 常见失分点
 
 单分数代表全链路；无无答案样本；相关块当完整答案。
+
+##### 面经扩展
+
+- **[AI-107](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-107)** · 文档明确包含目标内容，但 RAG 召回失败，如何逐步排查？
+- **[AI-108](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-108)** · RAG 召回率超过 90%，最终答案准确率仍低，如何排查？
+- **[AI-110](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-110)** · 当前 RAG 最大的瓶颈是什么？
+- **[AI-117](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-117)** · 知识库的准确率与召回率如何评估？
+- **[AI-118](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-118)** · 如何分别量化检索效果与最终回答效果？
+- **[AI-134](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-134)** · Precision 与 Recall 分别是什么？不同场景如何取舍？
+- **[AI-135](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-135)** · Recall 很高而 Precision 很低时，如何处理？
+
+**回答补充：** 召回失败按源文档可见性、解析、切块、编码、过滤、ANN、融合与重排逐层检查；用穷举近邻或关键词对照区分索引与语义问题。Recall 高而答案差时检查标注单位、噪声、证据截断、生成与引用。Precision=相关命中数/返回数，Recall=相关命中数/全部相关数，声明按文档、块或主张计算；提高阈值、重排或缩小 K 时同时评估误拒与覆盖，瓶颈以分层实验确认。
+
+<a id="q-33"></a>
 
 #### 33. 长上下文与 RAG 的组合
 
@@ -982,6 +1282,8 @@ Recall@K 提高而满意度下降，如何定位？
 
 长窗口自动理解全部；把两者视为互斥；忽略解析。
 
+<a id="q-34"></a>
+
 #### 34. Agentic RAG 的适用边界
 
 **题型：** 专项题，P1
@@ -1004,6 +1306,16 @@ Recall@K 提高而满意度下降，如何定位？
 ##### 常见失分点
 
 自主循环当必选；无预算；自身回答强化错误。
+
+##### 面经扩展
+
+- **[AI-089](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-089)** · 把 RAG 封装成 Agent 有什么好处？
+- **[AI-090](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-090)** · 了解 Graph RAG 与 Agentic RAG 吗？
+- **[AI-105](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-105)** · RAG 为什么使用图数据库？
+
+**回答补充：** Agentic RAG 允许按证据缺口动态检索，Graph RAG 利用实体关系或社区摘要支持关系查询与全局归纳，两者可组合。只有跨实体、多跳或全局问题有测得收益时才承担图抽取、实体对齐、更新与权限传播成本；简单检索不必图化。
+
+<a id="q-35"></a>
 
 #### 35. 索引重建与 Embedding 迁移
 
@@ -1030,6 +1342,8 @@ Recall@K 提高而满意度下降，如何定位？
 
 ## 4. Agent 决策与任务规划
 
+<a id="q-36"></a>
+
 #### 36. Agent 与 Workflow 的选择
 
 **题型：** 专项题，P0
@@ -1052,6 +1366,19 @@ Recall@K 提高而满意度下降，如何定位？
 ##### 常见失分点
 
 把 Agent 当固定工作流的必然升级；只比较灵活性；没有限制自主动作。
+
+##### 面经扩展
+
+- **[AI-004](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-004)** · 项目为什么必须用 Agent？固定规则代码是否也能解决？
+- **[AI-005](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-005)** · 了解哪些 Agent 开发框架？框架包含哪些组件？
+- **[AI-006](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-006)** · LangChain 与 LangGraph 的核心区别是什么？
+- **[AI-007](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-007)** · 为什么自研轻量 Agent，而不直接使用成熟框架？
+- **[AI-008](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-008)** · 基于 LangGraph 的 Agent 框架中，图的节点与边分别是什么？
+- **[AI-012](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-012)** · OpenClaw 的核心亮点是什么？
+
+**回答补充：** 先比较规则代码、固定 Workflow 与自主 Agent 的路径不确定性、收益和失败成本。LangChain 常提供模型与检索工具等集成抽象，LangGraph 提供显式状态、节点、边与持久化编排；具体能力按使用版本核实。图节点执行处理，边表达控制流，状态更新遵守合并与并发约定。自研方案需交代要保留的授权、恢复、观测和升级能力；介绍 OpenClaw 等具体产品时以所用版本、真实任务和可验证能力评价，不能把产品名称当架构答案。
+
+<a id="q-37"></a>
 
 #### 37. ReAct 循环与状态
 
@@ -1076,6 +1403,17 @@ Recall@K 提高而满意度下降，如何定位？
 
 只讲循环图；把所有观察当事实；终止完全由模型自由决定。
 
+##### 面经扩展
+
+- **[AI-015](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-015)** · ReAct 是什么？循环中的 Reasoning 与 Action 分别做什么？
+- **[AI-016](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-016)** · ReAct 与 Plan 模式有什么区别？各适合什么场景？
+- **[AI-017](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-017)** · Agent Loop 在什么条件下继续，在什么条件下结束？
+- **[AI-063](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-063)** · ReAct 与 CoT 有什么区别？各适合什么场景？
+
+**回答补充：** ReAct 在行动与观察间迭代，Plan 模式先给出步骤与依赖，执行后仍可按观察重规划；CoT 主要组织推理，不必包含环境交互。结束由产物验收、不可恢复错误、授权缺口或预算触发，不能只依赖模型说完成。
+
+<a id="q-38"></a>
+
 #### 38. 任务拆解与完成标准
 
 **题型：** 专项题，P0
@@ -1098,6 +1436,16 @@ Recall@K 提高而满意度下降，如何定位？
 ##### 常见失分点
 
 只列自然语言清单；无依赖和验收；把规划等同于执行。
+
+##### 面经扩展
+
+- **[AI-020](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-020)** · Modular Agent 如何实现多步规划？
+- **[AI-021](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-021)** · 如何做任务拆分？为什么要拆分？如何衡量和提升效果？
+- **[AI-228](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-228)** · 设计词包 Agent，对 10 万余词分类：给出架构并指出模型方案的坑点，是否需要子 Agent 或专用模块？
+
+**回答补充：** 任务拆分按可验收产物、依赖与权限划界，比较成功率、返工和协调成本。十万词分类先定义标签体系、歧义与多标签规则，做去重、批处理、检查点和抽样标注；可用规则或小模型处理稳定部分，大模型处理困难样本。按可独立验证的批次并行，不按词数机械创建子 Agent。
+
+<a id="q-39"></a>
 
 #### 39. 失败后的重规划
 
@@ -1122,6 +1470,14 @@ Recall@K 提高而满意度下降，如何定位？
 
 任何错误都重跑；丢失已执行事实；通过换工具绕过拒绝。
 
+##### 面经扩展
+
+- **[AI-230](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-230)** · 行程中遇到下雨或用户将两天改成一天时，Agent 如何调整？
+
+**回答补充：** 天气变化与天数缩短分别触发局部替换和全局约束重算；保留用户确认的预算、交通、预订与不可退款事实。计划有版本，受影响步骤及下游重新验证，已发生业务动作必须查询或按规则补偿，不能仅修改自然语言行程。
+
+<a id="q-40"></a>
+
 #### 40. 空转识别与预算终止
 
 **题型：** 专项题，P0
@@ -1144,6 +1500,16 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 ##### 常见失分点
 
 只限制轮次；用不同措辞逃过检测；预算耗尽却伪报成功。
+
+##### 面经扩展
+
+- **[AI-018](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-018)** · Agent 出现路径震荡、重复尝试的原因是什么？如何优化？
+- **[AI-030](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-030)** · 如何避免 Agent 无限循环，或多个 Agent 互相推诿任务？
+- **[AI-081](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-081)** · 如何识别反复读同一文件、重复调用同一工具等重复状态？
+
+**回答补充：** 用规范化工具名、参数、结果摘要、状态版本和产物变化识别重复，结合依赖图发现循环转派与等待。区分正常轮询、暂时无新结果和无进展，设置总步数、失败次数、时间及费用上限；终止时交付部分结果和未决状态。
+
+<a id="q-41"></a>
 
 #### 41. 短期记忆、长期记忆与业务状态
 
@@ -1168,6 +1534,17 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 
 所有状态向量化；历史全部灌入；把记忆当交易账本。
 
+##### 面经扩展
+
+- **[AI-074](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-074)** · 长期、中期、短期记忆分别如何设计和分层存储？
+- **[AI-075](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-075)** · 当前 Context 与长期 Memory 有什么区别？分别解决什么问题？
+- **[AI-082](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-082)** · RAG、Memory、Context Engineering 各解决什么问题？在 Coding Agent 中如何协同？
+- **[AI-085](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-085)** · 长周期对话间隔数周后继续时，如何管理历史与 Token 用量？
+
+**回答补充：** 长期保存稳定偏好与有来源事实，中期保存项目摘要与阶段产物，短期保存当前步骤和工作集，分层按用途而非仅按存储介质命名。Context 是本轮输入，Memory 是可选择召回的记录，RAG 是获取外部证据的路径；数周后续聊先重验目标、权限与事实新鲜度，再按需召回，不能全量回灌历史。
+
+<a id="q-42"></a>
+
 #### 42. 记忆写入与冲突更新
 
 **题型：** 专项题，P1
@@ -1190,6 +1567,15 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 ##### 常见失分点
 
 模型抽取后无条件写入；只追加不撤销；记忆更新直接改业务资料。
+
+##### 面经扩展
+
+- **[AI-076](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-076)** · Memory 如何提取、存储和检索？
+- **[AI-077](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-077)** · 长短期记忆如何实现过期管理与去重？
+
+**回答补充：** 抽取候选后校验来源、必要性、主体与保留策略，再用实体键或语义候选做去重；冲突通过版本与撤销表示。过期后先停止召回，并传播到摘要与索引，不能仅依赖向量库自然遗忘。
+
+<a id="q-43"></a>
 
 #### 43. 记忆召回与污染防护
 
@@ -1214,6 +1600,15 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 
 相关就可信；没有来源；删除原条目却保留派生摘要。
 
+##### 面经扩展
+
+- **[AI-079](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-079)** · 长期记忆保存了过时文件摘要时，如何处理记忆污染？
+- **[AI-080](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-080)** · 模型把错误结论写入记忆并被持续沿用时，如何纠错？
+
+**回答补充：** 文件摘要绑定提交或内容哈希，文件变化后标记过期并按需重读。错误结论追踪来源和受影响的派生记忆，撤销后重新核验；相似度高和被反复引用都不能提高事实可信度。
+
+<a id="q-44"></a>
+
 #### 44. 多 Agent 编排与任务协议
 
 **题型：** 专项题，P1
@@ -1236,6 +1631,19 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 ##### 常见失分点
 
 数量越多越好；无协议与责任；没有总预算。
+
+##### 面经扩展
+
+- **[AI-023](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-023)** · 单 Agent 与多 Agent 有什么区别？分别适用于什么场景？
+- **[AI-024](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-024)** · Multi-Agent 系统如何划分各 Agent 的职责？
+- **[AI-025](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-025)** · 中心式与分布式多 Agent 协作通信各有什么优缺点？
+- **[AI-026](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-026)** · 多 Agent 通信采用信箱、共享内存、事件驱动时，底层如何实现？
+- **[AI-027](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-027)** · 如何保证多 Agent 通信结果明确、可验证，避免自然语言歧义？
+- **[AI-047](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-047)** · A2A 协议是什么？
+
+**回答补充：** 中心编排便于统一预算、依赖与验收，但协调方需恢复；分布式协作提高局部自治，同时增加状态一致性与终止难度。信箱可落持久化队列，共享状态用版本更新，事件驱动要处理重复、乱序与关联；消息携带 task_id、父任务、输入版本、结果 Schema 与验收证据。A2A 侧重 Agent 发现与任务交互，MCP 侧重工具和资源接入；协议不自动解决权限、幂等或业务结果核验。
+
+<a id="q-45"></a>
 
 #### 45. 多 Agent 共享资源冲突
 
@@ -1260,7 +1668,15 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 
 共享目录任意写；只加锁不定义所有权；无集成验证。
 
+##### 面经扩展
+
+- **[AI-028](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-028)** · 多个 Agent 同时修改同一文件，如何避免冲突？
+
+**回答补充：** 按文件或模块分配所有权，隔离工作区生成带基线版本的补丁；合并方负责冲突消解和组合验证。锁只解决同时写入，不能代替语义冲突检测、完整测试或用户已有修改保护。
+
 ## 5. 工具、MCP 与执行环境
+
+<a id="q-46"></a>
 
 #### 46. 工具 Schema 与业务契约
 
@@ -1285,6 +1701,14 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 
 只设计 JSON；描述和实现不一致；失败统一返回字符串。
 
+##### 面经扩展
+
+- **[AI-037](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-037)** · 哪些能力适合抽象为 Tool？参数 Schema 和错误码如何设计？
+
+**回答补充：** 适合抽象为 Tool 的能力应有稳定输入输出、明确副作用和可检查的完成条件；记录单位、前置状态、权限、幂等与错误分类。工具边界优先服务业务验收，避免把任意脚本直接暴露成无限权限入口。
+
+<a id="q-47"></a>
+
 #### 47. 工具选择与歧义治理
 
 **题型：** 专项题，P1
@@ -1307,6 +1731,8 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 ##### 常见失分点
 
 只换名字；把误选都归模型；无负例。
+
+<a id="q-48"></a>
 
 #### 48. Tool Calling 错误恢复
 
@@ -1331,6 +1757,16 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 
 所有错误重试；无限纠错；把拒绝当工具不可用。
 
+##### 面经扩展
+
+- **[AI-039](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-039)** · 工具遇到文件不存在、超时、权限不足时，如何恢复和重试？
+- **[AI-040](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-040)** · 工具入参由模型结合上下文生成时，如何保障调用可靠性？
+- **[AI-041](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-041)** · 多个工具调用链路如何调度？异常时如何 Fallback？
+
+**回答补充：** 文件不存在先区分路径错误和业务缺失，权限不足不得绕过，瞬时超时才进入有界退避；副作用结果未知先查询。多个工具按依赖图调度，只并行无依赖且无冲突的动作，替代工具也要满足相同语义、授权和幂等约束。
+
+<a id="q-49"></a>
+
 #### 49. MCP 协议与应用责任
 
 **题型：** 专项题，P1
@@ -1353,6 +1789,17 @@ MCP 接入降低了什么成本，哪些责任仍属于应用？
 ##### 常见失分点
 
 把 MCP 当 Agent 框架；接入就默认可信；混淆协议与业务责任。
+
+##### 面经扩展
+
+- **[AI-042](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-042)** · MCP 是什么？Agent 通过 MCP 调用工具的流程是什么？
+- **[AI-043](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-043)** · MCP 的底层实现原理是什么？
+- **[AI-044](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-044)** · MCP 与 Function Calling 有什么区别？有何实践？
+- **[AI-045](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-045)** · MCP 如何适配 stdio、HTTP、SSE、Streamable HTTP？
+
+**回答补充：** 按初始化与能力协商、发现、模型提出调用、执行校验、tools/call、结果回传讲清链路。MCP 的 JSON-RPC 消息可运行于 stdio 或适用版本的 HTTP 传输；旧式 HTTP+SSE 与 Streamable HTTP 的端点、会话与通知机制有差别，SSE 是可用于流式消息的机制，不能把所有名词当作同层独立协议。Function Calling 是模型输出调用建议的接口能力，MCP 解决宿主与服务的标准连接，二者可组合。
+
+<a id="q-50"></a>
 
 #### 50. MCP 工具发现与版本变化
 
@@ -1377,6 +1824,15 @@ MCP 接入降低了什么成本，哪些责任仍属于应用？
 
 发现结果永久缓存；忽略分页；把同名工具当同一可信实现。
 
+##### 面经扩展
+
+- **[AI-038](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-038)** · 一个工具从定义、注册、被 Agent 发现到被调用，完整生命周期是什么？
+- **[AI-046](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-046)** · 如何处理 MCP 版本兼容问题？
+
+**回答补充：** 工具生命周期包含定义契约、注册来源、协商与发现、按需加载、执行鉴权、观测、升级及下线。固定协议和 Schema 版本做契约回归，无法兼容时明确拒绝或通过适配层迁移，不能只因工具同名就沿用旧参数。
+
+<a id="q-51"></a>
+
 #### 51. 工具授权与用户身份传播
 
 **题型：** 专项题，P0
@@ -1399,6 +1855,14 @@ Agent 代用户操作多个系统，如何避免服务账号越权？
 ##### 常见失分点
 
 服务账号覆盖用户权限；凭据放 Prompt；只在会话开始鉴权。
+
+##### 面经扩展
+
+- **[AI-147](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-147)** · Agent 的写操作边界如何划分？
+
+**回答补充：** 区分读、生成可审查草稿、修改本地对象、提交外部系统与不可逆动作，为不同范围绑定用户授权、对象和参数。审批后仍重验业务状态，工具返回的授权声明或 Skill 说明不能自行扩大用户授权。
+
+<a id="q-52"></a>
 
 #### 52. 沙箱与代码执行隔离
 
@@ -1423,6 +1887,16 @@ Agent 能执行代码，如何隔离文件、网络和资源？
 
 只用容器无出口控制；挂载全部宿主目录；没有清理和资源上限。
 
+##### 面经扩展
+
+- **[AI-146](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-146)** · 如何实现 Agent 不同任务之间的隔离？
+- **[AI-150](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-150)** · AI 生成代码的执行安全如何保障？
+- **[AI-151](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-151)** · Python 的 exec 与 eval 能直接用于执行 AI 代码吗？
+
+**回答补充：** Python exec/eval 执行任意代码，不构成安全隔离；限制 globals 也不能替代受控进程、文件和网络边界。按任务分离环境、凭据和资源配额，验证宿主挂载、依赖安装、子进程与退出清理，防止跨任务污染。
+
+<a id="q-53"></a>
+
 #### 53. 浏览器 Agent 的状态验证
 
 **题型：** 专项题，P1
@@ -1446,6 +1920,8 @@ Agent 能执行代码，如何隔离文件、网络和资源？
 
 固定坐标反复点；超时就再提交；把网页文字当用户指令。
 
+<a id="q-54"></a>
+
 #### 54. Coding Agent 的执行与验证
 
 **题型：** 专项题，P1
@@ -1468,6 +1944,18 @@ Agent 修改代码后声称已修复，系统如何验证？
 ##### 常见失分点
 
 相信自报完成；覆盖用户修改；把生成补丁等同交付成功。
+
+##### 面经扩展
+
+- **[AI-013](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-013)** · Trae、Claude Code、Codex 这些 Coding Agent 各有什么优缺点？
+- **[AI-109](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-109)** · Coding Agent 使用 grep 检索与 RAG 检索有什么区别？为什么可能不用 RAG？
+- **[AI-152](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-152)** · Agent 生成错误 Patch 时，如何回滚、验证与重试？
+- **[AI-153](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-153)** · 大型仓库跨模块修改时，如何安排架构理解、检索、规划和验证？
+- **[AI-227](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-227)** · 如何使用 Agent 自动生成 CUDA Kernel？
+
+**回答补充：** 比较 Coding Agent 时固定仓库、任务、权限、环境与验收，观察补丁正确性、检索覆盖、恢复和成本。grep 适合精确符号与文本定位，RAG 可补语义定位，但会引入索引新鲜度与召回误差，应先用实测决定组合。跨模块修改先识别依赖与接口，再拆补丁并做集成验证；失败只回退本任务变更。CUDA Kernel 生成额外检查数值误差、Shape、dtype、设备兼容和真实性能，编译成功不足以证明正确或更快。
+
+<a id="q-55"></a>
 
 #### 55. 工具结果契约与不可信内容
 
@@ -1493,6 +1981,8 @@ Agent 修改代码后声称已修复，系统如何验证？
 只看 HTTP 200；未经校验传给模型；无输出预算。
 
 ## 6. 状态、异步执行与可靠性
+
+<a id="q-56"></a>
 
 #### 56. 长任务的异步执行与恢复
 
@@ -1527,6 +2017,16 @@ Task、Step、Attempt 如何划分；执行权和 Checkpoint 如何配合；任�
 
 能解释权威事实、执行权与去重责任；不声称消息队列天然保证端到端 exactly-once。
 
+##### 面经扩展
+
+- **[AI-001](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-001)** · 一次 Agent 请求从用户输入到最终回答，完整链路是什么？
+- **[AI-002](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-002)** · Agent Harness 是什么？与单纯调用 LLM API 有什么区别？
+- **[AI-031](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-031)** · 持续运行很久的 Agent 任务如何保证稳定性？
+
+**回答补充：** 完整链路为身份与目标确认、上下文组装、模型决策、工具校验执行、结果核验、状态提交与交付。Harness 管理循环、工具、权限、状态、预算和验证；长任务还需队列、持久化、租约、恢复与产物保留，不能让 HTTP 连接或进程内历史承载全部生命周期。
+
+<a id="q-57"></a>
+
 #### 57. Agent 状态机与并发更新
 
 **题型：** 专项题，P0
@@ -1549,6 +2049,15 @@ Task、Step、Attempt 如何划分；执行权和 Checkpoint 如何配合；任�
 ##### 常见失分点
 
 一个 status 包含所有语义；任意覆盖；状态存在就认为副作用已停止。
+
+##### 面经扩展
+
+- **[AI-019](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-019)** · 状态机与流式 Workflow 有什么区别？分别何时使用？
+- **[AI-155](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-155)** · ChatGPT 类对话 Agent 的会话表、消息表应如何设计字段？
+
+**回答补充：** 状态机描述合法迁移，流式输出描述进度交付，两者可组合。会话表保存会话 ID、租户、用户、配置版本与生命周期；消息表保存消息 ID、会话、序号、角色、内容引用与调用关联；任务、步骤、尝试、工具执行和流事件分别建模，明确并发序号、访问控制与删除血缘。
+
+<a id="q-58"></a>
 
 #### 58. Checkpoint 与步骤提交时机
 
@@ -1573,6 +2082,15 @@ Task、Step、Attempt 如何划分；执行权和 Checkpoint 如何配合；任�
 
 执行前推进进度；只存步骤号；假设所有写入原子。
 
+##### 面经扩展
+
+- **[AI-032](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-032)** · 运行数天的 Agent 遇到第三方接口报错，如何从断点继续而不重头运行？
+- **[AI-033](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-033)** · 如何定制任务调度、状态回退、Checkpoint 与 Trace 回放能力？
+
+**回答补充：** 检查点保存已提交步骤、输入版本、产物引用和未决工具操作；恢复前核对外部事实与执行权。定制调度与回退需保留任务依赖和状态版本；Trace 回放用于诊断，重新执行必须走授权、幂等和副作用核验，不能把日志重放等同于安全重跑。
+
+<a id="q-59"></a>
+
 #### 59. Worker 租约与执行权
 
 **题型：** 专项题，P1
@@ -1595,6 +2113,8 @@ Task、Step、Attempt 如何划分；执行权和 Checkpoint 如何配合；任�
 ##### 常见失分点
 
 worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界。
+
+<a id="q-60"></a>
 
 #### 60. 请求、任务与工具幂等
 
@@ -1619,6 +2139,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 
 每次重试生成新键；只按消息 ID；没有范围与保存期限。
 
+<a id="q-61"></a>
+
 #### 61. 工具成功但响应丢失
 
 **题型：** 专项题，P0
@@ -1641,6 +2163,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 ##### 常见失分点
 
 超时立即重发；本地去重当下游去重；没有未知状态。
+
+<a id="q-62"></a>
 
 #### 62. 任务落库与消息可靠投递
 
@@ -1665,6 +2189,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 
 库与 MQ 裸双写；宣称 Outbox 消除所有重复；无积压监控。
 
+<a id="q-63"></a>
+
 #### 63. 取消与超时后的副作用
 
 **题型：** 专项题，P0
@@ -1687,6 +2213,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 ##### 常见失分点
 
 关闭 SSE 就取消；本地超时等于下游停止；抛弃迟到结果。
+
+<a id="q-64"></a>
 
 #### 64. 人工审批与恢复执行
 
@@ -1711,6 +2239,14 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 
 只存 approved=true；恢复时自由改参数；不检查审批有效期。
 
+##### 面经扩展
+
+- **[AI-034](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-034)** · 需要人工强制中断 Agent 时，如何处理 Human-in-the-Loop？
+
+**回答补充：** 区分审批等待、协作取消、人工接管和强制终止进程。先撤销或转移执行权，保存检查点并核验在途副作用；人工审批绑定对象、参数、版本和有效期，恢复时重验，进程退出不代表远端操作取消。
+
+<a id="q-65"></a>
+
 #### 65. 部分成功与补偿边界
 
 **题型：** 专项题，P1
@@ -1733,6 +2269,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 ##### 常见失分点
 
 所有动作可回滚；补偿等于逆操作；忽略补偿失败。
+
+<a id="q-66"></a>
 
 #### 66. 超时、重试与重试放大
 
@@ -1757,6 +2295,14 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 每层三次重试；无限延长总超时；只防重复副作用不看费用。
 
+##### 面经扩展
+
+- **[AI-139](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-139)** · 模型调用超时或异常时如何处理？稳定性、监控与可观测性如何建设？
+
+**回答补充：** 端到端 Deadline 分配给排队、模型与工具；按错误类型决定重试、退避、熔断或降级，限制跨层重试放大。关联任务状态、尝试与 Trace 监控超时和恢复，避免仅用接口 200 判断稳定。
+
+<a id="q-67"></a>
+
 #### 67. 模型与工具限流熔断
 
 **题型：** 专项题，P0
@@ -1779,6 +2325,14 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 ##### 常见失分点
 
 只按 QPS；失败工具用默认成功；恢复瞬间全量重试。
+
+##### 面经扩展
+
+- **[AI-140](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-140)** · 如何用 Redis 实现每个 Key 每分钟 N 次请求、100 万 Token 的限流？
+
+**回答补充：** Redis 实现先声明固定窗口、滑动窗口或令牌桶语义，再用 Lua 等原子操作协调请求数、估算 Token 与 TTL。多 Key 检查需考虑原子性与集群槽位；请求前预留 Token，结束结算并幂等释放，实际输出无法精确预知时采用保守上界或明确超额策略。
+
+<a id="q-68"></a>
 
 #### 68. 流式断线与结果恢复
 
@@ -1803,6 +2357,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 只存单副本内存；重连重新启动任务；SSE 自带业务持久化。
 
+<a id="q-69"></a>
+
 #### 69. 死信、卡住任务与人工修复
 
 **题型：** 专项题，P1
@@ -1825,6 +2381,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 ##### 常见失分点
 
 只看心跳；无上下文死信；人工直接改 status。
+
+<a id="q-70"></a>
 
 #### 70. Webhook 与完成通知
 
@@ -1850,6 +2408,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 通知失败就重做任务；不验证回调目标；没有版本和去重。
 
 ## 7. 性能、容量与成本
+
+<a id="q-71"></a>
 
 #### 71. 高并发 Agent 容量设计
 
@@ -1884,6 +2444,14 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 估算能改变设计，不把 MQ 当无限容量，不把 SSE 或异步化当实际吞吐提升保证。
 
+##### 面经扩展
+
+- **[AI-145](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-145)** · Agent 面向 5000–6000 人、每天十几万次请求时如何扩容？
+
+**回答补充：** 把人数、日请求数换算为声明峰均比的任务到达率，再乘模型轮次、Token、工具扇出与重试估压力。并发由到达率和执行时长估计，扩容同时受供应商配额、数据库、检索和慢工具约束；用目标负载和突发验证尾延迟与租户公平。
+
+<a id="q-72"></a>
+
 #### 72. 语义缓存与误命中治理
 
 **题型：** 专项题，P0
@@ -1906,6 +2474,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 ##### 常见失分点
 
 只有相似度和 TTL；共享个性化答案；缓存代替授权检查。
+
+<a id="q-73"></a>
 
 #### 73. 精确缓存与前缀缓存
 
@@ -1930,6 +2500,15 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 三个缓存混为一谈；前缀缓存认为能减少所有生成时间；忽略隔离。
 
+##### 面经扩展
+
+- **[AI-086](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-086)** · Prompt Caching 是什么？
+- **[AI-087](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-087)** · Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？
+
+**回答补充：** Prompt Cache 复用支持的相同前缀计算，通常减少 Prefill 成本与延迟，不缓存最终答案，也不直接加速每个 Decode Token。稳定规则与工具声明放前部，动态内容后置；结合模型、供应商隔离、最低长度和计费规则验证实际命中收益，不为命中率复用无权或过期上下文。
+
+<a id="q-74"></a>
+
 #### 74. 模型路由与质量门禁
 
 **题型：** 专项题，P0
@@ -1952,6 +2531,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 ##### 常见失分点
 
 只按问题长度；模型自报“简单”作依据；无升级和质量门禁。
+
+<a id="q-75"></a>
 
 #### 75. LLM Serving 性能优化
 
@@ -1976,6 +2557,33 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 GPU 利用率高就认为用户体验好；量化无损假设；无真实长度分布。
 
+##### 面经扩展
+
+- **[AI-190](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-190)** · vLLM 推理框架有哪些核心机制与特点？
+- **[AI-191](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-191)** · vLLM 如何设计推理调度与 KV Cache 管理？
+- **[AI-193](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-193)** · FlashAttention 的核心原理是什么？
+- **[AI-194](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-194)** · Prefill-Decode 分离与 AF 分离分别为了解决什么问题？为什么已有 PD 分离仍需要 AF 分离？
+- **[AI-198](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-198)** · per-tensor、per-channel、per-group 量化有什么区别？哪种粒度最细？
+- **[AI-199](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-199)** · minmax 与 percentile 校准有什么差异？
+- **[AI-200](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-200)** · KL 散度校准与 MSE 校准的原理是什么？
+- **[AI-201](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-201)** · SmoothQuant 的粒度与原理是什么？与 AWQ、GPTQ 如何比较？
+- **[AI-203](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-203)** · FP8 与 NV FP4 分别适合什么部署场景？
+- **[AI-204](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-204)** · AWQ 增加反量化步骤后，为什么推理仍能加速？
+- **[AI-205](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-205)** · 如何从零推进模型量化，选择粒度和校准方法，并验证精度与性能？
+- **[AI-214](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-214)** · 如何用 Profiling 判断 GPU 算子受限于访存还是计算？
+
+**回答补充：**
+
+1. vLLM 常见机制包括分页 KV、连续批处理与前缀复用，调度需兼顾 Prefill/Decode、公平、抢占与尾延迟；具体支持随版本核实。
+2. FlashAttention 通过分块和片上存储减少 HBM 读写，避免物化完整注意力矩阵，不把它等同于近似注意力；PD 分离隔离两阶段负载，但需付出 KV 传输与调度成本，AF 一词必须先核对原文含义及实现边界。
+3. 量化按权重、激活与 KV 分别讨论；per-tensor、per-channel、per-group 的细度取决于分组轴与组大小，不能一概声称 group 最细。
+4. minmax 容易受离群值影响，percentile 以裁剪换动态范围，KL/MSE 校准分别按分布差异与重构误差选阈值。
+5. SmoothQuant 通过等价缩放平衡权重与激活难度，AWQ 关注激活感知的权重量化，GPTQ 利用近似二阶信息逐步降低权重量化误差。
+6. FP8/FP4 的收益依赖硬件、内核与精度验收；反量化开销可被访存节省抵消，也可能导致小批次或特定 Shape 退化。
+7. 固定模型、长度、批量和硬件测质量、TTFT、TPOT 与吞吐，用 Profiling 和 Roofline 判断访存、计算或调度瓶颈。
+
+<a id="q-76"></a>
+
 #### 76. GPU 显存与并发估算
 
 **题型：** 专项题，P2
@@ -1998,6 +2606,15 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 ##### 常见失分点
 
 只算权重；忽略长度与余量；显存放得下等于满足延迟。
+
+##### 面经扩展
+
+- **[AI-195](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-195)** · 估算 Qwen3-8B 推理所需显存。
+- **[AI-223](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-223)** · 长轮次推理显存异常增长、OOM 或随机崩溃，如何排查？
+
+**回答补充：** Qwen3-8B 按名义 8B 参数粗估，BF16/FP16 权重约 16 GB（十进制），实际以检查点参数量为准，另加 KV、缓冲与余量；量化还需缩放元数据和内核工作区。多轮显存增长先区分有效 Token 增长、活跃任务、保留张量、KV 未释放、分配器预留与碎片；按轮次采样已分配／已保留显存，结合 Profile 和最小复现定位，不能把所有增长都归为内存泄漏。
+
+<a id="q-77"></a>
 
 #### 77. 背压、队列与公平调度
 
@@ -2022,6 +2639,14 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 
 无限队列；只扩 Worker 不看供应商配额；只有队列长度没有等待指标。
 
+##### 面经扩展
+
+- **[AI-143](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-143)** · Agent 链路含 3 个工具且请求频繁，如何降低整体延迟？
+
+**回答补充：** 对三个工具画依赖图，独立只读步骤并行，依赖或冲突步骤串行；设置单工具并发上限、队列和超时。缓存、批量查询与减少往返需验证新鲜度，整体收益按关键路径和尾延迟衡量，不能简单把三次调用都并行。
+
+<a id="q-78"></a>
+
 #### 78. 成本拆解与预算控制
 
 **题型：** 专项题，P1
@@ -2045,6 +2670,16 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 
 只统计模型单次费用；无并发预留；低成本通过率高但失败任务更贵。
 
+##### 面经扩展
+
+- **[AI-141](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-141)** · 流式调用结束才知道实际费用时，如何防止并发请求超出剩余预算？
+- **[AI-142](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-142)** · 输出到一半预算归零时，继续输出还是截断？如何取舍？
+- **[AI-144](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-144)** · 如何同时降低 RAG 延迟与 LLM 调用成本？
+
+**回答补充：** 流式前原子预留输入、最大输出和必要工具预算，完成后按实际用量幂等结算并退回余量；超时未知的费用留待对账。预算不足时停止新增步骤，按预定交付策略结束并明确部分结果，不能把截断 JSON 当成功。RAG 优化同时比较召回、重排、上下文长度、缓存和路由的质量与费用，避免只压 Token 导致重试增加。
+
+<a id="q-79"></a>
+
 #### 79. 多供应商 Fallback
 
 **题型：** 专项题，P1
@@ -2067,6 +2702,14 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 ##### 常见失分点
 
 所有模型可互换；两个输出直接拼接；跨供应商绕过数据约束。
+
+##### 面经扩展
+
+- **[AI-011](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-011)** · 使用不同模型时，如何保证 Agent 表现一致？
+
+**回答补充：** 公共接口仅统一消息和错误外形，工具、结构化输出、窗口、拒绝与推理行为仍有差异。建立能力矩阵、适配器与跨模型任务回归，定义可替代场景和升级路线，不承诺不同模型逐字或行为完全一致。
+
+<a id="q-80"></a>
 
 #### 80. AI Gateway 架构
 
@@ -2102,7 +2745,15 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 
 处理适配差异、预算与可用性，而非只画反向代理；不把 Fallback 当无条件放行。
 
+##### 面经扩展
+
+- **[AI-009](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-009)** · 接入多个模型后端时，如何统一请求、响应、错误码与重试逻辑？
+
+**回答补充：** 统一请求、响应、错误分类与用量结构，同时保留供应商原始错误和能力差异。逻辑请求与多次尝试分开计量，重试有 Deadline、预算和幂等保护；流式事件、取消和部分输出必须有明确公共语义。
+
 ## 8. 评测、可观测与发布治理
+
+<a id="q-81"></a>
 
 #### 81. AI 应用的测试分层
 
@@ -2127,6 +2778,16 @@ LLM 输出不固定，哪些部分仍能写确定性测试？
 
 声称 AI 无法单元测试；只做字符串快照；Mock 完全替代集成。
 
+##### 面经扩展
+
+- **[AI-125](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-125)** · 自动更新 AGENTS.md 或 Skills 后，如何验证效果提升？
+- **[AI-131](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-131)** · 模块分阶段开发时如何验证效果？Bad Case 如何用于优化？
+- **[AI-154](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-154)** · 引入 SDD 或 TDD 后 AI 仍可能引入问题，如何防护并做端到端验证？
+
+**回答补充：** 将规则文件与 Skill 的变更当作可发布配置，对同一任务集做前后对照，保存环境与版本；确定性规则用测试，模型行为做多次任务评测。模块开发配合契约和集成验收，SDD/TDD 是组织方法，仍须核实测试覆盖实际需求并运行真实端到端验证。
+
+<a id="q-82"></a>
+
 #### 82. Golden Set 与数据泄漏
 
 **题型：** 专项题，P0
@@ -2150,6 +2811,19 @@ LLM 输出不固定，哪些部分仍能写确定性测试？
 
 只用简单手写题；测试答案进入 Prompt；反复在验收集调优。
 
+##### 面经扩展
+
+- **[AI-112](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-112)** · 评测数据集如何构建？
+- **[AI-119](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-119)** · 评测数据哪些由人工标注，哪些由模型生成？
+- **[AI-120](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-120)** · 项目接近 100% 的命中率是否可信？
+- **[AI-121](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-121)** · 高命中率如何排除数据量小、针对性优化或过拟合的影响？
+- **[AI-122](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-122)** · 公开文档可能进入预训练数据，会怎样影响评测？
+- **[AI-123](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-123)** · 如何使用私有或未见数据集，提高评测结论的可信度？
+
+**回答补充：** 人工定义任务、验收与边界，模型可生成候选和扰动，但独立抽检与标注不能省略。按会话、文档实体或时间切分去重，调优集与留出集隔离；公开文档可能已被模型见过，私有或新数据也需排查污染。报告样本量、重复运行、置信区间和各切片表现，接近满分时检查简单样本、泄漏与定向优化。
+
+<a id="q-83"></a>
+
 #### 83. Agent 轨迹与任务成功评测
 
 **题型：** 专项题，P0
@@ -2172,6 +2846,18 @@ Agent 最终答案正确但曾越权调用工具，应如何评分？
 ##### 常见失分点
 
 只评最终文本；轨迹逐字匹配；不清理工具状态。
+
+##### 面经扩展
+
+- **[AI-113](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-113)** · 每个 Case 跑几遍？使用什么指标评价？
+- **[AI-114](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-114)** · 如何设计 Agent 的 Benchmark、Case 与指标，判断一次改动确实提升能力？
+- **[AI-115](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-115)** · 不考虑底层模型时，如何评价 Agent 自身的能力？
+- **[AI-116](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-116)** · Agent 评估有哪些维度？如何分别衡量规划能力与幻觉率？
+- **[AI-124](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-124)** · 如何设计 Benchmark，保证不同方案在相同环境下比较？
+
+**回答补充：** 固定模型、工具状态、预算和环境，对同一 Case 多次运行，次数由方差和所需统计精度决定，不能规定所有任务同跑固定次数。分别衡量规划依赖正确、工具选择、产物事实、授权、恢复、耗时和成本；通过固定模型对比 Harness 或固定 Harness 对比模型做消融，不能声称完全剥离二者交互。环境重置后配对比较，报告置信与失败分布。
+
+<a id="q-84"></a>
 
 #### 84. LLM-as-a-Judge 校准
 
@@ -2197,6 +2883,15 @@ Agent 最终答案正确但曾越权调用工具，应如何评分？
 
 裁判更大就当可靠；调优和验证同一批；用待预测人工标签泄漏答案。
 
+##### 面经扩展
+
+- **[AI-126](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-126)** · 如何使用评价脚本或模型评审，对比两个 Skill 的输出？
+- **[AI-132](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-132)** · 如何评价 AIGC 文本？
+
+**回答补充：** 可确定校验的字段与格式先用脚本，语义质量用明确 Rubric、来源证据与人工校准的模型裁判。比较两个 Skill 时固定输入、工具和预算，换序盲评并抽查位置与长度偏差；AIGC 文本按任务评估正确、忠实、完整、风格及可用性，不能用单一相似度评价所有创作。
+
+<a id="q-85"></a>
+
 #### 85. AI Trace 与敏感数据治理
 
 **题型：** 专项题，P0
@@ -2219,6 +2914,14 @@ Agent 最终答案正确但曾越权调用工具，应如何评分？
 ##### 常见失分点
 
 只有 HTTP Trace；全量明文记录；不同尝试混成一次调用。
+
+##### 面经扩展
+
+- **[AI-138](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-138)** · 如何记录每轮实验的耗时、Token 消耗、结果与失败路线？
+
+**回答补充：** 每次实验关联样本、任务、步骤与尝试，保存版本、起止时间、Token、预算和产物引用；失败路线保留首次偏离和错误类型。输入输出先脱敏并限权，日志引用支持复核，不能为了可复现全量泄露数据。
+
+<a id="q-86"></a>
 
 #### 86. Agent 故障定位与止血
 
@@ -2243,6 +2946,16 @@ Agent 最终答案正确但曾越权调用工具，应如何评分？
 
 全部归为模型幻觉；先全量重跑；止血后不核对业务事实。
 
+##### 面经扩展
+
+- **[AI-130](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-130)** · 项目最大的 Bad Case 是什么？如何定位并解决模型幻觉？
+- **[AI-136](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-136)** · Agent 从用户提问到返回结果，端到端耗时如何控制？
+- **[AI-137](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-137)** · 原本 5 分钟完成的长任务突然耗时 15–20 分钟，如何分析延迟来源？
+
+**回答补充：** 长任务从 5 分钟变为 15–20 分钟时，按关键路径比较排队、TTFT/TPOT、工具、轮次、重试和恢复，分辨单步变慢与步骤变多。Bad Case 找首次偏离，分别验证证据、规划、调用、状态和交付；修复后进入独立回归切片，按质量、费用和时延判断收益。
+
+<a id="q-87"></a>
+
 #### 87. AI 服务 SLI、SLO 与告警
 
 **题型：** 专项题，P1
@@ -2265,6 +2978,8 @@ HTTP 200 很稳定但任务无法完成，如何定义服务目标？
 ##### 常见失分点
 
 HTTP 200 当任务成功；只看 GPU 利用率；样本评分当全量实时事实。
+
+<a id="q-88"></a>
 
 #### 88. 模型、Prompt 与索引发布
 
@@ -2291,6 +3006,8 @@ HTTP 200 当任务成功；只看 GPU 利用率；样本评分当全量实时事
 
 ## 9. 安全、隐私与多租户
 
+<a id="q-89"></a>
+
 #### 89. Prompt Injection 防御
 
 **题型：** 专项题，P0
@@ -2313,6 +3030,8 @@ HTTP 200 当任务成功；只看 GPU 利用率；样本评分当全量实时事
 ##### 常见失分点
 
 只写“忽略恶意指令”；模型自己授权；只测用户直接输入攻击。
+
+<a id="q-90"></a>
 
 #### 90. SSRF 与数据外泄防护
 
@@ -2337,6 +3056,8 @@ Agent 可访问 URL 和上传文件，如何防止访问内网或把数据发送
 
 只查域名；只禁一个 IP；网络允许就默认数据可外传。
 
+<a id="q-91"></a>
+
 #### 91. PII 与模型数据最小化
 
 **题型：** 专项题，P0
@@ -2359,6 +3080,14 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 ##### 常见失分点
 
 脱敏一次认为全链路安全；映射公开；供应商数据处理政策未经核实。
+
+##### 面经扩展
+
+- **[AI-148](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-148)** · 通过 Skill 实现功能时，如何避免泄露业务数据与核心脚本？
+
+**回答补充：** Skill 文本、模型可见工具声明和模型执行进程均不应持有业务密钥或无需暴露的核心脚本；敏感实现封装在受控服务并做最小数据返回。分开限制资源读取、模型输入、日志与网络出口，若任务确需脚本内容，应按授权范围提供，不能以隐藏提示词作为唯一保护。
+
+<a id="q-92"></a>
 
 #### 92. Guardrails 与误杀治理
 
@@ -2383,6 +3112,8 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 
 只有敏感词；所有审核故障都放行；把内容审核等同动作授权。
 
+<a id="q-93"></a>
+
 #### 93. 多租户隔离与资源公平
 
 **题型：** 专项题，P1
@@ -2405,6 +3136,8 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 ##### 常见失分点
 
 只在表里加租户字段；相信模型传入租户；后台和日志无隔离。
+
+<a id="q-94"></a>
 
 #### 94. 对话、记忆与派生数据删除
 
@@ -2430,6 +3163,8 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 只删会话表；所有系统即时物理删除的无依据承诺；忽略备份。
 
 ## 10. 端到端系统设计案例
+
+<a id="q-95"></a>
 
 #### 95. 企业知识助手
 
@@ -2464,6 +3199,14 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 
 根据事实类型选路径，说明权限和时效，而非所有数据都塞向量库。
 
+##### 面经扩展
+
+- **[AI-235](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-235)** · Text-to-SQL 如何实现？如何提高准确率？
+
+**回答补充：** Text-to-SQL 先检索授权 Schema、字段含义与业务口径，再生成受约束 SQL，做语法、表列权限、只读与资源校验。使用最小权限数据库身份与数据库侧行列策略执行，限制行数、超时与费用；仅允许 SELECT 文本不足以防危险函数或越权。以真实执行结果、口径一致性和拒答质量评测，歧义先澄清。
+
+<a id="q-96"></a>
+
 #### 96. 客服与工单 Agent
 
 **题型：** 核心案例，P0，45 分钟
@@ -2496,6 +3239,8 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 ##### 评价要点
 
 定义业务承诺和人机交接，避免用兜底文案掩盖未知状态。
+
+<a id="q-97"></a>
 
 #### 97. Coding Agent 平台
 
@@ -2530,6 +3275,14 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 
 区分补丁生成、验证、审查与发布，不把自主编码解释成无限权限。
 
+##### 面经扩展
+
+- **[AI-149](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-149)** · Coding Agent 作为团队工具时，如何处理文件、命令权限、安全与审计？
+
+**回答补充：** 团队平台按仓库、任务和用户委托授予路径与命令权限，区分生成补丁、执行测试、提交和部署；审计关联输入版本、补丁、授权及命令结果。隔离凭据与工作区，保留用户已有变更，敏感外部写入绑定具体审批对象。
+
+<a id="q-98"></a>
+
 #### 98. 研究与报告 Agent
 
 **题型：** 核心案例，P1，45 分钟
@@ -2562,6 +3315,15 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 ##### 评价要点
 
 说明证据质量、终止和产物恢复，不把抓取成功率当研究成功率。
+
+##### 面经扩展
+
+- **[AI-232](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-232)** · 设计全自动 AI 漫剧创作 Agent：从给定场景生成内容，按创作节点反馈并迭代。
+- **[AI-233](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-233)** · AI 漫剧如何保证人物前后一致？片段质量如何评估？
+
+**回答补充：** 将漫剧作为有阶段验收的创作工作流：场景理解、脚本、分镜、角色设定、片段生成、剪辑与交付各有版本和产物。角色一致性保存角色设定、参考资产、服装与场景约束，Seed 不能单独保证跨片段一致；评估身份、动作、叙事连续性与用户反馈。节点返工仅重算受影响下游，保留通过版本和预算；此变体复用本题的分解、产物与恢复机制，视觉一致性另需专门评测。
+
+<a id="q-99"></a>
 
 #### 99. 有副作用的业务操作 Agent
 
@@ -2596,6 +3358,15 @@ Agent 根据用户请求创建订单、申请退款或发送通知，每秒接�
 
 覆盖授权、幂等、未知结果与人工恢复，不以模型输出决定交易终态。
 
+##### 面经扩展
+
+- **[AI-229](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-229)** · 设计行程规划 Agent：周末南京两天、预算 2000 元，如何编排工具、处理异常和多轮澄清？
+- **[AI-231](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-231)** · 面对“想找个好吃的”等模糊需求，如何通过多轮对话澄清？
+
+**回答补充：** 行程规划先澄清出发地、日期、人数、偏好和预算口径，查询天气、交通、营业时间与价格后检查时间和地理可行性；预算 2000 元只作为用户约束，不编造实时价格。对“好吃的”等模糊需求优先追问会改变推荐的条件，允许明确假设。查询推荐与预订付款分开授权，失败后保留已确认事项并按真实业务状态恢复。
+
+<a id="q-100"></a>
+
 #### 100. 多租户 Agent 平台
 
 **题型：** 核心案例，P2，45 分钟
@@ -2629,6 +3400,12 @@ Agent 根据用户请求创建订单、申请退款或发送通知，每秒接�
 ##### 评价要点
 
 把前面机制落实到平台边界、故障域和运营责任，而非只列框架与中间件。
+
+##### 面经扩展
+
+- **[AI-014](../../../wxquare-private/tools/interview-results/AI与Agent面试题汇总.md#ai-014)** · 为什么把 Agent 做成云端服务，而不是本地 Harness 或 CLI？
+
+**回答补充：** 云端服务适合集中权限、资源调度、任务恢复与团队协作，本地 Harness 或 CLI 适合贴近开发环境、低启动成本与本地数据处理；比较网络依赖、数据边界、沙箱、运维成本与离线能力。混合部署可让控制面管理配置和任务、受控执行器靠近代码或私有数据，仍须明确凭据、产物与执行权归属。
 
 ## 参考资料
 
