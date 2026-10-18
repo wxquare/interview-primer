@@ -14,6 +14,28 @@
 
 优先级与题型独立。当前共 301 道主题题：283 道专项题建议每道练习 5–10 分钟，8 道手写实践建议每道练习 20–40 分钟，10 道核心案例建议每道练习 35–45 分钟。题量随考点扩展，不设 100 题上限。核心案例为第 85、203、218、227、285–290 题，不要求一次读完整个题库。
 
+## 书稿覆盖与定位
+
+本题库与《AI Engineering：大模型与智能体系统工程》配合阅读。**2026-10-18 按活动书稿逐题核对：301 题均已标注，其中 286 题主要原理与设计已覆盖、13 题部分覆盖、2 题不纳入本书。** 这不是代码实现率、GPU 实测率或整本书出版质量评分。
+
+- **已覆盖（原理与设计）**：正文能够支撑题干的主要机制与设计判断；跨层问题可能需要组合多个小节。题目涉及多个产品的实现对照时，定位首先对应共同原理，不表示所有产品细节都在书中逐条复现。具体版本 API、个人项目经历和实际性能仍须独立取证。
+- **部分覆盖**：有相关机制，但题目要求的完整手写代码、版本化实现或性能/项目证据不齐；每题明确写出缺口，不能只靠出现术语判定覆盖。
+- **不纳入**：通用机器学习编程入门超出本书主线。仍标明相关背景与原因，保留本题已有答案，不将背景章节当作完整答案。
+
+每题“书稿定位”链接到对应章节的具体小节；“覆盖边界”说明适用条件或未覆盖部分。链接锚点已按本轮本地 mdBook 构建核对；本次新增内容需随书站发布后才能在线访问，书稿源码位于相邻仓库 `wxquare.github.io/books/ai-book/src/`。本次没有发布书站。
+
+部分覆盖题可按缺口集中练习：
+
+| 缺口 | 题号 | 后续需要的证据或产物 |
+| --- | --- | --- |
+| 本人项目选型与接入实践 | [26](#q-26)、[187](#q-187) | 实际模型、业务、代码版本、测试和运行记录；书稿不能虚构个人经历 |
+| 产品与数据库的同条件比较 | [116](#q-116)、[145](#q-145) | Qdrant 与 Coding 产品的具体版本、负载、硬件和评价口径 |
+| 框架异步保存实现 | [249](#q-249) | DDP/DeepSpeed 的版本化 API、完整快照与恢复演练 |
+| 手写核心代码 | [261](#q-261)、[262](#q-262)、[263](#q-263)、[266](#q-266)、[267](#q-267)、[268](#q-268) | 完整 Attention/GQA、SFT Loss、校准或 CUDA 实现与断言；练习卡只有规格 |
+| 低精度部署与生成 Kernel 的实证 | [280](#q-280)、[291](#q-291) | 支持矩阵、同质量测试、目标 GPU 的正确性与性能数据 |
+
+[264](#q-264) 的 K-means 与 [265](#q-265) 的 CSV/MLP 手写保留在题库中，作为额外基础练习；本书不扩展为通用机器学习编程教材。
+
 ## 分类地图与记忆主线
 
 记忆主线：目标与授权 → 模型与上下文 → 证据与工具 → 状态与副作用 → 质量与成本 → 故障恢复与演进。
@@ -454,6 +476,8 @@
 
 #### 1. Transformer 核心组成与工程影响
 
+**书稿定位：已覆盖（原理与设计）。** [第1章 · 1.2 一次前向计算的完整路径](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#12-%E4%B8%80%E6%AC%A1%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E7%9A%84%E5%AE%8C%E6%95%B4%E8%B7%AF%E5%BE%84)；[第1章 · 1.3 Attention 与 Q/K/V 的计算](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#13-attention-%E4%B8%8E-qkv-%E7%9A%84%E8%AE%A1%E7%AE%97)；[第1章 · 1.4 Block 的稳定性与位置信息](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#14-block-%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7%E4%B8%8E%E4%BD%8D%E7%BD%AE%E4%BF%A1%E6%81%AF)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -491,6 +515,8 @@
 
 #### 2. Token 与可用上下文窗口
 
+**书稿定位：已覆盖（原理与设计）。** [第2章 · 2.4 Tokenizer、样本构造与有效训练信号](https://wxquare.github.io/ai-book/part1/02-pretraining-data-scaling.html#24-tokenizer%E6%A0%B7%E6%9C%AC%E6%9E%84%E9%80%A0%E4%B8%8E%E6%9C%89%E6%95%88%E8%AE%AD%E7%BB%83%E4%BF%A1%E5%8F%B7)；[第15章 · 15.6 上下文预算与信息密度](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#156-%E4%B8%8A%E4%B8%8B%E6%96%87%E9%A2%84%E7%AE%97%E4%B8%8E%E4%BF%A1%E6%81%AF%E5%AF%86%E5%BA%A6)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -521,6 +547,8 @@
 <a id="q-3"></a>
 
 #### 3. Embedding 与文本相似度
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.3.1 Embedding 与向量索引](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1931-embedding-%E4%B8%8E%E5%90%91%E9%87%8F%E7%B4%A2%E5%BC%95)；[第19章 · 19.3.2 非对称编码与空间契约](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1932-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%BC%96%E7%A0%81%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A5%91%E7%BA%A6)
 
 **题型：** 专项题，P0
 
@@ -555,6 +583,8 @@
 
 #### 4. LLM 生成的 Prefill 与 Decode
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.1 请求生命周期与服务契约](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#91-%E8%AF%B7%E6%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%A5%91%E7%BA%A6)；[第9章 · 9.2 显存与容量模型](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#92-%E6%98%BE%E5%AD%98%E4%B8%8E%E5%AE%B9%E9%87%8F%E6%A8%A1%E5%9E%8B)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -582,6 +612,8 @@
 <a id="q-5"></a>
 
 #### 5. 幻觉、忠实度与拒答
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.6.4 Evidence Sufficiency Check](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1964-evidence-sufficiency-check)；[第19章 · 19.6.5 证据不足时如何回答](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1965-%E8%AF%81%E6%8D%AE%E4%B8%8D%E8%B6%B3%E6%97%B6%E5%A6%82%E4%BD%95%E5%9B%9E%E7%AD%94)；[第19章 · 19.6.7 Hallucination Guard](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1967-hallucination-guard)
 
 **题型：** 专项题，P0
 
@@ -619,6 +651,8 @@
 
 #### 6. 采样参数与可复现性
 
+**书稿定位：已覆盖（原理与设计）。** [第4章 · 4.2 生成分布与采样：模型如何选择下一个 token](https://wxquare.github.io/ai-book/part1/04-reasoning-generation-algorithms.html#42-%E7%94%9F%E6%88%90%E5%88%86%E5%B8%83%E4%B8%8E%E9%87%87%E6%A0%B7%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E4%B8%8B%E4%B8%80%E4%B8%AA-token)；[第4章 · 4.3 解码算法：从局部选择到候选搜索](https://wxquare.github.io/ai-book/part1/04-reasoning-generation-algorithms.html#43-%E8%A7%A3%E7%A0%81%E7%AE%97%E6%B3%95%E4%BB%8E%E5%B1%80%E9%83%A8%E9%80%89%E6%8B%A9%E5%88%B0%E5%80%99%E9%80%89%E6%90%9C%E7%B4%A2)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -649,6 +683,8 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 <a id="q-7"></a>
 
 #### 7. Prompt、RAG 与 Fine-tuning 的取舍
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 · 5.1 先诊断问题再选适配方式](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#51-%E5%85%88%E8%AF%8A%E6%96%AD%E9%97%AE%E9%A2%98%E5%86%8D%E9%80%89%E9%80%82%E9%85%8D%E6%96%B9%E5%BC%8F)
 
 **题型：** 专项题，P0
 
@@ -690,6 +726,8 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 
 #### 8. KV Cache 与长上下文
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.3 KV 与缓存的层次](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#93-kv-%E4%B8%8E%E7%BC%93%E5%AD%98%E7%9A%84%E5%B1%82%E6%AC%A1)；[第9章 · 9.6 多模态与长上下文负载](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#96-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%8E%E9%95%BF%E4%B8%8A%E4%B8%8B%E6%96%87%E8%B4%9F%E8%BD%BD)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -720,6 +758,8 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 <a id="q-9"></a>
 
 #### 9. 模型选型与业务基线
+
+**书稿定位：已覆盖（原理与设计）。** [第7章 · 7.8 跨章接口与部署决策](https://wxquare.github.io/ai-book/part1/07-llm-boundaries.html#78-%E8%B7%A8%E7%AB%A0%E6%8E%A5%E5%8F%A3%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%86%B3%E7%AD%96)；[第10章 · 10.4 评估集、指标与统计不确定性](https://wxquare.github.io/ai-book/part2/infra-10-data-eval.html#104-%E8%AF%84%E4%BC%B0%E9%9B%86%E6%8C%87%E6%A0%87%E4%B8%8E%E7%BB%9F%E8%AE%A1%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7)
 
 **题型：** 专项题，P1
 
@@ -782,6 +822,8 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 
 #### 10. 自托管与模型 API 的边界
 
+**书稿定位：已覆盖（原理与设计）。** [第7章 · 7.8 跨章接口与部署决策](https://wxquare.github.io/ai-book/part1/07-llm-boundaries.html#78-%E8%B7%A8%E7%AB%A0%E6%8E%A5%E5%8F%A3%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%86%B3%E7%AD%96)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -812,6 +854,10 @@ Temperature 为零仍有差异，应记录哪些版本和输入？
 <a id="q-11"></a>
 
 #### 11. Qwen 系列模型的架构与训练方法是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.5 · 有版本依据的 Qwen 侧栏](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E6%9C%89%E7%89%88%E6%9C%AC%E4%BE%9D%E6%8D%AE%E7%9A%84-qwen-%E4%BE%A7%E6%A0%8F)；[第2章 · 2.3 数据不是原料，而是能力设计](https://wxquare.github.io/ai-book/part1/02-pretraining-data-scaling.html#23-%E6%95%B0%E6%8D%AE%E4%B8%8D%E6%98%AF%E5%8E%9F%E6%96%99%E8%80%8C%E6%98%AF%E8%83%BD%E5%8A%9B%E8%AE%BE%E8%AE%A1)；[第3章 · 3.8 方法选择、成本与回归](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#38-%E6%96%B9%E6%B3%95%E9%80%89%E6%8B%A9%E6%88%90%E6%9C%AC%E4%B8%8E%E5%9B%9E%E5%BD%92)；[第9章 §9.2 · Qwen3-8B：从配置到候选并发](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#qwen3-8b%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%88%B0%E5%80%99%E9%80%89%E5%B9%B6%E5%8F%91)
+
+**覆盖边界：** 示例采用第1章明确核验的 Qwen2 配置；题库中的 Qwen3 示例另见第9章显存账本。不能把任一配置推广到整个系列。
 
 **题型：** 专项题，P1
 
@@ -850,6 +896,8 @@ Qwen3 报告描述多阶段预训练与推理/非推理相关后训练，具体�
 <a id="q-12"></a>
 
 #### 12. PPO、DPO、GRPO 的主要区别是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第3章 · 3.4 RLHF 与 PPO](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#34-rlhf-%E4%B8%8E-ppo)；[第3章 · 3.5 DPO 与离线偏好优化](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#35-dpo-%E4%B8%8E%E7%A6%BB%E7%BA%BF%E5%81%8F%E5%A5%BD%E4%BC%98%E5%8C%96)；[第3章 · 3.6 RLVR、GRPO 与工具行为](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#36-rlvrgrpo-%E4%B8%8E%E5%B7%A5%E5%85%B7%E8%A1%8C%E4%B8%BA)
 
 **题型：** 专项题，P2
 
@@ -890,6 +938,8 @@ GRPO 对同题多条采样的奖励做组内相对优势，通常不训练独立
 
 #### 13. DPO 训练有哪些注意事项？
 
+**书稿定位：已覆盖（原理与设计）。** [第3章 · 3.5 DPO 与离线偏好优化](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#35-dpo-%E4%B8%8E%E7%A6%BB%E7%BA%BF%E5%81%8F%E5%A5%BD%E4%BC%98%E5%8C%96)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -928,6 +978,8 @@ DPO 训练有哪些注意事项？ 回答时明确所用版本、输入假设与
 <a id="q-14"></a>
 
 #### 14. PPO 优势函数如何计算？Critic 如何更新？
+
+**书稿定位：已覆盖（原理与设计）。** [第3章 §3.4 · GAE、终止与采集截断](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#gae%E7%BB%88%E6%AD%A2%E4%B8%8E%E9%87%87%E9%9B%86%E6%88%AA%E6%96%AD)；[第3章 §3.4 · PPO的四种模型角色](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#ppo%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%A8%A1%E5%9E%8B%E8%A7%92%E8%89%B2)
 
 **题型：** 专项题，P2
 
@@ -968,6 +1020,8 @@ Actor 用 ρ_t=πθ(a_t|s_t)/πold(a_t|s_t)，最大化 E[min(ρA,clip(ρ,1-ε,1
 
 #### 15. PPO 中 KL 散度起什么作用？
 
+**书稿定位：已覆盖（原理与设计）。** [第3章 §3.4 · Reference KL和PPO clip的边界](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#reference-kl%E5%92%8Cppo-clip%E7%9A%84%E8%BE%B9%E7%95%8C)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -1006,6 +1060,8 @@ PPO 的 old policy 用于重要性比和单次更新控制，reference policy �
 <a id="q-16"></a>
 
 #### 16. 奖励函数如何设计？GRPO 前是否需要冷启动？
+
+**书稿定位：已覆盖（原理与设计）。** [第3章 §3.6 · GRPO、组内奖励与冷启动](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#grpo%E7%BB%84%E5%86%85%E5%A5%96%E5%8A%B1%E4%B8%8E%E5%86%B7%E5%90%AF%E5%8A%A8)；[第3章 §3.6 · 结果奖励、过程奖励与验证器](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#%E7%BB%93%E6%9E%9C%E5%A5%96%E5%8A%B1%E8%BF%87%E7%A8%8B%E5%A5%96%E5%8A%B1%E4%B8%8E%E9%AA%8C%E8%AF%81%E5%99%A8)
 
 **题型：** 专项题，P2
 
@@ -1046,6 +1102,8 @@ GRPO 不在定义上要求冷启动 SFT。若基础策略几乎不能产生有�
 
 #### 17. 熵、交叉熵、KL 散度有什么联系与区别？
 
+**书稿定位：已覆盖（原理与设计）。** [第2章 · 2.2 预训练目标：模型究竟在学习什么](https://wxquare.github.io/ai-book/part1/02-pretraining-data-scaling.html#22-%E9%A2%84%E8%AE%AD%E7%BB%83%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B%E7%A9%B6%E7%AB%9F%E5%9C%A8%E5%AD%A6%E4%B9%A0%E4%BB%80%E4%B9%88)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1085,6 +1143,8 @@ one-hot 标签下交叉熵为什么退化成正确类别的负 log 概率？
 
 #### 18. 分类任务为什么通常不使用 MSE 作为损失函数？
 
+**书稿定位：已覆盖（原理与设计）。** [第2章 · 2.2 预训练目标：模型究竟在学习什么](https://wxquare.github.io/ai-book/part1/02-pretraining-data-scaling.html#22-%E9%A2%84%E8%AE%AD%E7%BB%83%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B%E7%A9%B6%E7%AB%9F%E5%9C%A8%E5%AD%A6%E4%B9%A0%E4%BB%80%E4%B9%88)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1123,6 +1183,8 @@ MSE 并非数学上不能分类：one-hot 概率的平方误差对应 Brier 类�
 <a id="q-19"></a>
 
 #### 19. 微调 Qwen 时如何选择训练阶段与 Loss？
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 · 5.1 先诊断问题再选适配方式](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#51-%E5%85%88%E8%AF%8A%E6%96%AD%E9%97%AE%E9%A2%98%E5%86%8D%E9%80%89%E9%80%82%E9%85%8D%E6%96%B9%E5%BC%8F)；[第3章 · 3.2 数据、监督位置与训练契约](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#32-%E6%95%B0%E6%8D%AE%E7%9B%91%E7%9D%A3%E4%BD%8D%E7%BD%AE%E4%B8%8E%E8%AE%AD%E7%BB%83%E5%A5%91%E7%BA%A6)
 
 **题型：** 专项题，P2
 
@@ -1167,6 +1229,8 @@ SFT 对目标 Token 做交叉熵并正确 shift/mask，偏好目标用成对相�
 
 #### 20. 词表超过 10 万 Token 时，Softmax 有哪些加速方法？
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.5 · 大词表选读：先分清投影、归约和采样](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E5%A4%A7%E8%AF%8D%E8%A1%A8%E9%80%89%E8%AF%BB%E5%85%88%E5%88%86%E6%B8%85%E6%8A%95%E5%BD%B1%E5%BD%92%E7%BA%A6%E5%92%8C%E9%87%87%E6%A0%B7)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -1206,6 +1270,8 @@ SFT 对目标 Token 做交叉熵并正确 shift/mask，偏好目标用成对相�
 
 #### 21. 如何处理 Softmax 数值稳定性？Online Softmax 的原理是什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · Online Softmax与IO优化的数学边界](https://wxquare.github.io/ai-book/part2/infra-08-training.html#online-softmax%E4%B8%8Eio%E4%BC%98%E5%8C%96%E7%9A%84%E6%95%B0%E5%AD%A6%E8%BE%B9%E7%95%8C)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1244,6 +1310,10 @@ FlashAttention 还维护输出累加器 o'=o exp(m-m')+Σ_b exp(s-m')v。初始�
 <a id="q-22"></a>
 
 #### 22. NV FP4 如何量化？缩放因子维度和存储格式如何设计？
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.4 · NVFP4：表示、缩放轴与存储账本](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#nvfp4%E8%A1%A8%E7%A4%BA%E7%BC%A9%E6%94%BE%E8%BD%B4%E4%B8%8E%E5%AD%98%E5%82%A8%E8%B4%A6%E6%9C%AC)
+
+**覆盖边界：** 补充 NVFP4 一维块的表示、scale 维度、打包账本及训练配方差异；不提供所有后端的物理布局与支持矩阵。
 
 **题型：** 专项题，P2
 
@@ -1290,6 +1360,8 @@ NVFP4 用 E2M1 浮点编码，典型表示 x≈q_E2M1×s_block×s_global；基�
 
 #### 23. 大模型是如何训练出来的？
 
+**书稿定位：已覆盖（原理与设计）。** [第2章 · 2.8 从预训练到后训练：边界与工程决策](https://wxquare.github.io/ai-book/part1/02-pretraining-data-scaling.html#28-%E4%BB%8E%E9%A2%84%E8%AE%AD%E7%BB%83%E5%88%B0%E5%90%8E%E8%AE%AD%E7%BB%83%E8%BE%B9%E7%95%8C%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%86%B3%E7%AD%96)；[第3章 · 3.1 从续写能力到行为塑形](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#31-%E4%BB%8E%E7%BB%AD%E5%86%99%E8%83%BD%E5%8A%9B%E5%88%B0%E8%A1%8C%E4%B8%BA%E5%A1%91%E5%BD%A2)；[第8章 · 8.1 作业对象、控制面与训练生命周期](https://wxquare.github.io/ai-book/part2/infra-08-training.html#81-%E4%BD%9C%E4%B8%9A%E5%AF%B9%E8%B1%A1%E6%8E%A7%E5%88%B6%E9%9D%A2%E4%B8%8E%E8%AE%AD%E7%BB%83%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1321,6 +1393,8 @@ NVFP4 用 E2M1 浮点编码，典型表示 x≈q_E2M1×s_block×s_global；基�
 <a id="q-24"></a>
 
 #### 24. Transformer 的整体架构是什么？Encoder 与 Decoder 分别是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.5 · 架构、可见性与目标要一起读](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E6%9E%B6%E6%9E%84%E5%8F%AF%E8%A7%81%E6%80%A7%E4%B8%8E%E7%9B%AE%E6%A0%87%E8%A6%81%E4%B8%80%E8%B5%B7%E8%AF%BB)
 
 **题型：** 专项题，P1
 
@@ -1354,6 +1428,8 @@ Decoder 都有 Cross-Attention；训练并行就等于生成并行；混用原�
 
 #### 25. 大模型分词器是什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第2章 · 2.4 Tokenizer、样本构造与有效训练信号](https://wxquare.github.io/ai-book/part1/02-pretraining-data-scaling.html#24-tokenizer%E6%A0%B7%E6%9C%AC%E6%9E%84%E9%80%A0%E4%B8%8E%E6%9C%89%E6%95%88%E8%AE%AD%E7%BB%83%E4%BF%A1%E5%8F%B7)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1385,6 +1461,10 @@ Tokenizer 把文本转成词表 ID，模型输出 ID 后再解码。常用 BPE�
 <a id="q-26"></a>
 
 #### 26. Embedding 是什么？项目使用了什么模型？
+
+**书稿定位：部分覆盖。** [第19章 · 19.3.1 Embedding 与向量索引](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1931-embedding-%E4%B8%8E%E5%90%91%E9%87%8F%E7%B4%A2%E5%BC%95)
+
+**覆盖边界：** 书中给出 Embedding 选型与检索方法；“项目实际使用了什么模型”必须补充你自己的模型版本、数据与评估结果，书稿不能代答个人经历。
 
 **题型：** 专项题，P1
 
@@ -1418,6 +1498,8 @@ Token 向量等同文档向量；默认等同线上；忽略编码器迁移。
 
 #### 27. 为什么多头注意力能提升表达能力？
 
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.3 · 多头如何回到残差流](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E5%A4%9A%E5%A4%B4%E5%A6%82%E4%BD%95%E5%9B%9E%E5%88%B0%E6%AE%8B%E5%B7%AE%E6%B5%81)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1449,6 +1531,8 @@ Token 向量等同文档向量；默认等同线上；忽略编码器迁移。
 <a id="q-28"></a>
 
 #### 28. Self-Attention 如何实现？为什么拆成 Q、K、V？如何计算？
+
+**书稿定位：已覆盖（原理与设计）。** [第1章 · 1.3 Attention 与 Q/K/V 的计算](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#13-attention-%E4%B8%8E-qkv-%E7%9A%84%E8%AE%A1%E7%AE%97)
 
 **题型：** 专项题，P1
 
@@ -1482,6 +1566,8 @@ Softmax 维度错；忘缩放；把 mask 当授权；忽略缓存偏移和全掩
 
 #### 29. QKV 中 K 起什么作用？能否省略 K，直接使用 V？
 
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.3 · 匹配空间与内容空间](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E5%8C%B9%E9%85%8D%E7%A9%BA%E9%97%B4%E4%B8%8E%E5%86%85%E5%AE%B9%E7%A9%BA%E9%97%B4)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1513,6 +1599,8 @@ K=V 仍能计算注意力，为何不等于原模型？
 <a id="q-30"></a>
 
 #### 30. MHA、GQA、MLA 的设计思路与差异是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第1章 · 1.5 架构变体与资源代价](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#15-%E6%9E%B6%E6%9E%84%E5%8F%98%E4%BD%93%E4%B8%8E%E8%B5%84%E6%BA%90%E4%BB%A3%E4%BB%B7)
 
 **题型：** 专项题，P1
 
@@ -1546,6 +1634,8 @@ MLA 为何还需要单独处理部分 RoPE 表示？
 
 #### 31. 为什么使用 RMSNorm？与 LayerNorm 有什么差异？
 
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.4 · LN、RMSNorm 与 BN 比较什么](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#lnrmsnorm-%E4%B8%8E-bn-%E6%AF%94%E8%BE%83%E4%BB%80%E4%B9%88)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1577,6 +1667,8 @@ RMSNorm 就是 LayerNorm 改名；无条件更稳定更快；无需训练直接�
 <a id="q-32"></a>
 
 #### 32. BatchNorm、LayerNorm、RMSNorm 有什么区别？
+
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.4 · LN、RMSNorm 与 BN 比较什么](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#lnrmsnorm-%E4%B8%8E-bn-%E6%AF%94%E8%BE%83%E4%BB%80%E4%B9%88)
 
 **题型：** 专项题，P1
 
@@ -1610,6 +1702,8 @@ BatchNorm 通常训练用批统计、推理用运行统计，受批组成和小�
 
 #### 33. 常见位置编码有哪些？各有什么特点？
 
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.4 · 顺序如何进入计算，扩窗为何还要验证](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E9%A1%BA%E5%BA%8F%E5%A6%82%E4%BD%95%E8%BF%9B%E5%85%A5%E8%AE%A1%E7%AE%97%E6%89%A9%E7%AA%97%E4%B8%BA%E4%BD%95%E8%BF%98%E8%A6%81%E9%AA%8C%E8%AF%81)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1641,6 +1735,8 @@ RoPE 无限制外推；位置窗口等同有效记忆；忽略缓存位置。
 <a id="q-34"></a>
 
 #### 34. 为什么 Decoder-only 架构比 Encoder-decoder 更流行？
+
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.5 · 架构、可见性与目标要一起读](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E6%9E%B6%E6%9E%84%E5%8F%AF%E8%A7%81%E6%80%A7%E4%B8%8E%E7%9B%AE%E6%A0%87%E8%A6%81%E4%B8%80%E8%B5%B7%E8%AF%BB)
 
 **题型：** 专项题，P1
 
@@ -1674,6 +1770,8 @@ Encoder-decoder 显式编码源输入，再通过 Cross-Attention 生成，适�
 
 #### 35. LLaMA 与 BERT 有什么不同？
 
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.5 · 架构、可见性与目标要一起读](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E6%9E%B6%E6%9E%84%E5%8F%AF%E8%A7%81%E6%80%A7%E4%B8%8E%E7%9B%AE%E6%A0%87%E8%A6%81%E4%B8%80%E8%B5%B7%E8%AF%BB)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1705,6 +1803,8 @@ LLaMA 与 BERT 有什么不同？ 说明理论机制、具体假设、实现取�
 <a id="q-36"></a>
 
 #### 36. T5 与 GPT-2 在架构上有什么差异？
+
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.5 · 架构、可见性与目标要一起读](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E6%9E%B6%E6%9E%84%E5%8F%AF%E8%A7%81%E6%80%A7%E4%B8%8E%E7%9B%AE%E6%A0%87%E8%A6%81%E4%B8%80%E8%B5%B7%E8%AF%BB)
 
 **题型：** 专项题，P1
 
@@ -1738,6 +1838,8 @@ T5 是 Encoder-only；GPT-2 有独立 Encoder；掩码目标一概相同。
 
 #### 37. MoE 与 Dense 模型有什么区别？各有什么优缺点？
 
+**书稿定位：已覆盖（原理与设计）。** [第1章 §1.5 · Dense、MoE 与算子的不同取舍](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#densemoe-%E4%B8%8E%E7%AE%97%E5%AD%90%E7%9A%84%E4%B8%8D%E5%90%8C%E5%8F%96%E8%88%8D)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1769,6 +1871,8 @@ MoE 仍需保存或分布承载专家权重，增加负载均衡、专家通信�
 <a id="q-38"></a>
 
 #### 38. 多轮 Agent 对话中，Attention 有哪些局限？
+
+**书稿定位：已覆盖（原理与设计）。** [第15章 · 15.1 为什么需要 Context Engineering：LLM 的上下文特性](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#151-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-context-engineeringllm-%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E7%89%B9%E6%80%A7)；[第15章 · 15.10 Context Rot 与上下文污染](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#1510-context-rot-%E4%B8%8E%E4%B8%8A%E4%B8%8B%E6%96%87%E6%B1%A1%E6%9F%93)
 
 **题型：** 专项题，P1
 
@@ -1802,6 +1906,8 @@ MoE 仍需保存或分布承载专家权重，增加负载均衡、专家通信�
 
 #### 39. Function Calling 能力如何训练？
 
+**书稿定位：已覆盖（原理与设计）。** [第3章 §3.2 · 工具轨迹与数据划分](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#%E5%B7%A5%E5%85%B7%E8%BD%A8%E8%BF%B9%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%88%92%E5%88%86)；[第3章 §3.6 · 工具调用与 Agent 轨迹](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E4%B8%8E-agent-%E8%BD%A8%E8%BF%B9)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1833,6 +1939,8 @@ SFT 可对助手调用与回答施加监督，工具结果通常作为条件而�
 <a id="q-40"></a>
 
 #### 40. SFT 的流程是什么？数据集如何构建与筛选？
+
+**书稿定位：已覆盖（原理与设计）。** [第3章 · 3.2 数据、监督位置与训练契约](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#32-%E6%95%B0%E6%8D%AE%E7%9B%91%E7%9D%A3%E4%BD%8D%E7%BD%AE%E4%B8%8E%E8%AE%AD%E7%BB%83%E5%A5%91%E7%BA%A6)；[第3章 · 3.3 SFT 的目标与失效模式](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#33-sft-%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%8E%E5%A4%B1%E6%95%88%E6%A8%A1%E5%BC%8F)
 
 **题型：** 专项题，P1
 
@@ -1866,6 +1974,8 @@ SFT 的流程是什么？数据集如何构建与筛选？ 说明理论机制、
 
 #### 41. SFT 后的 Post-Training 包含哪些方法？各自优化什么目标？
 
+**书稿定位：已覆盖（原理与设计）。** [第3章 · 3.4 RLHF 与 PPO](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#34-rlhf-%E4%B8%8E-ppo)；[第3章 · 3.5 DPO 与离线偏好优化](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#35-dpo-%E4%B8%8E%E7%A6%BB%E7%BA%BF%E5%81%8F%E5%A5%BD%E4%BC%98%E5%8C%96)；[第3章 · 3.6 RLVR、GRPO 与工具行为](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#36-rlvrgrpo-%E4%B8%8E%E5%B7%A5%E5%85%B7%E8%A1%8C%E4%B8%BA)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1897,6 +2007,8 @@ SFT 不算后训练；统一固定顺序；一个 reward 代表全部能力。
 <a id="q-42"></a>
 
 #### 42. LoRA 原理是什么？推理时是否仍需加载额外 Adapter？
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.3 · LoRA：低秩更新](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#lora%E4%BD%8E%E7%A7%A9%E6%9B%B4%E6%96%B0)；[第5章 §5.3 · Adapter 合并、组合与隔离](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#adapter-%E5%90%88%E5%B9%B6%E7%BB%84%E5%90%88%E4%B8%8E%E9%9A%94%E7%A6%BB)
 
 **题型：** 专项题，P1
 
@@ -1930,6 +2042,8 @@ LoRA 不需基础权重；永远必须或永远无需 Adapter；量化合并天�
 
 #### 43. LoRA 与 Prompt Tuning 有什么区别？分别适合什么场景？
 
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.3 · 连续提示与权重增量的接口差别](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E8%BF%9E%E7%BB%AD%E6%8F%90%E7%A4%BA%E4%B8%8E%E6%9D%83%E9%87%8D%E5%A2%9E%E9%87%8F%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%B7%AE%E5%88%AB)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -1961,6 +2075,8 @@ Prompt Tuning 等同手写 Prompt；参数少必然好；忽略服务接口。
 <a id="q-44"></a>
 
 #### 44. LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何比较？
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 · 5.2 适配数据、训练量与泛化](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#52-%E9%80%82%E9%85%8D%E6%95%B0%E6%8D%AE%E8%AE%AD%E7%BB%83%E9%87%8F%E4%B8%8E%E6%B3%9B%E5%8C%96)；[第5章 · 5.3 PEFT、LoRA 与 QLoRA](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#53-peftlora-%E4%B8%8E-qlora)
 
 **题型：** 专项题，P1
 
@@ -1994,6 +2110,8 @@ LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何�
 
 #### 45. 中文领域做 Instruction Tuning，需要注意哪些数据问题？
 
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.2 · 中文数据与过拟合的诊断顺序](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E4%B8%AD%E6%96%87%E6%95%B0%E6%8D%AE%E4%B8%8E%E8%BF%87%E6%8B%9F%E5%90%88%E7%9A%84%E8%AF%8A%E6%96%AD%E9%A1%BA%E5%BA%8F)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2025,6 +2143,8 @@ LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何�
 <a id="q-46"></a>
 
 #### 46. 模型微调过拟合时如何处理？
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.2 · 中文数据与过拟合的诊断顺序](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E4%B8%AD%E6%96%87%E6%95%B0%E6%8D%AE%E4%B8%8E%E8%BF%87%E6%8B%9F%E5%90%88%E7%9A%84%E8%AF%8A%E6%96%AD%E9%A1%BA%E5%BA%8F)；[第3章 · 3.3 SFT 的目标与失效模式](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#33-sft-%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%8E%E5%A4%B1%E6%95%88%E6%A8%A1%E5%BC%8F)
 
 **题型：** 专项题，P1
 
@@ -2068,6 +2188,8 @@ LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何�
 
 #### 47. 消息结构与信任层级
 
+**书稿定位：已覆盖（原理与设计）。** [第17章 · 17.1 统一抽象：输入、指令、上下文与输出](https://wxquare.github.io/ai-book/part2/05-llm-api-protocol.html#171-%E7%BB%9F%E4%B8%80%E6%8A%BD%E8%B1%A1%E8%BE%93%E5%85%A5%E6%8C%87%E4%BB%A4%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8E%E8%BE%93%E5%87%BA)；[第15章 · 15.5 优先级、可信度与冲突处理](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#155-%E4%BC%98%E5%85%88%E7%BA%A7%E5%8F%AF%E4%BF%A1%E5%BA%A6%E4%B8%8E%E5%86%B2%E7%AA%81%E5%A4%84%E7%90%86)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -2101,6 +2223,8 @@ LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何�
 
 #### 48. Few-shot 与分步推理
 
+**书稿定位：已覆盖（原理与设计）。** [第14章 · 14.10 Few-shot、反例与决策边界](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#1410-few-shot%E5%8F%8D%E4%BE%8B%E4%B8%8E%E5%86%B3%E7%AD%96%E8%BE%B9%E7%95%8C)；[第4章 · 4.4 Chain-of-Thought 与分解式推理](https://wxquare.github.io/ai-book/part1/04-reasoning-generation-algorithms.html#44-chain-of-thought-%E4%B8%8E%E5%88%86%E8%A7%A3%E5%BC%8F%E6%8E%A8%E7%90%86)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -2133,6 +2257,8 @@ LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何�
 
 #### 49. 结构化输出与业务校验
 
+**书稿定位：已覆盖（原理与设计）。** [第14章 · 14.8 Output Contract：结构化输出是系统边界](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#148-output-contract%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E6%98%AF%E7%B3%BB%E7%BB%9F%E8%BE%B9%E7%95%8C)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -2163,6 +2289,8 @@ LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何�
 <a id="q-50"></a>
 
 #### 50. Function Calling 的执行责任
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.1 Tool Calling 决策：从函数调用到受控行动](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#181-tool-calling-%E5%86%B3%E7%AD%96%E4%BB%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%88%B0%E5%8F%97%E6%8E%A7%E8%A1%8C%E5%8A%A8)；[第18章 · 18.3 Tool Runtime：生产级工具调用的控制平面](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#183-tool-runtime%E7%94%9F%E4%BA%A7%E7%BA%A7%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E7%9A%84%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2)
 
 **题型：** 专项题，P0
 
@@ -2195,6 +2323,8 @@ LoRA 与全参 SFT 如何选择？小模型 SFT 与大模型 LoRA 效果如何�
 
 #### 51. SSE 流式输出协议
 
+**书稿定位：已覆盖（原理与设计）。** [第17章 · 17.3.5 SSE分帧与完成判断](https://wxquare.github.io/ai-book/part2/05-llm-api-protocol.html#1735-sse%E5%88%86%E5%B8%A7%E4%B8%8E%E5%AE%8C%E6%88%90%E5%88%A4%E6%96%AD)；[第11章 §11.6 · 持久事件、水位与游标过期](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%8C%81%E4%B9%85%E4%BA%8B%E4%BB%B6%E6%B0%B4%E4%BD%8D%E4%B8%8E%E6%B8%B8%E6%A0%87%E8%BF%87%E6%9C%9F)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2221,6 +2351,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 <a id="q-52"></a>
 
 #### 52. Prompt 版本管理与 A/B
+
+**书稿定位：已覆盖（原理与设计）。** [第14章 · 14.13 Prompt 版本管理、评估与回滚](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#1413-prompt-%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E8%AF%84%E4%BC%B0%E4%B8%8E%E5%9B%9E%E6%BB%9A)
 
 **题型：** 专项题，P1
 
@@ -2252,6 +2384,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 <a id="q-53"></a>
 
 #### 53. 上下文预算与动态组装
+
+**书稿定位：已覆盖（原理与设计）。** [第15章 · 15.4 Context Package：把信息结构化交给模型](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#154-context-package%E6%8A%8A%E4%BF%A1%E6%81%AF%E7%BB%93%E6%9E%84%E5%8C%96%E4%BA%A4%E7%BB%99%E6%A8%A1%E5%9E%8B)；[第15章 §15.6 · 输入预算与输出预留](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E8%BE%93%E5%85%A5%E9%A2%84%E7%AE%97%E4%B8%8E%E8%BE%93%E5%87%BA%E9%A2%84%E7%95%99)
 
 **题型：** 专项题，P0
 
@@ -2286,6 +2420,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 #### 54. 历史压缩与信息保真
 
+**书稿定位：已覆盖（原理与设计）。** [第15章 §15.7 · 好摘要的结构](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E5%A5%BD%E6%91%98%E8%A6%81%E7%9A%84%E7%BB%93%E6%9E%84)；[第15章 §15.7 · 压缩前后必须校验的不变量](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E5%8E%8B%E7%BC%A9%E5%89%8D%E5%90%8E%E5%BF%85%E9%A1%BB%E6%A0%A1%E9%AA%8C%E7%9A%84%E4%B8%8D%E5%8F%98%E9%87%8F)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2317,6 +2453,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 #### 55. 大量工具与大结果的上下文治理
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.2.6 动态工具暴露：按任务、阶段、权限和环境裁剪能力](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1826-%E5%8A%A8%E6%80%81%E5%B7%A5%E5%85%B7%E6%9A%B4%E9%9C%B2%E6%8C%89%E4%BB%BB%E5%8A%A1%E9%98%B6%E6%AE%B5%E6%9D%83%E9%99%90%E5%92%8C%E7%8E%AF%E5%A2%83%E8%A3%81%E5%89%AA%E8%83%BD%E5%8A%9B)；[第18章 · 18.2.5 ToolResult Envelope：把模型上下文和系统元数据分开](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1825-toolresult-envelope%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E7%B3%BB%E7%BB%9F%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%86%E5%BC%80)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2347,6 +2485,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 <a id="q-56"></a>
 
 #### 56. 多模态输入的工程处理
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 · 5.7 多模态输入与能力扩展](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#57-%E5%A4%9A%E6%A8%A1%E6%80%81%E8%BE%93%E5%85%A5%E4%B8%8E%E8%83%BD%E5%8A%9B%E6%89%A9%E5%B1%95)；[第9章 · 9.6 多模态与长上下文负载](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#96-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%8E%E9%95%BF%E4%B8%8A%E4%B8%8B%E6%96%87%E8%B4%9F%E8%BD%BD)
 
 **题型：** 专项题，P1
 
@@ -2382,6 +2522,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 <a id="q-57"></a>
 
 #### 57. 提示词模板是如何构建的？
+
+**书稿定位：已覆盖（原理与设计）。** [第14章 · 14.3 Prompt 的层级架构：从角色到输出契约](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#143-prompt-%E7%9A%84%E5%B1%82%E7%BA%A7%E6%9E%B6%E6%9E%84%E4%BB%8E%E8%A7%92%E8%89%B2%E5%88%B0%E8%BE%93%E5%87%BA%E5%A5%91%E7%BA%A6)；[第14章 · 14.4 Task Protocol：把需求变成可执行协议](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#144-task-protocol%E6%8A%8A%E9%9C%80%E6%B1%82%E5%8F%98%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E5%8D%8F%E8%AE%AE)
 
 **题型：** 专项题，P1
 
@@ -2429,6 +2571,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 
 #### 58. 编写 Prompt 时有哪些实践经验或设计原则？
 
+**书稿定位：已覆盖（原理与设计）。** [第14章 · 14.2 Prompt Engineering 的设计思路：从任务风险开始](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#142-prompt-engineering-%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E4%BB%8E%E4%BB%BB%E5%8A%A1%E9%A3%8E%E9%99%A9%E5%BC%80%E5%A7%8B)；[第14章 · 14.15 常见失败模式与 Debug 路径](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#1415-%E5%B8%B8%E8%A7%81%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F%E4%B8%8E-debug-%E8%B7%AF%E5%BE%84)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2468,6 +2612,8 @@ TCP 分片当事件；断线当取消；只有增量无终态。
 <a id="q-59"></a>
 
 #### 59. CoT 是什么？为什么有效？有什么缺点？
+
+**书稿定位：已覆盖（原理与设计）。** [第4章 · 4.4 Chain-of-Thought 与分解式推理](https://wxquare.github.io/ai-book/part1/04-reasoning-generation-algorithms.html#44-chain-of-thought-%E4%B8%8E%E5%88%86%E8%A7%A3%E5%BC%8F%E6%8E%A8%E7%90%86)
 
 **题型：** 专项题，P1
 
@@ -2509,6 +2655,8 @@ CoT 是什么？为什么有效？有什么缺点？ 先解释理论，再结合
 
 #### 60. ReAct 与 CoT 有什么区别？各适合什么场景？
 
+**书稿定位：已覆盖（原理与设计）。** [第13章 · 13.5.2 ReAct、Plan-and-Execute 与 Plan mode：三个容易混淆的概念](https://wxquare.github.io/ai-book/part2/01-agent-architecture.html#1352-reactplan-and-execute-%E4%B8%8E-plan-mode%E4%B8%89%E4%B8%AA%E5%AE%B9%E6%98%93%E6%B7%B7%E6%B7%86%E7%9A%84%E6%A6%82%E5%BF%B5)；[第21章 · 21.2.2 ReAct Loop：观察、思考、行动、反馈](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2122-react-loop%E8%A7%82%E5%AF%9F%E6%80%9D%E8%80%83%E8%A1%8C%E5%8A%A8%E5%8F%8D%E9%A6%88)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2549,6 +2697,8 @@ CoT 与 ReAct 二选一；只有标签没有执行；将概念相似等同逐行
 
 #### 61. Temperature、top-p、top-k 分别是什么？不同场景如何设置？
 
+**书稿定位：已覆盖（原理与设计）。** [第4章 · 4.2 生成分布与采样：模型如何选择下一个 token](https://wxquare.github.io/ai-book/part1/04-reasoning-generation-algorithms.html#42-%E7%94%9F%E6%88%90%E5%88%86%E5%B8%83%E4%B8%8E%E9%87%87%E6%A0%B7%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E4%B8%8B%E4%B8%80%E4%B8%AA-token)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2586,6 +2736,8 @@ T=0 保证正确与确定；top-p 按数量截取；所有后端都支持全部�
 <a id="q-62"></a>
 
 #### 62. Prompt 如何迭代优化？如何验证优化效果？
+
+**书稿定位：已覆盖（原理与设计）。** [第14章 · 14.13 Prompt 版本管理、评估与回滚](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#1413-prompt-%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E8%AF%84%E4%BC%B0%E4%B8%8E%E5%9B%9E%E6%BB%9A)
 
 **题型：** 专项题，P1
 
@@ -2633,6 +2785,8 @@ Langfuse 可管理 Prompt 版本、数据集和实验对照；它提供评测基
 
 #### 63. Coding Agent 如何做会话管理与上下文管理？Token 如何计算，为什么这样算？
 
+**书稿定位：已覆盖（原理与设计）。** [第23章 · 23.4.6 Context Control Plane：让模型看到该看的内容](https://wxquare.github.io/ai-book/part3/01-coding-agent-systems.html#2346-context-control-plane%E8%AE%A9%E6%A8%A1%E5%9E%8B%E7%9C%8B%E5%88%B0%E8%AF%A5%E7%9C%8B%E7%9A%84%E5%86%85%E5%AE%B9)；[第15章 · 15.6 上下文预算与信息密度](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#156-%E4%B8%8A%E4%B8%8B%E6%96%87%E9%A2%84%E7%AE%97%E4%B8%8E%E4%BF%A1%E6%81%AF%E5%AF%86%E5%BA%A6)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2673,6 +2827,8 @@ Token 按目标模型 tokenizer 和多模态规则计数，实际输入还含消
 
 #### 64. 上下文越来越长，超过模型限制时有哪些处理方法？
 
+**书稿定位：已覆盖（原理与设计）。** [第15章 · 15.6 上下文预算与信息密度](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#156-%E4%B8%8A%E4%B8%8B%E6%96%87%E9%A2%84%E7%AE%97%E4%B8%8E%E4%BF%A1%E6%81%AF%E5%AF%86%E5%BA%A6)；[第15章 · 15.7 压缩与摘要：保留状态，而不是压扁文本](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#157-%E5%8E%8B%E7%BC%A9%E4%B8%8E%E6%91%98%E8%A6%81%E4%BF%9D%E7%95%99%E7%8A%B6%E6%80%81%E8%80%8C%E4%B8%8D%E6%98%AF%E5%8E%8B%E6%89%81%E6%96%87%E6%9C%AC)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2710,6 +2866,8 @@ Token 按目标模型 tokenizer 和多模态规则计数，实际输入还含消
 <a id="q-65"></a>
 
 #### 65. 压缩上下文时保留哪些信息？如何判断哪些内容可以丢弃？
+
+**书稿定位：已覆盖（原理与设计）。** [第15章 §15.7 · 好摘要的结构](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E5%A5%BD%E6%91%98%E8%A6%81%E7%9A%84%E7%BB%93%E6%9E%84)；[第15章 §15.7 · 压缩前后必须校验的不变量](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E5%8E%8B%E7%BC%A9%E5%89%8D%E5%90%8E%E5%BF%85%E9%A1%BB%E6%A0%A1%E9%AA%8C%E7%9A%84%E4%B8%8D%E5%8F%98%E9%87%8F)
 
 **题型：** 专项题，P1
 
@@ -2749,6 +2907,8 @@ Token 按目标模型 tokenizer 和多模态规则计数，实际输入还含消
 
 #### 66. 压缩后如何判断没有破坏当前任务？有什么校验标准？
 
+**书稿定位：已覆盖（原理与设计）。** [第15章 §15.7 · 压缩前后必须校验的不变量](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E5%8E%8B%E7%BC%A9%E5%89%8D%E5%90%8E%E5%BF%85%E9%A1%BB%E6%A0%A1%E9%AA%8C%E7%9A%84%E4%B8%8D%E5%8F%98%E9%87%8F)；[第15章 · 15.13 上下文评估：让上下文系统可度量](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#1513-%E4%B8%8A%E4%B8%8B%E6%96%87%E8%AF%84%E4%BC%B0%E8%AE%A9%E4%B8%8A%E4%B8%8B%E6%96%87%E7%B3%BB%E7%BB%9F%E5%8F%AF%E5%BA%A6%E9%87%8F)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2786,6 +2946,8 @@ Token 按目标模型 tokenizer 和多模态规则计数，实际输入还含消
 <a id="q-67"></a>
 
 #### 67. 任务摘要、文件摘要、过程笔记如何生成和维护，避免关键内容被压掉？
+
+**书稿定位：已覆盖（原理与设计）。** [第15章 §15.7 · 三类摘要的版本化Schema](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E4%B8%89%E7%B1%BB%E6%91%98%E8%A6%81%E7%9A%84%E7%89%88%E6%9C%AC%E5%8C%96schema)
 
 **题型：** 专项题，P1
 
@@ -2825,6 +2987,8 @@ Token 按目标模型 tokenizer 和多模态规则计数，实际输入还含消
 
 #### 68. 压缩摘要遗漏关键约束并导致后续出错时，如何发现和纠正？
 
+**书稿定位：已覆盖（原理与设计）。** [第15章 §15.7 · 丢约束后的回源修复轨迹](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E4%B8%A2%E7%BA%A6%E6%9D%9F%E5%90%8E%E7%9A%84%E5%9B%9E%E6%BA%90%E4%BF%AE%E5%A4%8D%E8%BD%A8%E8%BF%B9)；[第20章 §20.9 · 纠错依赖链：不能只覆盖原句](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#%E7%BA%A0%E9%94%99%E4%BE%9D%E8%B5%96%E9%93%BE%E4%B8%8D%E8%83%BD%E5%8F%AA%E8%A6%86%E7%9B%96%E5%8E%9F%E5%8F%A5)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2863,6 +3027,8 @@ Token 按目标模型 tokenizer 和多模态规则计数，实际输入还含消
 
 #### 69. 项目规则文件应保存哪些不能在压缩时丢失的信息？
 
+**书稿定位：已覆盖（原理与设计）。** [第15章 §15.12 · 顶层规则要短](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E9%A1%B6%E5%B1%82%E8%A7%84%E5%88%99%E8%A6%81%E7%9F%AD)；[第15章 §15.12 · 规则要可执行](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#%E8%A7%84%E5%88%99%E8%A6%81%E5%8F%AF%E6%89%A7%E8%A1%8C)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2900,6 +3066,8 @@ Token 按目标模型 tokenizer 和多模态规则计数，实际输入还含消
 <a id="q-70"></a>
 
 #### 70. 上下文工程中的 To-do List 为什么能让模型更聚焦？如何实现？
+
+**书稿定位：已覆盖（原理与设计）。** [第15章 §15.7 · Todo是执行视图](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#todo%E6%98%AF%E6%89%A7%E8%A1%8C%E8%A7%86%E5%9B%BE)；[第21章 · 21.2.5 计划节点必须有外部验收](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2125-%E8%AE%A1%E5%88%92%E8%8A%82%E7%82%B9%E5%BF%85%E9%A1%BB%E6%9C%89%E5%A4%96%E9%83%A8%E9%AA%8C%E6%94%B6)
 
 **题型：** 专项题，P1
 
@@ -2945,6 +3113,8 @@ Todo 勾选已退款，但外部结果未知，真正状态应是什么？
 
 #### 71. 长期、中期、短期记忆分别如何设计和分层存储？
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.2 Memory 的分层架构](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#202-memory-%E7%9A%84%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -2982,6 +3152,8 @@ Todo 勾选已退款，但外部结果未知，真正状态应是什么？
 <a id="q-72"></a>
 
 #### 72. 当前 Context 与长期 Memory 有什么区别？分别解决什么问题？
+
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.1 为什么 Memory 是 Agent 的状态层](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#201-%E4%B8%BA%E4%BB%80%E4%B9%88-memory-%E6%98%AF-agent-%E7%9A%84%E7%8A%B6%E6%80%81%E5%B1%82)；[第20章 · 20.8 Memory 与 Knowledge System / RAG 的关系](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#208-memory-%E4%B8%8E-knowledge-system--rag-%E7%9A%84%E5%85%B3%E7%B3%BB)
 
 **题型：** 专项题，P1
 
@@ -3021,6 +3193,8 @@ Context 解决当前决策的信息可用性；Memory 解决跨任务复用和�
 
 #### 73. Memory 如何提取、存储和检索？
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.3 Memory Control Plane：记忆控制面](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#203-memory-control-plane%E8%AE%B0%E5%BF%86%E6%8E%A7%E5%88%B6%E9%9D%A2)；[第20章 · 20.5 写入策略：什么时候该记](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#205-%E5%86%99%E5%85%A5%E7%AD%96%E7%95%A5%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E8%AE%B0)；[第20章 · 20.6 读取策略：如何让 Agent 想起正确的事](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#206-%E8%AF%BB%E5%8F%96%E7%AD%96%E7%95%A5%E5%A6%82%E4%BD%95%E8%AE%A9-agent-%E6%83%B3%E8%B5%B7%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BA%8B)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3058,6 +3232,8 @@ Memory 如何提取、存储和检索？ 先解释理论，再结合 Claude Code
 <a id="q-74"></a>
 
 #### 74. 长短期记忆如何实现过期管理与去重？
+
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.4 Memory Store 设计](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#204-memory-store-%E8%AE%BE%E8%AE%A1)；[第20章 · 20.9 记忆压缩、巩固与遗忘](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#209-%E8%AE%B0%E5%BF%86%E5%8E%8B%E7%BC%A9%E5%B7%A9%E5%9B%BA%E4%B8%8E%E9%81%97%E5%BF%98)
 
 **题型：** 专项题，P1
 
@@ -3097,6 +3273,8 @@ Redis TTL 等同语义有效期；相似就合并；最新写入必然正确；�
 
 #### 75. 记忆滚动更新、摘要压缩、结构化压缩分别如何实现？
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.9 记忆压缩、巩固与遗忘](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#209-%E8%AE%B0%E5%BF%86%E5%8E%8B%E7%BC%A9%E5%B7%A9%E5%9B%BA%E4%B8%8E%E9%81%97%E5%BF%98)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3134,6 +3312,8 @@ Redis TTL 等同语义有效期；相似就合并；最新写入必然正确；�
 <a id="q-76"></a>
 
 #### 76. 长期记忆保存了过时文件摘要时，如何处理记忆污染？
+
+**书稿定位：已覆盖（原理与设计）。** [第20章 §20.9 · Stale Memory Detection](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#stale-memory-detection)；[第20章 §20.9 · 纠错依赖链：不能只覆盖原句](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#%E7%BA%A0%E9%94%99%E4%BE%9D%E8%B5%96%E9%93%BE%E4%B8%8D%E8%83%BD%E5%8F%AA%E8%A6%86%E7%9B%96%E5%8E%9F%E5%8F%A5)
 
 **题型：** 专项题，P1
 
@@ -3173,6 +3353,8 @@ Redis TTL 等同语义有效期；相似就合并；最新写入必然正确；�
 
 #### 77. 模型把错误结论写入记忆并被持续沿用时，如何纠错？
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 §20.9 · 纠错依赖链：不能只覆盖原句](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#%E7%BA%A0%E9%94%99%E4%BE%9D%E8%B5%96%E9%93%BE%E4%B8%8D%E8%83%BD%E5%8F%AA%E8%A6%86%E7%9B%96%E5%8E%9F%E5%8F%A5)；[第20章 · 20.10 记忆污染、安全与隐私](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#2010-%E8%AE%B0%E5%BF%86%E6%B1%A1%E6%9F%93%E5%AE%89%E5%85%A8%E4%B8%8E%E9%9A%90%E7%A7%81)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3210,6 +3392,8 @@ Redis TTL 等同语义有效期；相似就合并；最新写入必然正确；�
 <a id="q-78"></a>
 
 #### 78. 如何识别反复读同一文件、重复调用同一工具等重复状态？
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.7 · 活性、进展与循环不是同一个信号](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%B4%BB%E6%80%A7%E8%BF%9B%E5%B1%95%E4%B8%8E%E5%BE%AA%E7%8E%AF%E4%B8%8D%E6%98%AF%E5%90%8C%E4%B8%80%E4%B8%AA%E4%BF%A1%E5%8F%B7)；[第21章 · 21.8.8 多 Agent 循环争论](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2188-%E5%A4%9A-agent-%E5%BE%AA%E7%8E%AF%E4%BA%89%E8%AE%BA)
 
 **题型：** 专项题，P1
 
@@ -3251,6 +3435,8 @@ Redis TTL 等同语义有效期；相似就合并；最新写入必然正确；�
 
 #### 79. RAG、Memory、Context Engineering 各解决什么问题？在 Coding Agent 中如何协同？
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.8 Memory 与 Knowledge System / RAG 的关系](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#208-memory-%E4%B8%8E-knowledge-system--rag-%E7%9A%84%E5%85%B3%E7%B3%BB)；[第15章 · 15.8 RAG：把检索当成上下文供应链](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#158-rag%E6%8A%8A%E6%A3%80%E7%B4%A2%E5%BD%93%E6%88%90%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BE%9B%E5%BA%94%E9%93%BE)；[第23章 §23.3 · 检索路径：grep、符号和 RAG 如何配合](https://wxquare.github.io/ai-book/part3/01-coding-agent-systems.html#%E6%A3%80%E7%B4%A2%E8%B7%AF%E5%BE%84grep%E7%AC%A6%E5%8F%B7%E5%92%8C-rag-%E5%A6%82%E4%BD%95%E9%85%8D%E5%90%88)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3289,6 +3475,8 @@ RAG 等同 Memory；Context 只含聊天；所有检索必须向量；旧经验�
 
 #### 80. 为什么可以用小模型做记忆管理与上下文压缩？相比大模型有什么优势？
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 §20.9 · 小模型压缩器的独立评测](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#%E5%B0%8F%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E5%99%A8%E7%9A%84%E7%8B%AC%E7%AB%8B%E8%AF%84%E6%B5%8B)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3326,6 +3514,8 @@ RAG 等同 Memory；Context 只含聊天；所有检索必须向量；旧经验�
 <a id="q-81"></a>
 
 #### 81. 为什么工具调用链应属于高优先级记忆？
+
+**书稿定位：已覆盖（原理与设计）。** [第20章 §20.7 · Tool History 与 Memory](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#tool-history-%E4%B8%8E-memory)
 
 **题型：** 专项题，P1
 
@@ -3371,6 +3561,8 @@ RAG 等同 Memory；Context 只含聊天；所有检索必须向量；旧经验�
 
 #### 82. 长周期对话间隔数周后继续时，如何管理历史与 Token 用量？
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 §20.7 · 状态恢复](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#%E7%8A%B6%E6%80%81%E6%81%A2%E5%A4%8D)；[第20章 · 20.9 记忆压缩、巩固与遗忘](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#209-%E8%AE%B0%E5%BF%86%E5%8E%8B%E7%BC%A9%E5%B7%A9%E5%9B%BA%E4%B8%8E%E9%81%97%E5%BF%98)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3409,6 +3601,8 @@ RAG 等同 Memory；Context 只含聊天；所有检索必须向量；旧经验�
 
 #### 83. Prompt Caching 是什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.3 · Prefix Cache](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#prefix-cache)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3446,6 +3640,8 @@ Prompt Caching 是什么？ 先解释理论，再结合 Claude Code、Codex 与 
 <a id="q-84"></a>
 
 #### 84. Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？
+
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.3 · Prefix Cache](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#prefix-cache)；[第9章 §9.3 · 四种缓存不能共用一套命中语义](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E5%9B%9B%E7%A7%8D%E7%BC%93%E5%AD%98%E4%B8%8D%E8%83%BD%E5%85%B1%E7%94%A8%E4%B8%80%E5%A5%97%E5%91%BD%E4%B8%AD%E8%AF%AD%E4%B9%89)
 
 **题型：** 专项题，P1
 
@@ -3497,6 +3693,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 
 #### 85. 企业 RAG 全链路设计
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.1 生产级 RAG 的离线与在线链路](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1921-%E7%94%9F%E4%BA%A7%E7%BA%A7-rag-%E7%9A%84%E7%A6%BB%E7%BA%BF%E4%B8%8E%E5%9C%A8%E7%BA%BF%E9%93%BE%E8%B7%AF)；[第24章 · 24.2 端到端架构：两条链路和四个控制面](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#242-%E7%AB%AF%E5%88%B0%E7%AB%AF%E6%9E%B6%E6%9E%84%E4%B8%A4%E6%9D%A1%E9%93%BE%E8%B7%AF%E5%92%8C%E5%9B%9B%E4%B8%AA%E6%8E%A7%E5%88%B6%E9%9D%A2)；[第24章 · 24.14 设计评审表达与设计清单](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#2414-%E8%AE%BE%E8%AE%A1%E8%AF%84%E5%AE%A1%E8%A1%A8%E8%BE%BE%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%B8%85%E5%8D%95)
+
 **题型：** 核心案例，P0，45 分钟
 
 ##### 目标与规模假设
@@ -3540,6 +3738,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 
 #### 86. 文档解析与数据血缘
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.2 文档摄取：解析、清洗、版本与生命周期](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1922-%E6%96%87%E6%A1%A3%E6%91%84%E5%8F%96%E8%A7%A3%E6%9E%90%E6%B8%85%E6%B4%97%E7%89%88%E6%9C%AC%E4%B8%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F)；[第19章 · 19.6.9 Evidence的最小约定与来源血缘](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1969-evidence%E7%9A%84%E6%9C%80%E5%B0%8F%E7%BA%A6%E5%AE%9A%E4%B8%8E%E6%9D%A5%E6%BA%90%E8%A1%80%E7%BC%98)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3570,6 +3770,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 <a id="q-87"></a>
 
 #### 87. 分块策略与父子检索
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.3 Chunk 策略：检索单位、上下文单位、引用单位](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1923-chunk-%E7%AD%96%E7%95%A5%E6%A3%80%E7%B4%A2%E5%8D%95%E4%BD%8D%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8D%95%E4%BD%8D%E5%BC%95%E7%94%A8%E5%8D%95%E4%BD%8D)
 
 **题型：** 专项题，P0
 
@@ -3602,6 +3804,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 
 #### 88. Embedding 模型选型
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.3.1 Embedding 与向量索引](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1931-embedding-%E4%B8%8E%E5%90%91%E9%87%8F%E7%B4%A2%E5%BC%95)；[第19章 · 19.3.2 非对称编码与空间契约](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1932-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%BC%96%E7%A0%81%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A5%91%E7%BA%A6)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3632,6 +3836,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 <a id="q-89"></a>
 
 #### 89. 向量库与索引选型
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.3.3 Flat、HNSW、IVF与PQ的取舍](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1933-flathnswivf%E4%B8%8Epq%E7%9A%84%E5%8F%96%E8%88%8D)
 
 **题型：** 专项题，P2
 
@@ -3665,6 +3871,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 
 #### 90. 混合检索与 Rerank
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.4.1 Hybrid Search：关键词检索为什么仍然重要](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1941-hybrid-search%E5%85%B3%E9%94%AE%E8%AF%8D%E6%A3%80%E7%B4%A2%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%8D%E7%84%B6%E9%87%8D%E8%A6%81)；[第19章 · 19.4.6 Rerank：让结果从“相似”变成“有用”](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1946-rerank%E8%AE%A9%E7%BB%93%E6%9E%9C%E4%BB%8E%E7%9B%B8%E4%BC%BC%E5%8F%98%E6%88%90%E6%9C%89%E7%94%A8)；[第19章 · 19.4.8 融合与重排不共享一个“万能分数”](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1948-%E8%9E%8D%E5%90%88%E4%B8%8E%E9%87%8D%E6%8E%92%E4%B8%8D%E5%85%B1%E4%BA%AB%E4%B8%80%E4%B8%AA%E4%B8%87%E8%83%BD%E5%88%86%E6%95%B0)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -3696,6 +3904,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 
 #### 91. 查询改写与多跳检索
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.4.3 Query Rewrite 与 Query Expansion](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1943-query-rewrite-%E4%B8%8E-query-expansion)；[第19章 · 19.5.10 Multi-hop Retrieval：跨证据链路检索](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19510-multi-hop-retrieval%E8%B7%A8%E8%AF%81%E6%8D%AE%E9%93%BE%E8%B7%AF%E6%A3%80%E7%B4%A2)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3722,6 +3932,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 <a id="q-92"></a>
 
 #### 92. 检索置信与无答案处理
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.6.4 Evidence Sufficiency Check](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1964-evidence-sufficiency-check)；[第19章 · 19.6.5 证据不足时如何回答](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1965-%E8%AF%81%E6%8D%AE%E4%B8%8D%E8%B6%B3%E6%97%B6%E5%A6%82%E4%BD%95%E5%9B%9E%E7%AD%94)
 
 **题型：** 专项题，P0
 
@@ -3750,6 +3962,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 
 #### 93. 引用生成与证据校验
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.6.3 Citation 与 Claim-level Citation](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1963-citation-%E4%B8%8E-claim-level-citation)；[第19章 · 19.6.9 Evidence的最小约定与来源血缘](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1969-evidence%E7%9A%84%E6%9C%80%E5%B0%8F%E7%BA%A6%E5%AE%9A%E4%B8%8E%E6%9D%A5%E6%BA%90%E8%A1%80%E7%BC%98)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -3776,6 +3990,8 @@ Prompt Cache 为什么能提升调用效率？如何提高缓存命中率？ 先
 <a id="q-94"></a>
 
 #### 94. 知识更新与一致性
+
+**书稿定位：已覆盖（原理与设计）。** [第24章 §24.3 · 增量更新、撤权与索引迁移](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%92%A4%E6%9D%83%E4%B8%8E%E7%B4%A2%E5%BC%95%E8%BF%81%E7%A7%BB)
 
 **题型：** 专项题，P1
 
@@ -3808,6 +4024,8 @@ V3 发布后 V2 任务晚到，如何防止覆盖？
 
 #### 95. RAG 权限过滤与撤权
 
+**书稿定位：已覆盖（原理与设计）。** [第24章 · 24.8 企业权限模型：ACL、身份映射与安全裁剪](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#248-%E4%BC%81%E4%B8%9A%E6%9D%83%E9%99%90%E6%A8%A1%E5%9E%8Bacl%E8%BA%AB%E4%BB%BD%E6%98%A0%E5%B0%84%E4%B8%8E%E5%AE%89%E5%85%A8%E8%A3%81%E5%89%AA)；[第24章 §24.3 · 增量更新、撤权与索引迁移](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%92%A4%E6%9D%83%E4%B8%8E%E7%B4%A2%E5%BC%95%E8%BF%81%E7%A7%BB)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -3834,6 +4052,8 @@ V3 发布后 V2 任务晚到，如何防止覆盖？
 <a id="q-96"></a>
 
 #### 96. RAG 分层评测
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.8.1 检索层指标](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1981-%E6%A3%80%E7%B4%A2%E5%B1%82%E6%8C%87%E6%A0%87)；[第19章 · 19.8.2 证据层指标](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1982-%E8%AF%81%E6%8D%AE%E5%B1%82%E6%8C%87%E6%A0%87)；[第19章 · 19.8.3 生成层指标](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1983-%E7%94%9F%E6%88%90%E5%B1%82%E6%8C%87%E6%A0%87)
 
 **题型：** 专项题，P0
 
@@ -3873,6 +4093,8 @@ Recall@K 提高而满意度下降，如何定位？
 
 #### 97. 长上下文与 RAG 的组合
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.5.13 Long-context 与 RAG 的组合](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19513-long-context-%E4%B8%8E-rag-%E7%9A%84%E7%BB%84%E5%90%88)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -3899,6 +4121,8 @@ Recall@K 提高而满意度下降，如何定位？
 <a id="q-98"></a>
 
 #### 98. Agentic RAG 的适用边界
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.5.2 什么时候需要 Agentic RAG](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1952-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81-agentic-rag)；[第19章 · 19.5.7 Decide Next Step：继续检索、换源、验证或停止](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1957-decide-next-step%E7%BB%A7%E7%BB%AD%E6%A3%80%E7%B4%A2%E6%8D%A2%E6%BA%90%E9%AA%8C%E8%AF%81%E6%88%96%E5%81%9C%E6%AD%A2)
 
 **题型：** 专项题，P1
 
@@ -3930,6 +4154,8 @@ Recall@K 提高而满意度下降，如何定位？
 <a id="q-99"></a>
 
 #### 99. 索引重建与 Embedding 迁移
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.7.1 双索引迁移时序](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1971-%E5%8F%8C%E7%B4%A2%E5%BC%95%E8%BF%81%E7%A7%BB%E6%97%B6%E5%BA%8F)
 
 **题型：** 专项题，P2
 
@@ -3963,6 +4189,8 @@ Recall@K 提高而满意度下降，如何定位？
 <a id="q-100"></a>
 
 #### 100. 完整介绍 RAG 从文档入库到检索、生成的流程。
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.1 生产级 RAG 的离线与在线链路](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1921-%E7%94%9F%E4%BA%A7%E7%BA%A7-rag-%E7%9A%84%E7%A6%BB%E7%BA%BF%E4%B8%8E%E5%9C%A8%E7%BA%BF%E9%93%BE%E8%B7%AF)；[第24章 · 24.2 端到端架构：两条链路和四个控制面](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#242-%E7%AB%AF%E5%88%B0%E7%AB%AF%E6%9E%B6%E6%9E%84%E4%B8%A4%E6%9D%A1%E9%93%BE%E8%B7%AF%E5%92%8C%E5%9B%9B%E4%B8%AA%E6%8E%A7%E5%88%B6%E9%9D%A2)
 
 **题型：** 专项题，P1
 
@@ -4012,6 +4240,8 @@ Chunk 保留文档 ID、版本、页码/位置、父子关系与 ACL。写入索
 
 #### 101. 把 RAG 封装成 Agent 有什么好处？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.5.2 什么时候需要 Agentic RAG](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1952-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81-agentic-rag)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4051,6 +4281,8 @@ Agent 必然优于固定链路；无限检索；换查询绕过权限；相关�
 <a id="q-102"></a>
 
 #### 102. 了解 Graph RAG 与 Agentic RAG 吗？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.5.12 GraphRAG：当关系比文本相似更重要](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19512-graphrag%E5%BD%93%E5%85%B3%E7%B3%BB%E6%AF%94%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E6%9B%B4%E9%87%8D%E8%A6%81)；[第19章 · 19.5.2 什么时候需要 Agentic RAG](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1952-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81-agentic-rag)
 
 **题型：** 专项题，P1
 
@@ -4092,6 +4324,8 @@ GraphRAG 等于 Agentic RAG；有图库就有高质量推理；图边等同事�
 
 #### 103. 微调与 RAG 各有什么优缺点？如何选用和组合？
 
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.1 · Prompt、RAG、工具与微调的分工](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#promptrag%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%BE%AE%E8%B0%83%E7%9A%84%E5%88%86%E5%B7%A5)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4131,6 +4365,8 @@ GraphRAG 等于 Agentic RAG；有图库就有高质量推理；图边等同事�
 <a id="q-104"></a>
 
 #### 104. Embedding 模型如何选型？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.3.1 Embedding 与向量索引](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1931-embedding-%E4%B8%8E%E5%90%91%E9%87%8F%E7%B4%A2%E5%BC%95)；[第19章 · 19.3.2 非对称编码与空间契约](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1932-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%BC%96%E7%A0%81%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A5%91%E7%BA%A6)
 
 **题型：** 专项题，P1
 
@@ -4172,6 +4408,8 @@ Embedding 模型如何选型？ 先解释理论，再结合 Claude Code、Codex 
 
 #### 105. 为什么要向量化？直接做文本匹配不行吗？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.4.1 Hybrid Search：关键词检索为什么仍然重要](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1941-hybrid-search%E5%85%B3%E9%94%AE%E8%AF%8D%E6%A3%80%E7%B4%A2%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%8D%E7%84%B6%E9%87%8D%E8%A6%81)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4212,6 +4450,8 @@ Embedding 模型如何选型？ 先解释理论，再结合 Claude Code、Codex 
 
 #### 106. RAG 的文档切分粒度如何确定？具体怎么实现？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.3 Chunk 策略：检索单位、上下文单位、引用单位](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1923-chunk-%E7%AD%96%E7%95%A5%E6%A3%80%E7%B4%A2%E5%8D%95%E4%BD%8D%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8D%95%E4%BD%8D%E5%BC%95%E7%94%A8%E5%8D%95%E4%BD%8D)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4250,6 +4490,8 @@ Chunk 记录来源、偏移/页码、标题路径、父块、版本及权限，�
 
 #### 107. Chunk 大小和重叠度如何设置？如何对比参数效果？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.3 Chunk 策略：检索单位、上下文单位、引用单位](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1923-chunk-%E7%AD%96%E7%95%A5%E6%A3%80%E7%B4%A2%E5%8D%95%E4%BD%8D%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8D%95%E4%BD%8D%E5%BC%95%E7%94%A8%E5%8D%95%E4%BD%8D)；[第19章 · 19.8.12 控制变量实验与故障回源](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19812-%E6%8E%A7%E5%88%B6%E5%8F%98%E9%87%8F%E5%AE%9E%E9%AA%8C%E4%B8%8E%E6%95%85%E9%9A%9C%E5%9B%9E%E6%BA%90)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4287,6 +4529,8 @@ overlap 增加后 Recall 变高，怎样排除重复证据造成的假提升？
 <a id="q-108"></a>
 
 #### 108. 文档切割有哪些策略？如何避免破坏语义？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.3 Chunk 策略：检索单位、上下文单位、引用单位](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1923-chunk-%E7%AD%96%E7%95%A5%E6%A3%80%E7%B4%A2%E5%8D%95%E4%BD%8D%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8D%95%E4%BD%8D%E5%BC%95%E7%94%A8%E5%8D%95%E4%BD%8D)；[第19章 · 19.2.5 无标题、表格和OCR的兜底链](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1925-%E6%97%A0%E6%A0%87%E9%A2%98%E8%A1%A8%E6%A0%BC%E5%92%8Cocr%E7%9A%84%E5%85%9C%E5%BA%95%E9%93%BE)
 
 **题型：** 专项题，P1
 
@@ -4328,6 +4572,8 @@ overlap 增加后 Recall 变高，怎样排除重复证据造成的假提升？
 
 #### 109. Markdown 文档没有标题时如何切分？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.5 无标题、表格和OCR的兜底链](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1925-%E6%97%A0%E6%A0%87%E9%A2%98%E8%A1%A8%E6%A0%BC%E5%92%8Cocr%E7%9A%84%E5%85%9C%E5%BA%95%E9%93%BE)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4368,6 +4614,8 @@ Markdown 文档没有标题时如何切分？ 先解释理论，再结合 Claude
 
 #### 110. 带表格、标题的 PDF 与 Word 复杂文档如何处理？多路召回如何设计？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.5 无标题、表格和OCR的兜底链](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1925-%E6%97%A0%E6%A0%87%E9%A2%98%E8%A1%A8%E6%A0%BC%E5%92%8Cocr%E7%9A%84%E5%85%9C%E5%BA%95%E9%93%BE)；[第24章 · 24.4 文档处理：Chunk 不是切字符串](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#244-%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86chunk-%E4%B8%8D%E6%98%AF%E5%88%87%E5%AD%97%E7%AC%A6%E4%B8%B2)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4405,6 +4653,8 @@ PDF 一律 OCR；提取文本就算成功；忽略多栏、表头和单位；多
 <a id="q-111"></a>
 
 #### 111. 给定一部长篇小说，如何做文档切割？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.2.5 无标题、表格和OCR的兜底链](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1925-%E6%97%A0%E6%A0%87%E9%A2%98%E8%A1%A8%E6%A0%BC%E5%92%8Cocr%E7%9A%84%E5%85%9C%E5%BA%95%E9%93%BE)
 
 **题型：** 专项题，P1
 
@@ -4445,6 +4695,8 @@ PDF 一律 OCR；提取文本就算成功；忽略多栏、表头和单位；多
 <a id="q-112"></a>
 
 #### 112. 短 Query 与长 Chunk 向量化后如何比较？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.3.2 非对称编码与空间契约](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1932-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%BC%96%E7%A0%81%E4%B8%8E%E7%A9%BA%E9%97%B4%E5%A5%91%E7%BA%A6)
 
 **题型：** 专项题，P1
 
@@ -4490,6 +4742,8 @@ PDF 一律 OCR；提取文本就算成功；忽略多栏、表头和单位；多
 
 #### 113. 关键词检索与向量检索各有什么优缺点？两路结果如何融合？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.4.1 Hybrid Search：关键词检索为什么仍然重要](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1941-hybrid-search%E5%85%B3%E9%94%AE%E8%AF%8D%E6%A3%80%E7%B4%A2%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%8D%E7%84%B6%E9%87%8D%E8%A6%81)；[第19章 · 19.4.8 融合与重排不共享一个“万能分数”](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1948-%E8%9E%8D%E5%90%88%E4%B8%8E%E9%87%8D%E6%8E%92%E4%B8%8D%E5%85%B1%E4%BA%AB%E4%B8%80%E4%B8%AA%E4%B8%87%E8%83%BD%E5%88%86%E6%95%B0)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4527,6 +4781,8 @@ RRF 可按 `score(d)=Σ 1/(c+rank_i(d))` 融合排名，c 为待验证参数，�
 <a id="q-114"></a>
 
 #### 114. 向量检索使用什么索引类型？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.3.3 Flat、HNSW、IVF与PQ的取舍](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1933-flathnswivf%E4%B8%8Epq%E7%9A%84%E5%8F%96%E8%88%8D)
 
 **题型：** 专项题，P1
 
@@ -4566,6 +4822,8 @@ ANN Recall 等同业务 Recall；HNSW 没有内存成本；所有数据库支持
 
 #### 115. Rerank 如何实现？排序特征权重如何分配？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.4.6 Rerank：让结果从“相似”变成“有用”](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1946-rerank%E8%AE%A9%E7%BB%93%E6%9E%9C%E4%BB%8E%E7%9B%B8%E4%BC%BC%E5%8F%98%E6%88%90%E6%9C%89%E7%94%A8)；[第19章 · 19.4.8 融合与重排不共享一个“万能分数”](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1948-%E8%9E%8D%E5%90%88%E4%B8%8E%E9%87%8D%E6%8E%92%E4%B8%8D%E5%85%B1%E4%BA%AB%E4%B8%80%E4%B8%AA%E4%B8%87%E8%83%BD%E5%88%86%E6%95%B0)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4603,6 +4861,10 @@ Rerank 如何实现？排序特征权重如何分配？ 先解释理论，再结
 <a id="q-116"></a>
 
 #### 116. 如何对比向量数据库？Qdrant 的性能、数据量级与瓶颈如何？
+
+**书稿定位：部分覆盖。** [第19章 · 19.3.3 Flat、HNSW、IVF与PQ的取舍](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1933-flathnswivf%E4%B8%8Epq%E7%9A%84%E5%8F%96%E8%88%8D)；[第19章 · 19.8.12 控制变量实验与故障回源](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19812-%E6%8E%A7%E5%88%B6%E5%8F%98%E9%87%8F%E5%AE%9E%E9%AA%8C%E4%B8%8E%E6%95%85%E9%9A%9C%E5%9B%9E%E6%BA%90)
+
+**覆盖边界：** 覆盖 Flat/HNSW/IVF/PQ 及受控选型实验；没有 Qdrant 同版本、同硬件、同过滤条件的容量和性能实测，不给无条件性能排名。
 
 **题型：** 专项题，P1
 
@@ -4646,6 +4908,8 @@ Qdrant 提供 HNSW、payload 索引、量化及磁盘相关能力；瓶颈可能
 
 #### 117. RAG 为什么使用图数据库？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.5.12 GraphRAG：当关系比文本相似更重要](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19512-graphrag%E5%BD%93%E5%85%B3%E7%B3%BB%E6%AF%94%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E6%9B%B4%E9%87%8D%E8%A6%81)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4685,6 +4949,8 @@ RAG 必须图数据库；图路径等同因果；只过滤最终文本；不处�
 <a id="q-118"></a>
 
 #### 118. RAG 的索引可以做哪些优化？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.3.3 Flat、HNSW、IVF与PQ的取舍](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1933-flathnswivf%E4%B8%8Epq%E7%9A%84%E5%8F%96%E8%88%8D)；[第19章 · 19.7.1 双索引迁移时序](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1971-%E5%8F%8C%E7%B4%A2%E5%BC%95%E8%BF%81%E7%A7%BB%E6%97%B6%E5%BA%8F)
 
 **题型：** 专项题，P1
 
@@ -4730,6 +4996,8 @@ RAG 的索引可以做哪些优化？ 先解释理论，再结合 Claude Code、
 
 #### 119. 文档明确包含目标内容，但 RAG 召回失败，如何逐步排查？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.8.7 常见失败模式与修复路径](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1987-%E5%B8%B8%E8%A7%81%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F%E4%B8%8E%E4%BF%AE%E5%A4%8D%E8%B7%AF%E5%BE%84)；[第19章 · 19.8.12 控制变量实验与故障回源](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19812-%E6%8E%A7%E5%88%B6%E5%8F%98%E9%87%8F%E5%AE%9E%E9%AA%8C%E4%B8%8E%E6%95%85%E9%9A%9C%E5%9B%9E%E6%BA%90)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4767,6 +5035,8 @@ RAG 的索引可以做哪些优化？ 先解释理论，再结合 Claude Code、
 <a id="q-120"></a>
 
 #### 120. RAG 召回率超过 90%，最终答案准确率仍低，如何排查？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.8.1 检索层指标](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1981-%E6%A3%80%E7%B4%A2%E5%B1%82%E6%8C%87%E6%A0%87)；[第19章 · 19.8.2 证据层指标](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1982-%E8%AF%81%E6%8D%AE%E5%B1%82%E6%8C%87%E6%A0%87)；[第19章 · 19.8.3 生成层指标](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1983-%E7%94%9F%E6%88%90%E5%B1%82%E6%8C%87%E6%A0%87)
 
 **题型：** 专项题，P1
 
@@ -4806,6 +5076,8 @@ Recall 定义不清；只命中一块就算充分；忽略适用范围；只换�
 
 #### 121. Coding Agent 使用 grep 检索与 RAG 检索有什么区别？为什么可能不用 RAG？
 
+**书稿定位：已覆盖（原理与设计）。** [第23章 §23.3 · 检索路径：grep、符号和 RAG 如何配合](https://wxquare.github.io/ai-book/part3/01-coding-agent-systems.html#%E6%A3%80%E7%B4%A2%E8%B7%AF%E5%BE%84grep%E7%AC%A6%E5%8F%B7%E5%92%8C-rag-%E5%A6%82%E4%BD%95%E9%85%8D%E5%90%88)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -4843,6 +5115,10 @@ grep 理解完整调用图；RAG 只指向量；Coding Agent 必须预建索引�
 <a id="q-122"></a>
 
 #### 122. 当前 RAG 最大的瓶颈是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.8.7 常见失败模式与修复路径](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1987-%E5%B8%B8%E8%A7%81%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F%E4%B8%8E%E4%BF%AE%E5%A4%8D%E8%B7%AF%E5%BE%84)；[第19章 · 19.8.12 控制变量实验与故障回源](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19812-%E6%8E%A7%E5%88%B6%E5%8F%98%E9%87%8F%E5%AE%9E%E9%AA%8C%E4%B8%8E%E6%95%85%E9%9A%9C%E5%9B%9E%E6%BA%90)
+
+**覆盖边界：** 按摄取、召回、证据、生成与权限分层诊断；“最大瓶颈”取决于工作负载，书中不把某一项写成通用结论。
 
 **题型：** 专项题，P1
 
@@ -4883,6 +5159,8 @@ grep 理解完整调用图；RAG 只指向量；Coding Agent 必须预建索引�
 <a id="q-123"></a>
 
 #### 123. 商品价格、描述动态更新时，知识库设计应考虑什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第24章 §24.4 · 商品变体：SKU × 版本 × chunk 的容量账本](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E5%95%86%E5%93%81%E5%8F%98%E4%BD%93sku--%E7%89%88%E6%9C%AC--chunk-%E7%9A%84%E5%AE%B9%E9%87%8F%E8%B4%A6%E6%9C%AC)；[第19章 · 19.1.18 实时事实为什么常常需要专用 API](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#19118-%E5%AE%9E%E6%97%B6%E4%BA%8B%E5%AE%9E%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B8%B8%E5%B8%B8%E9%9C%80%E8%A6%81%E4%B8%93%E7%94%A8-api)
 
 **题型：** 专项题，P1
 
@@ -4934,6 +5212,8 @@ grep 理解完整调用图；RAG 只指向量；Coding Agent 必须预建索引�
 
 #### 124. Agent 与 Workflow 的选择
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.1.5 图式编排 vs 自由 Agent Loop](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2115-%E5%9B%BE%E5%BC%8F%E7%BC%96%E6%8E%92-vs-%E8%87%AA%E7%94%B1-agent-loop)；[第13章 · 13.2.4 决策框架：什么时候需要 Agent](https://wxquare.github.io/ai-book/part2/01-agent-architecture.html#1324-%E5%86%B3%E7%AD%96%E6%A1%86%E6%9E%B6%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81-agent)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -4969,6 +5249,8 @@ grep 理解完整调用图；RAG 只指向量；Coding Agent 必须预建索引�
 
 #### 125. ReAct 循环与状态
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.2.2 ReAct Loop：观察、思考、行动、反馈](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2122-react-loop%E8%A7%82%E5%AF%9F%E6%80%9D%E8%80%83%E8%A1%8C%E5%8A%A8%E5%8F%8D%E9%A6%88)；[第11章 §11.1 · ReAct 不是生产状态机](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#react-%E4%B8%8D%E6%98%AF%E7%94%9F%E4%BA%A7%E7%8A%B6%E6%80%81%E6%9C%BA)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -4999,6 +5281,8 @@ grep 理解完整调用图；RAG 只指向量；Coding Agent 必须预建索引�
 <a id="q-126"></a>
 
 #### 126. 任务拆解与完成标准
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.2.1 Plan-and-Execute：计划与执行分离](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2121-plan-and-execute%E8%AE%A1%E5%88%92%E4%B8%8E%E6%89%A7%E8%A1%8C%E5%88%86%E7%A6%BB)；[第21章 · 21.2.5 计划节点必须有外部验收](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2125-%E8%AE%A1%E5%88%92%E8%8A%82%E7%82%B9%E5%BF%85%E9%A1%BB%E6%9C%89%E5%A4%96%E9%83%A8%E9%AA%8C%E6%94%B6)
 
 **题型：** 专项题，P0
 
@@ -5031,6 +5315,8 @@ grep 理解完整调用图；RAG 只指向量；Coding Agent 必须预建索引�
 
 #### 127. 失败后的重规划
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.2.5 计划节点必须有外部验收](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2125-%E8%AE%A1%E5%88%92%E8%8A%82%E7%82%B9%E5%BF%85%E9%A1%BB%E6%9C%89%E5%A4%96%E9%83%A8%E9%AA%8C%E6%94%B6)；[第11章 · 11.4 Checkpoint、恢复与补偿](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#114-checkpoint%E6%81%A2%E5%A4%8D%E4%B8%8E%E8%A1%A5%E5%81%BF)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -5061,6 +5347,8 @@ grep 理解完整调用图；RAG 只指向量；Coding Agent 必须预建索引�
 <a id="q-128"></a>
 
 #### 128. 空转识别与预算终止
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.7 · 活性、进展与循环不是同一个信号](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%B4%BB%E6%80%A7%E8%BF%9B%E5%B1%95%E4%B8%8E%E5%BE%AA%E7%8E%AF%E4%B8%8D%E6%98%AF%E5%90%8C%E4%B8%80%E4%B8%AA%E4%BF%A1%E5%8F%B7)；[第21章 · 21.8.8 多 Agent 循环争论](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2188-%E5%A4%9A-agent-%E5%BE%AA%E7%8E%AF%E4%BA%89%E8%AE%BA)
 
 **题型：** 专项题，P0
 
@@ -5095,6 +5383,8 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 
 #### 129. 短期记忆、长期记忆与业务状态
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.2 Memory 的分层架构](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#202-memory-%E7%9A%84%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84)；[第20章 · 20.7 Memory 与 Agent State 的关系](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#207-memory-%E4%B8%8E-agent-state-%E7%9A%84%E5%85%B3%E7%B3%BB)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -5125,6 +5415,8 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 <a id="q-130"></a>
 
 #### 130. 记忆写入与冲突更新
+
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.5 写入策略：什么时候该记](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#205-%E5%86%99%E5%85%A5%E7%AD%96%E7%95%A5%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E8%AE%B0)；[第20章 §20.6 · 冲突处理](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#%E5%86%B2%E7%AA%81%E5%A4%84%E7%90%86)
 
 **题型：** 专项题，P1
 
@@ -5157,6 +5449,8 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 
 #### 131. 记忆召回与污染防护
 
+**书稿定位：已覆盖（原理与设计）。** [第20章 · 20.10 记忆污染、安全与隐私](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#2010-%E8%AE%B0%E5%BF%86%E6%B1%A1%E6%9F%93%E5%AE%89%E5%85%A8%E4%B8%8E%E9%9A%90%E7%A7%81)；[第20章 · 20.6 读取策略：如何让 Agent 想起正确的事](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#206-%E8%AF%BB%E5%8F%96%E7%AD%96%E7%95%A5%E5%A6%82%E4%BD%95%E8%AE%A9-agent-%E6%83%B3%E8%B5%B7%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BA%8B)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -5187,6 +5481,8 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 <a id="q-132"></a>
 
 #### 132. 多 Agent 编排与任务协议
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.4.7 Modular Agent与交接契约](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2147-modular-agent%E4%B8%8E%E4%BA%A4%E6%8E%A5%E5%A5%91%E7%BA%A6)；[第21章 · 21.5 mailbox、共享状态与事件总线](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#215-mailbox%E5%85%B1%E4%BA%AB%E7%8A%B6%E6%80%81%E4%B8%8E%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF)
 
 **题型：** 专项题，P1
 
@@ -5223,6 +5519,8 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 
 #### 133. 多 Agent 共享资源冲突
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.6 共享资源与执行隔离](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#216-%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90%E4%B8%8E%E6%89%A7%E8%A1%8C%E9%9A%94%E7%A6%BB)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -5255,6 +5553,8 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 <a id="q-134"></a>
 
 #### 134. 一次 Agent 请求从用户输入到最终回答，完整链路是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第13章 · 13.3.4 用户请求完整链路：从入口到最终响应](https://wxquare.github.io/ai-book/part2/01-agent-architecture.html#1334-%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E5%AE%8C%E6%95%B4%E9%93%BE%E8%B7%AF%E4%BB%8E%E5%85%A5%E5%8F%A3%E5%88%B0%E6%9C%80%E7%BB%88%E5%93%8D%E5%BA%94)
 
 **题型：** 专项题，P0
 
@@ -5295,6 +5595,8 @@ Agent 重复调用同一工具，如何识别无进展并停止？
 <a id="q-135"></a>
 
 #### 135. Agent Harness 是什么？与单纯调用 LLM API 有什么区别？
+
+**书稿定位：已覆盖（原理与设计）。** [第16章 · 16.3 Harness 的六层架构](https://wxquare.github.io/ai-book/part2/04-harness-engineering.html#163-harness-%E7%9A%84%E5%85%AD%E5%B1%82%E6%9E%B6%E6%9E%84)；[第13章 · 13.3 Agent Runtime：生产级 Agent 的最小骨架](https://wxquare.github.io/ai-book/part2/01-agent-architecture.html#133-agent-runtime%E7%94%9F%E4%BA%A7%E7%BA%A7-agent-%E7%9A%84%E6%9C%80%E5%B0%8F%E9%AA%A8%E6%9E%B6)
 
 **题型：** 专项题，P0
 
@@ -5351,6 +5653,8 @@ Agent Harness 是什么？与单纯调用 LLM API 有什么区别？
 
 #### 136. Prompt Engineering、Context Engineering、Harness Engineering 有什么区别？
 
+**书稿定位：已覆盖（原理与设计）。** [第13章 · 13.4 Agent 核心组件：职责边界与后续章节地图](https://wxquare.github.io/ai-book/part2/01-agent-architecture.html#134-agent-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E8%81%8C%E8%B4%A3%E8%BE%B9%E7%95%8C%E4%B8%8E%E5%90%8E%E7%BB%AD%E7%AB%A0%E8%8A%82%E5%9C%B0%E5%9B%BE)；[第16章 · 16.3 Harness 的六层架构](https://wxquare.github.io/ai-book/part2/04-harness-engineering.html#163-harness-%E7%9A%84%E5%85%AD%E5%B1%82%E6%9E%B6%E6%9E%84)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -5405,6 +5709,8 @@ Prompt Engineering、Context Engineering、Harness Engineering 有什么区别�
 
 #### 137. 了解哪些 Agent 开发框架？它们分别处于什么层次？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.7.1 先分模型SDK、Agent SDK、编排Runtime与产品](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2171-%E5%85%88%E5%88%86%E6%A8%A1%E5%9E%8Bsdkagent-sdk%E7%BC%96%E6%8E%92runtime%E4%B8%8E%E4%BA%A7%E5%93%81)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -5450,6 +5756,8 @@ Prompt Engineering、Context Engineering、Harness Engineering 有什么区别�
 
 #### 138. Agent 框架通常包含哪些核心组件？
 
+**书稿定位：已覆盖（原理与设计）。** [第13章 · 13.4 Agent 核心组件：职责边界与后续章节地图](https://wxquare.github.io/ai-book/part2/01-agent-architecture.html#134-agent-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E8%81%8C%E8%B4%A3%E8%BE%B9%E7%95%8C%E4%B8%8E%E5%90%8E%E7%BB%AD%E7%AB%A0%E8%8A%82%E5%9C%B0%E5%9B%BE)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -5483,6 +5791,8 @@ Prompt Engineering、Context Engineering、Harness Engineering 有什么区别�
 <a id="q-139"></a>
 
 #### 139. LangChain 与 LangGraph 的核心区别是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.7.1 先分模型SDK、Agent SDK、编排Runtime与产品](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2171-%E5%85%88%E5%88%86%E6%A8%A1%E5%9E%8Bsdkagent-sdk%E7%BC%96%E6%8E%92runtime%E4%B8%8E%E4%BA%A7%E5%93%81)
 
 **题型：** 专项题，P0
 
@@ -5535,6 +5845,10 @@ Prompt Engineering、Context Engineering、Harness Engineering 有什么区别�
 
 #### 140. OpenAI SDK 与 Anthropic SDK 有什么作用、区别和使用场景？
 
+**书稿定位：已覆盖（原理与设计）。** [第17章 · 17.4 供应商适配与错误分类](https://wxquare.github.io/ai-book/part2/05-llm-api-protocol.html#174-%E4%BE%9B%E5%BA%94%E5%95%86%E9%80%82%E9%85%8D%E4%B8%8E%E9%94%99%E8%AF%AF%E5%88%86%E7%B1%BB)；[第21章 · 21.7.1 先分模型SDK、Agent SDK、编排Runtime与产品](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2171-%E5%85%88%E5%88%86%E6%A8%A1%E5%9E%8Bsdkagent-sdk%E7%BC%96%E6%8E%92runtime%E4%B8%8E%E4%BA%A7%E5%93%81)
+
+**覆盖边界：** 覆盖客户端职责、协议适配与错误分类；具体 SDK API、版本能力与迁移用法回到官方文档核验。
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -5576,6 +5890,10 @@ SDK 可能提供请求重试、工具循环辅助器等便利能力，但这不�
 <a id="q-141"></a>
 
 #### 141. OpenAI Agents SDK 与 Claude Agent SDK 的核心区别和使用场景是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.7.1 先分模型SDK、Agent SDK、编排Runtime与产品](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2171-%E5%85%88%E5%88%86%E6%A8%A1%E5%9E%8Bsdkagent-sdk%E7%BC%96%E6%8E%92runtime%E4%B8%8E%E4%BA%A7%E5%93%81)
+
+**覆盖边界：** 覆盖两类 SDK 的职责、循环和工作区边界；不把选型讨论当作某 SDK 已替应用实现持久化、审批或业务幂等的证明。
 
 **题型：** 专项题，P1
 
@@ -5620,6 +5938,8 @@ Claude Agent SDK 提供 Claude Code 使用的工具、循环和上下文管理�
 
 #### 142. 如何在原生 SDK、LangChain、LangGraph 与 Agent SDK 之间选型？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.7.2 组合选型要消除重复责任](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2172-%E7%BB%84%E5%90%88%E9%80%89%E5%9E%8B%E8%A6%81%E6%B6%88%E9%99%A4%E9%87%8D%E5%A4%8D%E8%B4%A3%E4%BB%BB)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -5657,6 +5977,8 @@ Claude Agent SDK 提供 Claude Code 使用的工具、循环和上下文管理�
 <a id="q-143"></a>
 
 #### 143. 接入多个模型后端时，如何统一请求、响应、错误码与重试逻辑？
+
+**书稿定位：已覆盖（原理与设计）。** [第17章 · 17.4 供应商适配与错误分类](https://wxquare.github.io/ai-book/part2/05-llm-api-protocol.html#174-%E4%BE%9B%E5%BA%94%E5%95%86%E9%80%82%E9%85%8D%E4%B8%8E%E9%94%99%E8%AF%AF%E5%88%86%E7%B1%BB)
 
 **题型：** 专项题，P1
 
@@ -5797,6 +6119,8 @@ Provider Adapter / 兼容网关
 
 #### 144. 基于 LangGraph 的 Agent 框架中，图的节点与边分别是什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.7.1 先分模型SDK、Agent SDK、编排Runtime与产品](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2171-%E5%85%88%E5%88%86%E6%A8%A1%E5%9E%8Bsdkagent-sdk%E7%BC%96%E6%8E%92runtime%E4%B8%8E%E4%BA%A7%E5%93%81)；[第21章 · 21.2.4 State Machine：显式状态转移](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2124-state-machine%E6%98%BE%E5%BC%8F%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -5863,6 +6187,10 @@ START → 收集证据 → 分析问题
 <a id="q-145"></a>
 
 #### 145. Trae、Claude Code、Codex 这些 Coding Agent 各有什么优缺点？
+
+**书稿定位：部分覆盖。** [第23章 · 23.2.7 三类 Coding Agent 的架构对比](https://wxquare.github.io/ai-book/part3/01-coding-agent-systems.html#2327-%E4%B8%89%E7%B1%BB-coding-agent-%E7%9A%84%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94)；[第23章 §23.2 · 版本化选读：如何比较 Trae 等其他产品](https://wxquare.github.io/ai-book/part3/01-coding-agent-systems.html#%E7%89%88%E6%9C%AC%E5%8C%96%E9%80%89%E8%AF%BB%E5%A6%82%E4%BD%95%E6%AF%94%E8%BE%83-trae-%E7%AD%89%E5%85%B6%E4%BB%96%E4%BA%A7%E5%93%81)
+
+**覆盖边界：** 有 Claude Code、Codex、Cursor 的架构对照与 Trae 版本化比较方法；没有 Trae 同任务实测及实时产品优劣排名。
 
 **题型：** 专项题，P1
 
@@ -5942,6 +6270,8 @@ Claude Code 不只有终端，也提供 IDE、桌面和浏览器入口。它能�
 
 #### 146. ReAct 是什么？循环中的 Reasoning 与 Action 分别做什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.2.2 ReAct Loop：观察、思考、行动、反馈](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2122-react-loop%E8%A7%82%E5%AF%9F%E6%80%9D%E8%80%83%E8%A1%8C%E5%8A%A8%E5%8F%8D%E9%A6%88)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -6004,6 +6334,8 @@ Observation：接收执行结果
 
 #### 147. ReAct 与 Plan 模式有什么区别？各适合什么场景？
 
+**书稿定位：已覆盖（原理与设计）。** [第13章 · 13.5.2 ReAct、Plan-and-Execute 与 Plan mode：三个容易混淆的概念](https://wxquare.github.io/ai-book/part2/01-agent-architecture.html#1352-reactplan-and-execute-%E4%B8%8E-plan-mode%E4%B8%89%E4%B8%AA%E5%AE%B9%E6%98%93%E6%B7%B7%E6%B7%86%E7%9A%84%E6%A6%82%E5%BF%B5)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -6064,6 +6396,8 @@ Observation：接收执行结果
 <a id="q-148"></a>
 
 #### 148. Agent Loop 在什么条件下继续，在什么条件下结束？
+
+**书稿定位：已覆盖（原理与设计）。** [第13章 · 13.4.9 Agent Loop：观察、决策、行动、修复](https://wxquare.github.io/ai-book/part2/01-agent-architecture.html#1349-agent-loop%E8%A7%82%E5%AF%9F%E5%86%B3%E7%AD%96%E8%A1%8C%E5%8A%A8%E4%BF%AE%E5%A4%8D)；[第21章 · 21.2.5 计划节点必须有外部验收](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2125-%E8%AE%A1%E5%88%92%E8%8A%82%E7%82%B9%E5%BF%85%E9%A1%BB%E6%9C%89%E5%A4%96%E9%83%A8%E9%AA%8C%E6%94%B6)
 
 **题型：** 专项题，P0
 
@@ -6166,6 +6500,8 @@ Observation：接收执行结果
 
 #### 149. Agent 出现路径震荡、重复尝试的原因是什么？如何优化？
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.7 · 活性、进展与循环不是同一个信号](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%B4%BB%E6%80%A7%E8%BF%9B%E5%B1%95%E4%B8%8E%E5%BE%AA%E7%8E%AF%E4%B8%8D%E6%98%AF%E5%90%8C%E4%B8%80%E4%B8%AA%E4%BF%A1%E5%8F%B7)；[第21章 · 21.8.8 多 Agent 循环争论](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2188-%E5%A4%9A-agent-%E5%BE%AA%E7%8E%AF%E4%BA%89%E8%AE%BA)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -6247,6 +6583,8 @@ Hermes 的工具循环护栏与 Codex 的继续、停止机制见[第 148 题](#
 <a id="q-150"></a>
 
 #### 150. 状态机与流式 Workflow 有什么区别？分别何时使用？
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.6 · 状态机、工作流与流式是三个维度](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E7%8A%B6%E6%80%81%E6%9C%BA%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%B8%8E%E6%B5%81%E5%BC%8F%E6%98%AF%E4%B8%89%E4%B8%AA%E7%BB%B4%E5%BA%A6)
 
 **题型：** 专项题，P1
 
@@ -6332,6 +6670,8 @@ Hermes 的工具循环护栏与 Codex 的继续、停止机制见[第 148 题](#
 <a id="q-151"></a>
 
 #### 151. Modular Agent 是什么？如何通过模块协作实现多步规划？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.4.7 Modular Agent与交接契约](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2147-modular-agent%E4%B8%8E%E4%BA%A4%E6%8E%A5%E5%A5%91%E7%BA%A6)
 
 **题型：** 专项题，P0
 
@@ -6442,6 +6782,8 @@ S1、S2 在任务范围已明确且没有资源冲突时可以并行，S3 等待
 
 #### 152. Agent 如何做任务拆分？为什么要拆分？如何衡量和提升效果？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.2.1 Plan-and-Execute：计划与执行分离](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2121-plan-and-execute%E8%AE%A1%E5%88%92%E4%B8%8E%E6%89%A7%E8%A1%8C%E5%88%86%E7%A6%BB)；[第21章 · 21.2.5 计划节点必须有外部验收](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2125-%E8%AE%A1%E5%88%92%E8%8A%82%E7%82%B9%E5%BF%85%E9%A1%BB%E6%9C%89%E5%A4%96%E9%83%A8%E9%AA%8C%E6%94%B6)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -6540,6 +6882,8 @@ S1、S2 在任务范围已明确且没有资源冲突时可以并行，S3 等待
 <a id="q-153"></a>
 
 #### 153. Agent 反思机制是什么？为什么需要，如何实现？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.3.4 Evaluator-Optimizer：评估与迭代优化](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2134-evaluator-optimizer%E8%AF%84%E4%BC%B0%E4%B8%8E%E8%BF%AD%E4%BB%A3%E4%BC%98%E5%8C%96)；[第20章 §20.2 · Reflective Memory：反思与策略修正](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#reflective-memory%E5%8F%8D%E6%80%9D%E4%B8%8E%E7%AD%96%E7%95%A5%E4%BF%AE%E6%AD%A3)
 
 **题型：** 专项题，P1
 
@@ -6653,6 +6997,8 @@ Hermes 的 Background Review 在满足触发条件时审查会话，将有价值
 
 #### 154. 单 Agent 与多 Agent 有什么区别？分别适用于什么场景？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.1.6 单 Agent vs 多 Agent](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2116-%E5%8D%95-agent-vs-%E5%A4%9A-agent)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -6739,6 +7085,8 @@ Hermes 的 Background Review 在满足触发条件时审查会话，将有价值
 <a id="q-155"></a>
 
 #### 155. Multi-Agent 系统如何划分各 Agent 的职责？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.4 多 Agent 的职责与交接协议](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#214-%E5%A4%9A-agent-%E7%9A%84%E8%81%8C%E8%B4%A3%E4%B8%8E%E4%BA%A4%E6%8E%A5%E5%8D%8F%E8%AE%AE)
 
 **题型：** 专项题，P0
 
@@ -6839,6 +7187,8 @@ Hermes 的 Background Review 在满足触发条件时审查会话，将有价值
 <a id="q-156"></a>
 
 #### 156. 多 Agent 之间传递什么信息？如何保证通信结果明确、可验证？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.4.7 Modular Agent与交接契约](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2147-modular-agent%E4%B8%8E%E4%BA%A4%E6%8E%A5%E5%A5%91%E7%BA%A6)
 
 **题型：** 专项题，P0
 
@@ -6961,6 +7311,8 @@ Hermes 的 Background Review 在满足触发条件时审查会话，将有价值
 
 #### 157. 多 Agent 通信采用信箱、共享内存、事件驱动时，底层如何实现？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.5.1 三种组件各司其职](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2151-%E4%B8%89%E7%A7%8D%E7%BB%84%E4%BB%B6%E5%90%84%E5%8F%B8%E5%85%B6%E8%81%8C)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -7009,6 +7361,8 @@ ACK 时机取决于恢复设计：可处理完成后 ACK，也可先幂等创建
 
 #### 158. 中心式与分布式多 Agent 协作通信各有什么优缺点？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.5 mailbox、共享状态与事件总线](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#215-mailbox%E5%85%B1%E4%BA%AB%E7%8A%B6%E6%80%81%E4%B8%8E%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -7048,6 +7402,8 @@ ACK 时机取决于恢复设计：可处理完成后 ACK，也可先幂等创建
 <a id="q-159"></a>
 
 #### 159. 如何保证多 Agent 通信在重复、乱序、超时和取消时仍可靠？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.5.2 重复、乱序、取消和失联](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2152-%E9%87%8D%E5%A4%8D%E4%B9%B1%E5%BA%8F%E5%8F%96%E6%B6%88%E5%92%8C%E5%A4%B1%E8%81%94)
 
 **题型：** 专项题，P1
 
@@ -7089,6 +7445,8 @@ ACK 时机取决于恢复设计：可处理完成后 ACK，也可先幂等创建
 <a id="q-160"></a>
 
 #### 160. 如何组合编排器、信箱、共享状态和事件总线实现多 Agent 协作？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.5 mailbox、共享状态与事件总线](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#215-mailbox%E5%85%B1%E4%BA%AB%E7%8A%B6%E6%80%81%E4%B8%8E%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF)；[第21章 · 21.8.2 控制面、执行面、集成面与治理面](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2182-%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%89%A7%E8%A1%8C%E9%9D%A2%E9%9B%86%E6%88%90%E9%9D%A2%E4%B8%8E%E6%B2%BB%E7%90%86%E9%9D%A2)
 
 **题型：** 专项题，P1
 
@@ -7135,6 +7493,8 @@ ACK 时机取决于恢复设计：可处理完成后 ACK，也可先幂等创建
 <a id="q-161"></a>
 
 #### 161. 多个 Agent 同时修改同一文件，如何避免冲突？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.6.5 并行任务的合并、冲突和审查边界](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2165-%E5%B9%B6%E8%A1%8C%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%90%88%E5%B9%B6%E5%86%B2%E7%AA%81%E5%92%8C%E5%AE%A1%E6%9F%A5%E8%BE%B9%E7%95%8C)
 
 **题型：** 专项题，P1
 
@@ -7215,6 +7575,8 @@ Git worktree 隔离了工作区与索引，但仍共享部分仓库元数据；�
 <a id="q-162"></a>
 
 #### 162. 多个 Agent 如何处理输入？动态上下文使用什么数据结构？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.4.7 Modular Agent与交接契约](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2147-modular-agent%E4%B8%8E%E4%BA%A4%E6%8E%A5%E5%A5%91%E7%BA%A6)；[第15章 · 15.4 Context Package：把信息结构化交给模型](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#154-context-package%E6%8A%8A%E4%BF%A1%E6%81%AF%E7%BB%93%E6%9E%84%E5%8C%96%E4%BA%A4%E7%BB%99%E6%A8%A1%E5%9E%8B)
 
 **题型：** 专项题，P0
 
@@ -7340,6 +7702,8 @@ ContextItem {
 
 #### 163. 如何避免 Agent 无限循环，或多个 Agent 互相推诿任务？
 
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.8.8 多 Agent 循环争论](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2188-%E5%A4%9A-agent-%E5%BE%AA%E7%8E%AF%E4%BA%89%E8%AE%BA)；[第11章 §11.7 · 活性、进展与循环不是同一个信号](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%B4%BB%E6%80%A7%E8%BF%9B%E5%B1%95%E4%B8%8E%E5%BE%AA%E7%8E%AF%E4%B8%8D%E6%98%AF%E5%90%8C%E4%B8%80%E4%B8%AA%E4%BF%A1%E5%8F%B7)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -7383,6 +7747,8 @@ ContextItem {
 <a id="q-164"></a>
 
 #### 164. 持续运行很久的 Agent 任务如何保证稳定性？
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 · 11.4 Checkpoint、恢复与补偿](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#114-checkpoint%E6%81%A2%E5%A4%8D%E4%B8%8E%E8%A1%A5%E5%81%BF)；[第11章 · 11.7 隔离、预算、观测与回放](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#117-%E9%9A%94%E7%A6%BB%E9%A2%84%E7%AE%97%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%9B%9E%E6%94%BE)
 
 **题型：** 专项题，P1
 
@@ -7434,6 +7800,8 @@ ContextItem {
 <a id="q-165"></a>
 
 #### 165. 运行数天的 Agent 遇到第三方接口报错，如何从断点继续而不重头运行？
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 · 11.4 Checkpoint、恢复与补偿](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#114-checkpoint%E6%81%A2%E5%A4%8D%E4%B8%8E%E8%A1%A5%E5%81%BF)；[第11章 §11.3 · Operation独立于Attempt](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#operation%E7%8B%AC%E7%AB%8B%E4%BA%8Eattempt)
 
 **题型：** 专项题，P0
 
@@ -7500,6 +7868,8 @@ TaskStep {
 <a id="q-166"></a>
 
 #### 166. 如何定制任务调度、状态回退、Checkpoint 与 Trace 回放能力？
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 · 11.4 Checkpoint、恢复与补偿](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#114-checkpoint%E6%81%A2%E5%A4%8D%E4%B8%8E%E8%A1%A5%E5%81%BF)；[第11章 §11.7 · 可解释的执行回放](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E5%8F%AF%E8%A7%A3%E9%87%8A%E7%9A%84%E6%89%A7%E8%A1%8C%E5%9B%9E%E6%94%BE)
 
 **题型：** 专项题，P1
 
@@ -7570,6 +7940,8 @@ TaskStep {
 <a id="q-167"></a>
 
 #### 167. 需要人工强制中断 Agent 时，如何处理 Human-in-the-Loop？
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.5 · Human-in-the-loop](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#human-in-the-loop)
 
 **题型：** 专项题，P0
 
@@ -7642,6 +8014,8 @@ running → cancel_requested → cancelling → interrupted
 
 #### 168. 工具 Schema 与业务契约
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.2.1 工具 Schema 是模型与系统之间的契约](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1821-%E5%B7%A5%E5%85%B7-schema-%E6%98%AF%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%B3%BB%E7%BB%9F%E4%B9%8B%E9%97%B4%E7%9A%84%E5%A5%91%E7%BA%A6)；[第18章 · 18.2.4 Schema 设计原则：名称、参数、幂等、边界与错误](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1824-schema-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E5%90%8D%E7%A7%B0%E5%8F%82%E6%95%B0%E5%B9%82%E7%AD%89%E8%BE%B9%E7%95%8C%E4%B8%8E%E9%94%99%E8%AF%AF)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -7673,6 +8047,8 @@ running → cancel_requested → cancelling → interrupted
 
 #### 169. 工具选择与歧义治理
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.2.2 反例：过度宽泛的工具为什么不可靠](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1822-%E5%8F%8D%E4%BE%8B%E8%BF%87%E5%BA%A6%E5%AE%BD%E6%B3%9B%E7%9A%84%E5%B7%A5%E5%85%B7%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%8F%AF%E9%9D%A0)；[第18章 · 18.2.3 正例：边界清晰的工具如何设计](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1823-%E6%AD%A3%E4%BE%8B%E8%BE%B9%E7%95%8C%E6%B8%85%E6%99%B0%E7%9A%84%E5%B7%A5%E5%85%B7%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1)；[第18章 · 18.2.6 动态工具暴露：按任务、阶段、权限和环境裁剪能力](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1826-%E5%8A%A8%E6%80%81%E5%B7%A5%E5%85%B7%E6%9A%B4%E9%9C%B2%E6%8C%89%E4%BB%BB%E5%8A%A1%E9%98%B6%E6%AE%B5%E6%9D%83%E9%99%90%E5%92%8C%E7%8E%AF%E5%A2%83%E8%A3%81%E5%89%AA%E8%83%BD%E5%8A%9B)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -7699,6 +8075,8 @@ running → cancel_requested → cancelling → interrupted
 <a id="q-170"></a>
 
 #### 170. Tool Calling 错误恢复
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.3.4 失败模式：误选工具、参数错误、重复副作用与注入攻击](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1834-%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F%E8%AF%AF%E9%80%89%E5%B7%A5%E5%85%B7%E5%8F%82%E6%95%B0%E9%94%99%E8%AF%AF%E9%87%8D%E5%A4%8D%E5%89%AF%E4%BD%9C%E7%94%A8%E4%B8%8E%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB)；[第18章 · 18.3.5 重试策略：哪些失败可以重试，哪些不能](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1835-%E9%87%8D%E8%AF%95%E7%AD%96%E7%95%A5%E5%93%AA%E4%BA%9B%E5%A4%B1%E8%B4%A5%E5%8F%AF%E4%BB%A5%E9%87%8D%E8%AF%95%E5%93%AA%E4%BA%9B%E4%B8%8D%E8%83%BD)
 
 **题型：** 专项题，P0
 
@@ -7731,6 +8109,8 @@ running → cancel_requested → cancelling → interrupted
 
 #### 171. MCP 协议与应用责任
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.5.2 MCP 解决什么，不解决什么](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1852-mcp-%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E4%B8%8D%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88)；[第18章 · 18.5.4 MCP 的架构边界：Host、Client、Server](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1854-mcp-%E7%9A%84%E6%9E%B6%E6%9E%84%E8%BE%B9%E7%95%8Chostclientserver)；[第18章 · 18.5.7 MCP 协议流：initialize、list、call、read 与 notifications](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1857-mcp-%E5%8D%8F%E8%AE%AE%E6%B5%81initializelistcallread-%E4%B8%8E-notifications)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -7762,6 +8142,8 @@ MCP 接入降低了什么成本，哪些责任仍属于应用？
 
 #### 172. MCP 工具发现与版本变化
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.5.6 Capability Negotiation：能力协商与渐进兼容](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1856-capability-negotiation%E8%83%BD%E5%8A%9B%E5%8D%8F%E5%95%86%E4%B8%8E%E6%B8%90%E8%BF%9B%E5%85%BC%E5%AE%B9)；[第18章 · 18.5.7 MCP 协议流：initialize、list、call、read 与 notifications](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1857-mcp-%E5%8D%8F%E8%AE%AE%E6%B5%81initializelistcallread-%E4%B8%8E-notifications)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -7792,6 +8174,8 @@ MCP 接入降低了什么成本，哪些责任仍属于应用？
 <a id="q-173"></a>
 
 #### 173. 工具授权与用户身份传播
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.5.13 工具风险分级、认证授权与输出防注入](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#18513-%E5%B7%A5%E5%85%B7%E9%A3%8E%E9%99%A9%E5%88%86%E7%BA%A7%E8%AE%A4%E8%AF%81%E6%8E%88%E6%9D%83%E4%B8%8E%E8%BE%93%E5%87%BA%E9%98%B2%E6%B3%A8%E5%85%A5)；[第18章 · 18.3.2 Tool Runtime 核心组件：Registry、Validator、Policy、Executor 与 Trace](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1832-tool-runtime-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6registryvalidatorpolicyexecutor-%E4%B8%8E-trace)
 
 **题型：** 专项题，P0
 
@@ -7825,6 +8209,8 @@ Agent 代用户操作多个系统，如何避免服务账号越权？
 <a id="q-174"></a>
 
 #### 174. 沙箱与代码执行隔离
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.6.1 Sandbox 的职责：限制文件、网络、进程和凭据边界](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1861-sandbox-%E7%9A%84%E8%81%8C%E8%B4%A3%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E7%BD%91%E7%BB%9C%E8%BF%9B%E7%A8%8B%E5%92%8C%E5%87%AD%E6%8D%AE%E8%BE%B9%E7%95%8C)；[第18章 · 18.6.4 执行环境的四种层级：Path、Process、Container、Remote Runner](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1864-%E6%89%A7%E8%A1%8C%E7%8E%AF%E5%A2%83%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%B1%82%E7%BA%A7pathprocesscontainerremote-runner)
 
 **题型：** 专项题，P1
 
@@ -7861,6 +8247,10 @@ Agent 能执行代码，如何隔离文件、网络和资源？
 
 #### 175. 浏览器 Agent 的状态验证
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 §18.6 · 浏览器动作前后验证：别把旧定位当授权](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8A%A8%E4%BD%9C%E5%89%8D%E5%90%8E%E9%AA%8C%E8%AF%81%E5%88%AB%E6%8A%8A%E6%97%A7%E5%AE%9A%E4%BD%8D%E5%BD%93%E6%8E%88%E6%9D%83)
+
+**覆盖边界：** 浏览器小节给出动作前后取证、租户/对象复核、旧定位失效与未知提交结果处理；示例未实际执行。
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -7887,6 +8277,8 @@ Agent 能执行代码，如何隔离文件、网络和资源？
 <a id="q-176"></a>
 
 #### 176. Coding Agent 的执行与验证
+
+**书稿定位：已覆盖（原理与设计）。** [第23章 · 23.4.8 Verification Gate：完成不是模型说了算](https://wxquare.github.io/ai-book/part3/01-coding-agent-systems.html#2348-verification-gate%E5%AE%8C%E6%88%90%E4%B8%8D%E6%98%AF%E6%A8%A1%E5%9E%8B%E8%AF%B4%E4%BA%86%E7%AE%97)；[第29章 · 29.14 Verifier：不要让模型自己宣布完成](https://wxquare.github.io/ai-book/part3/08-mini-agent-observability.html#2914-verifier%E4%B8%8D%E8%A6%81%E8%AE%A9%E6%A8%A1%E5%9E%8B%E8%87%AA%E5%B7%B1%E5%AE%A3%E5%B8%83%E5%AE%8C%E6%88%90)
 
 **题型：** 专项题，P1
 
@@ -7926,6 +8318,8 @@ Agent 修改代码后声称已修复，系统如何验证？
 
 #### 177. 工具结果契约与不可信内容
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.2.5 ToolResult Envelope：把模型上下文和系统元数据分开](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1825-toolresult-envelope%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E7%B3%BB%E7%BB%9F%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%86%E5%BC%80)；[第18章 · 18.5.13 工具风险分级、认证授权与输出防注入](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#18513-%E5%B7%A5%E5%85%B7%E9%A3%8E%E9%99%A9%E5%88%86%E7%BA%A7%E8%AE%A4%E8%AF%81%E6%8E%88%E6%9D%83%E4%B8%8E%E8%BE%93%E5%87%BA%E9%98%B2%E6%B3%A8%E5%85%A5)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -7958,6 +8352,8 @@ Agent 修改代码后声称已修复，系统如何验证？
 <a id="q-178"></a>
 
 #### 178. 模型如何判断是否需要调用工具？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.1.2 Tool Calling 的运行闭环](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1812-tool-calling-%E7%9A%84%E8%BF%90%E8%A1%8C%E9%97%AD%E7%8E%AF)；[第18章 · 18.2.3 正例：边界清晰的工具如何设计](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1823-%E6%AD%A3%E4%BE%8B%E8%BE%B9%E7%95%8C%E6%B8%85%E6%99%B0%E7%9A%84%E5%B7%A5%E5%85%B7%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1)
 
 **题型：** 专项题，P1
 
@@ -7996,6 +8392,8 @@ Agent 修改代码后声称已修复，系统如何验证？
 <a id="q-179"></a>
 
 #### 179. Function Call 与 Tool Result 如何重新进入模型上下文？
+
+**书稿定位：已覆盖（原理与设计）。** [第17章 · 17.5.1 调用ID不是业务Operation](https://wxquare.github.io/ai-book/part2/05-llm-api-protocol.html#1751-%E8%B0%83%E7%94%A8id%E4%B8%8D%E6%98%AF%E4%B8%9A%E5%8A%A1operation)；[第18章 · 18.2.5 ToolResult Envelope：把模型上下文和系统元数据分开](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1825-toolresult-envelope%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E7%B3%BB%E7%BB%9F%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%86%E5%BC%80)
 
 **题型：** 专项题，P1
 
@@ -8041,6 +8439,8 @@ Function Call 与 Tool Result 如何重新进入模型上下文？ 说明理论�
 
 #### 180. 哪些能力适合抽象为 Tool？参数 Schema 和错误码如何设计？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.2.3 正例：边界清晰的工具如何设计](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1823-%E6%AD%A3%E4%BE%8B%E8%BE%B9%E7%95%8C%E6%B8%85%E6%99%B0%E7%9A%84%E5%B7%A5%E5%85%B7%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1)；[第18章 · 18.2.4 Schema 设计原则：名称、参数、幂等、边界与错误](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1824-schema-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E5%90%8D%E7%A7%B0%E5%8F%82%E6%95%B0%E5%B9%82%E7%AD%89%E8%BE%B9%E7%95%8C%E4%B8%8E%E9%94%99%E8%AF%AF)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8078,6 +8478,8 @@ Schema 写清必填、类型、枚举、范围、时间格式、时区、单位�
 <a id="q-181"></a>
 
 #### 181. 一个工具从定义、注册、被 Agent 发现到被调用，完整生命周期是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.3.2 Tool Runtime 核心组件：Registry、Validator、Policy、Executor 与 Trace](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1832-tool-runtime-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6registryvalidatorpolicyexecutor-%E4%B8%8E-trace)；[第18章 · 18.3.3 工具调用状态机：从 Requested 到 Observed](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1833-%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%BB%8E-requested-%E5%88%B0-observed)
 
 **题型：** 专项题，P1
 
@@ -8117,6 +8519,8 @@ Schema 写清必填、类型、枚举、范围、时间格式、时区、单位�
 
 #### 182. 工具遇到文件不存在、超时、权限不足时，如何恢复和重试？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.3.5 重试策略：哪些失败可以重试，哪些不能](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1835-%E9%87%8D%E8%AF%95%E7%AD%96%E7%95%A5%E5%93%AA%E4%BA%9B%E5%A4%B1%E8%B4%A5%E5%8F%AF%E4%BB%A5%E9%87%8D%E8%AF%95%E5%93%AA%E4%BA%9B%E4%B8%8D%E8%83%BD)；[第11章 §11.3 · 重试分类](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E9%87%8D%E8%AF%95%E5%88%86%E7%B1%BB)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8154,6 +8558,8 @@ Schema 写清必填、类型、枚举、范围、时间格式、时区、单位�
 <a id="q-183"></a>
 
 #### 183. 工具入参由模型结合上下文生成时，如何保障调用可靠性？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.2.4 Schema 设计原则：名称、参数、幂等、边界与错误](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1824-schema-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E5%90%8D%E7%A7%B0%E5%8F%82%E6%95%B0%E5%B9%82%E7%AD%89%E8%BE%B9%E7%95%8C%E4%B8%8E%E9%94%99%E8%AF%AF)；[第18章 · 18.3.2 Tool Runtime 核心组件：Registry、Validator、Policy、Executor 与 Trace](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1832-tool-runtime-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6registryvalidatorpolicyexecutor-%E4%B8%8E-trace)
 
 **题型：** 专项题，P1
 
@@ -8193,6 +8599,8 @@ Schema 写清必填、类型、枚举、范围、时间格式、时区、单位�
 
 #### 184. 多个工具调用链路如何调度？异常时如何 Fallback？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.7 工具编排模式：从单次调用到可治理流程](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#187-%E5%B7%A5%E5%85%B7%E7%BC%96%E6%8E%92%E6%A8%A1%E5%BC%8F%E4%BB%8E%E5%8D%95%E6%AC%A1%E8%B0%83%E7%94%A8%E5%88%B0%E5%8F%AF%E6%B2%BB%E7%90%86%E6%B5%81%E7%A8%8B)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8230,6 +8638,8 @@ Skill 等同强制状态机；盲并行写入；降级不标缺口；重跑整�
 <a id="q-185"></a>
 
 #### 185. MCP 是什么？Agent 通过 MCP 调用工具的流程是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.5.4 MCP 的架构边界：Host、Client、Server](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1854-mcp-%E7%9A%84%E6%9E%B6%E6%9E%84%E8%BE%B9%E7%95%8Chostclientserver)；[第18章 · 18.5.7 MCP 协议流：initialize、list、call、read 与 notifications](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1857-mcp-%E5%8D%8F%E8%AE%AE%E6%B5%81initializelistcallread-%E4%B8%8E-notifications)
 
 **题型：** 专项题，P1
 
@@ -8276,6 +8686,8 @@ Server 必须是 Agent；发现等同授权；只说 API 而不说明初始化�
 
 #### 186. MCP 的底层实现原理是什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.5.4 MCP 的架构边界：Host、Client、Server](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1854-mcp-%E7%9A%84%E6%9E%B6%E6%9E%84%E8%BE%B9%E7%95%8Chostclientserver)；[第18章 · 18.5.7 MCP 协议流：initialize、list、call、read 与 notifications](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1857-mcp-%E5%8D%8F%E8%AE%AE%E6%B5%81initializelistcallread-%E4%B8%8E-notifications)；[第18章 · 18.5.8 stdio 与 Streamable HTTP：本地 Server 和远程 Server](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1858-stdio-%E4%B8%8E-streamable-http%E6%9C%AC%E5%9C%B0-server-%E5%92%8C%E8%BF%9C%E7%A8%8B-server)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8318,6 +8730,10 @@ HTTP 200 且 JSON-RPC 有 result，工具是否一定成功？
 
 #### 187. MCP 与 Function Calling 有什么区别？有何实践？
 
+**书稿定位：部分覆盖。** [第18章 · 18.1.3 Function Calling、Tool Calling、Plugin、Skills 与 MCP 的边界](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1813-function-callingtool-callingpluginskills-%E4%B8%8E-mcp-%E7%9A%84%E8%BE%B9%E7%95%8C)；[第18章 · 18.5.10 GitHub 与 Log MCP 示例：API、CLI 与 MCP 的三条路径](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#18510-github-%E4%B8%8E-log-mcp-%E7%A4%BA%E4%BE%8Bapicli-%E4%B8%8E-mcp-%E7%9A%84%E4%B8%89%E6%9D%A1%E8%B7%AF%E5%BE%84)
+
+**覆盖边界：** Function Calling 与 MCP 的职责和链路已解释；个人 MCP 项目的实现、兼容测试与运行记录仍需由答题者补充。
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8355,6 +8771,8 @@ MCP 与 Function Calling 有什么区别？有何实践？ 说明理论机制，
 <a id="q-188"></a>
 
 #### 188. MCP 如何适配 stdio、HTTP、SSE、Streamable HTTP？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.5.8 stdio 与 Streamable HTTP：本地 Server 和远程 Server](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1858-stdio-%E4%B8%8E-streamable-http%E6%9C%AC%E5%9C%B0-server-%E5%92%8C%E8%BF%9C%E7%A8%8B-server)
 
 **题型：** 专项题，P1
 
@@ -8400,6 +8818,8 @@ HTTP、SSE 当同级互斥项；stdout 打日志；任务 SSE 当 MCP；连接�
 
 #### 189. 如何处理 MCP 版本兼容问题？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.5.6 Capability Negotiation：能力协商与渐进兼容](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1856-capability-negotiation%E8%83%BD%E5%8A%9B%E5%8D%8F%E5%95%86%E4%B8%8E%E6%B8%90%E8%BF%9B%E5%85%BC%E5%AE%B9)；[第18章 · 18.5.8 stdio 与 Streamable HTTP：本地 Server 和远程 Server](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1858-stdio-%E4%B8%8E-streamable-http%E6%9C%AC%E5%9C%B0-server-%E5%92%8C%E8%BF%9C%E7%A8%8B-server)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8437,6 +8857,10 @@ initialize 成功但工具 outputSchema 已变化，如何发现问题？
 <a id="q-190"></a>
 
 #### 190. A2A 协议是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.7.3 A2A仅作版本化协议选读](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2173-a2a%E4%BB%85%E4%BD%9C%E7%89%88%E6%9C%AC%E5%8C%96%E5%8D%8F%E8%AE%AE%E9%80%89%E8%AF%BB)
+
+**覆盖边界：** 限于明确版本的 Agent Card、任务/消息/产物和协议边界；自建信箱或子 Agent 调用不等于实现并验证 A2A。
 
 **题型：** 专项题，P1
 
@@ -8482,6 +8906,8 @@ RPC 调用等同 A2A；用名称猜协议；将 MCP 与 A2A 视为必须二选�
 
 #### 191. Skill 底层如何实现？渐进式披露的原理是什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.4.2 Skill 的定义：触发条件、步骤、工具、约束与验证](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1842-skill-%E7%9A%84%E5%AE%9A%E4%B9%89%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E6%AD%A5%E9%AA%A4%E5%B7%A5%E5%85%B7%E7%BA%A6%E6%9D%9F%E4%B8%8E%E9%AA%8C%E8%AF%81)；[第18章 · 18.4.7 Skill Selection：不是每次全部加载](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1847-skill-selection%E4%B8%8D%E6%98%AF%E6%AF%8F%E6%AC%A1%E5%85%A8%E9%83%A8%E5%8A%A0%E8%BD%BD)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8519,6 +8945,8 @@ Skill 底层如何实现？渐进式披露的原理是什么？ 说明理论机�
 <a id="q-192"></a>
 
 #### 192. Skills 如何管理和加载？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.4.6 Skill Registry：技能也需要版本、Owner 和风险等级](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1846-skill-registry%E6%8A%80%E8%83%BD%E4%B9%9F%E9%9C%80%E8%A6%81%E7%89%88%E6%9C%ACowner-%E5%92%8C%E9%A3%8E%E9%99%A9%E7%AD%89%E7%BA%A7)；[第18章 · 18.4.7 Skill Selection：不是每次全部加载](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1847-skill-selection%E4%B8%8D%E6%98%AF%E6%AF%8F%E6%AC%A1%E5%85%A8%E9%83%A8%E5%8A%A0%E8%BD%BD)；[第18章 · 18.4.9 Skill 生命周期：Create、Review、Validate、Publish、Retire](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1849-skill-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9Fcreatereviewvalidatepublishretire)
 
 **题型：** 专项题，P1
 
@@ -8560,6 +8988,8 @@ Skills 如何管理和加载？ 说明理论机制，再对照 Claude Code、Cod
 
 #### 193. Skill 与 Tool 有什么区别？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.4.3 Tool、Skill、Workflow、Memory、Plugin 的边界](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1843-toolskillworkflowmemoryplugin-%E7%9A%84%E8%BE%B9%E7%95%8C)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8597,6 +9027,8 @@ Skill 等同工具函数；一对一绑定；文本流程自动具备执行权�
 <a id="q-194"></a>
 
 #### 194. Skill 与 MCP 的核心区别是什么？为什么选择自封装工具而不使用 MCP？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.4.11 Skills 与 MCP 的关系](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#18411-skills-%E4%B8%8E-mcp-%E7%9A%84%E5%85%B3%E7%B3%BB)；[第18章 · 18.1.5 工具接入方式选择框架：API、CLI、MCP 与 Browser Use](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1815-%E5%B7%A5%E5%85%B7%E6%8E%A5%E5%85%A5%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9%E6%A1%86%E6%9E%B6apiclimcp-%E4%B8%8E-browser-use)
 
 **题型：** 专项题，P1
 
@@ -8636,6 +9068,8 @@ Skill 与 MCP 二选一；自封装不能用 MCP；协议优越论。
 
 #### 195. Skills 与子 Agent 有什么区别？不同场景如何选择？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.4.3 Tool、Skill、Workflow、Memory、Plugin 的边界](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1843-toolskillworkflowmemoryplugin-%E7%9A%84%E8%BE%B9%E7%95%8C)；[第21章 · 21.6.2 Subagents：专家上下文](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2162-subagents%E4%B8%93%E5%AE%B6%E4%B8%8A%E4%B8%8B%E6%96%87)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8674,6 +9108,8 @@ Skill 一定共享上下文；子 Agent 自动隔离权限；拆分必然提质�
 
 #### 196. 为什么组合使用 MCP 与 Skill，而不是脚本或命令行？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.4.11 Skills 与 MCP 的关系](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#18411-skills-%E4%B8%8E-mcp-%E7%9A%84%E5%85%B3%E7%B3%BB)；[第18章 · 18.1.5 工具接入方式选择框架：API、CLI、MCP 与 Browser Use](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1815-%E5%B7%A5%E5%85%B7%E6%8E%A5%E5%85%A5%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9%E6%A1%86%E6%9E%B6apiclimcp-%E4%B8%8E-browser-use)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8711,6 +9147,8 @@ MCP 必然优于 CLI；Skill 能替代脚本执行；为简单任务强加服务
 <a id="q-197"></a>
 
 #### 197. Skill 的目录结构是什么？相比 MCP 有什么优点？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.4.4 一个高质量 Skill 应该长什么样](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1844-%E4%B8%80%E4%B8%AA%E9%AB%98%E8%B4%A8%E9%87%8F-skill-%E5%BA%94%E8%AF%A5%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7)；[第18章 · 18.4.11 Skills 与 MCP 的关系](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#18411-skills-%E4%B8%8E-mcp-%E7%9A%84%E5%85%B3%E7%B3%BB)
 
 **题型：** 专项题，P1
 
@@ -8758,6 +9196,8 @@ Skill 便于版本管理、分发操作知识与按需加载长说明；MCP 擅�
 
 #### 198. Skill 是知识库，还是融合在 Agent 内部？在什么阶段获取？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.4.2 Skill 的定义：触发条件、步骤、工具、约束与验证](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1842-skill-%E7%9A%84%E5%AE%9A%E4%B9%89%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E6%AD%A5%E9%AA%A4%E5%B7%A5%E5%85%B7%E7%BA%A6%E6%9D%9F%E4%B8%8E%E9%AA%8C%E8%AF%81)；[第18章 · 18.4.7 Skill Selection：不是每次全部加载](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1847-skill-selection%E4%B8%8D%E6%98%AF%E6%AF%8F%E6%AC%A1%E5%85%A8%E9%83%A8%E5%8A%A0%E8%BD%BD)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8795,6 +9235,8 @@ Skill 是知识库，还是融合在 Agent 内部？在什么阶段获取？ 说
 <a id="q-199"></a>
 
 #### 199. 工具很多时，如何避免工具描述使 Prompt 过长？
+
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.2.6 动态工具暴露：按任务、阶段、权限和环境裁剪能力](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1826-%E5%8A%A8%E6%80%81%E5%B7%A5%E5%85%B7%E6%9A%B4%E9%9C%B2%E6%8C%89%E4%BB%BB%E5%8A%A1%E9%98%B6%E6%AE%B5%E6%9D%83%E9%99%90%E5%92%8C%E7%8E%AF%E5%A2%83%E8%A3%81%E5%89%AA%E8%83%BD%E5%8A%9B)
 
 **题型：** 专项题，P1
 
@@ -8834,6 +9276,8 @@ Skill 是知识库，还是融合在 Agent 内部？在什么阶段获取？ 说
 
 #### 200. 工具返回结果过大，超过上下文窗口时如何处理？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 · 18.2.5 ToolResult Envelope：把模型上下文和系统元数据分开](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1825-toolresult-envelope%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E7%B3%BB%E7%BB%9F%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%86%E5%BC%80)；[第15章 · 15.6 上下文预算与信息密度](https://wxquare.github.io/ai-book/part2/03-context-engineering.html#156-%E4%B8%8A%E4%B8%8B%E6%96%87%E9%A2%84%E7%AE%97%E4%B8%8E%E4%BF%A1%E6%81%AF%E5%AF%86%E5%BA%A6)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8872,6 +9316,8 @@ Skill 是知识库，还是融合在 Agent 内部？在什么阶段获取？ 说
 
 #### 201. 现有 Skill 无法解决问题时，Agent 应如何处理？
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 §18.4 · Skill失败回退需要保留授权与事实](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#skill%E5%A4%B1%E8%B4%A5%E5%9B%9E%E9%80%80%E9%9C%80%E8%A6%81%E4%BF%9D%E7%95%99%E6%8E%88%E6%9D%83%E4%B8%8E%E4%BA%8B%E5%AE%9E)；[第14章 · 14.12 失败策略：让模型知道何时停下来](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#1412-%E5%A4%B1%E8%B4%A5%E7%AD%96%E7%95%A5%E8%AE%A9%E6%A8%A1%E5%9E%8B%E7%9F%A5%E9%81%93%E4%BD%95%E6%97%B6%E5%81%9C%E4%B8%8B%E6%9D%A5)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -8909,6 +9355,8 @@ Skill 是知识库，还是融合在 Agent 内部？在什么阶段获取？ 说
 <a id="q-202"></a>
 
 #### 202. 如何约束模型输出格式，使生成内容能与后续工具代码对接？
+
+**书稿定位：已覆盖（原理与设计）。** [第14章 · 14.8 Output Contract：结构化输出是系统边界](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#148-output-contract%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E6%98%AF%E7%B3%BB%E7%BB%9F%E8%BE%B9%E7%95%8C)；[第18章 · 18.2.1 工具 Schema 是模型与系统之间的契约](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#1821-%E5%B7%A5%E5%85%B7-schema-%E6%98%AF%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%B3%BB%E7%BB%9F%E4%B9%8B%E9%97%B4%E7%9A%84%E5%A5%91%E7%BA%A6)
 
 **题型：** 专项题，P1
 
@@ -8967,6 +9415,8 @@ Skill 是知识库，还是融合在 Agent 内部？在什么阶段获取？ 说
 
 #### 203. 长任务的异步执行与恢复
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 · 11.2 提交、调度与可靠投递](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#112-%E6%8F%90%E4%BA%A4%E8%B0%83%E5%BA%A6%E4%B8%8E%E5%8F%AF%E9%9D%A0%E6%8A%95%E9%80%92)；[第11章 · 11.4 Checkpoint、恢复与补偿](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#114-checkpoint%E6%81%A2%E5%A4%8D%E4%B8%8E%E8%A1%A5%E5%81%BF)；[第11章 · 11.8 故障矩阵与最小交付契约](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#118-%E6%95%85%E9%9A%9C%E7%9F%A9%E9%98%B5%E4%B8%8E%E6%9C%80%E5%B0%8F%E4%BA%A4%E4%BB%98%E5%A5%91%E7%BA%A6)
+
 **题型：** 核心案例，P0，45 分钟
 
 ##### 目标与规模假设
@@ -9008,6 +9458,8 @@ Task、Step、Attempt 如何划分；执行权和 Checkpoint 如何配合；任�
 
 #### 204. Agent 状态机与并发更新
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.1 · 状态一致与并发](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E7%8A%B6%E6%80%81%E4%B8%80%E8%87%B4%E4%B8%8E%E5%B9%B6%E5%8F%91)；[第11章 §11.1 · 规范对象与单写者不变量](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E8%A7%84%E8%8C%83%E5%AF%B9%E8%B1%A1%E4%B8%8E%E5%8D%95%E5%86%99%E8%80%85%E4%B8%8D%E5%8F%98%E9%87%8F)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9043,6 +9495,8 @@ Task、Step、Attempt 如何划分；执行权和 Checkpoint 如何配合；任�
 
 #### 205. Checkpoint 与步骤提交时机
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.4 · Checkpoint的联合提交边界](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#checkpoint%E7%9A%84%E8%81%94%E5%90%88%E6%8F%90%E4%BA%A4%E8%BE%B9%E7%95%8C)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9074,6 +9528,8 @@ Task、Step、Attempt 如何划分；执行权和 Checkpoint 如何配合；任�
 
 #### 206. Worker 租约与执行权
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.2 · Lease、Fencing与迟到worker](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#leasefencing%E4%B8%8E%E8%BF%9F%E5%88%B0worker)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -9100,6 +9556,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 <a id="q-207"></a>
 
 #### 207. 请求、任务与工具幂等
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.3 · Operation独立于Attempt](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#operation%E7%8B%AC%E7%AB%8B%E4%BA%8Eattempt)
 
 **题型：** 专项题，P0
 
@@ -9128,6 +9586,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 
 #### 208. 工具成功但响应丢失
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.3 · Operation独立于Attempt](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#operation%E7%8B%AC%E7%AB%8B%E4%BA%8Eattempt)；[第11章 §11.8 · 故障窗口与人工修复矩阵](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%95%85%E9%9A%9C%E7%AA%97%E5%8F%A3%E4%B8%8E%E4%BA%BA%E5%B7%A5%E4%BF%AE%E5%A4%8D%E7%9F%A9%E9%98%B5)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9154,6 +9614,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 <a id="q-209"></a>
 
 #### 209. 任务落库与消息可靠投递
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.2 · 提交与Outbox同事务](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%8F%90%E4%BA%A4%E4%B8%8Eoutbox%E5%90%8C%E4%BA%8B%E5%8A%A1)；[第11章 §11.2 · Relay、CDC与消费确认](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#relaycdc%E4%B8%8E%E6%B6%88%E8%B4%B9%E7%A1%AE%E8%AE%A4)
 
 **题型：** 专项题，P1
 
@@ -9182,6 +9644,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 
 #### 210. 取消与超时后的副作用
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.5 · 取消请求、取消收敛与晚到成功](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E5%8F%96%E6%B6%88%E8%AF%B7%E6%B1%82%E5%8F%96%E6%B6%88%E6%94%B6%E6%95%9B%E4%B8%8E%E6%99%9A%E5%88%B0%E6%88%90%E5%8A%9F)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9208,6 +9672,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 <a id="q-211"></a>
 
 #### 211. 人工审批与恢复执行
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.5 · Human-in-the-loop](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#human-in-the-loop)；[第11章 §11.4 · 补偿与人工接管](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E8%A1%A5%E5%81%BF%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%8E%A5%E7%AE%A1)
 
 **题型：** 专项题，P0
 
@@ -9240,6 +9706,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 
 #### 212. 部分成功与补偿边界
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.4 · 补偿与人工接管](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E8%A1%A5%E5%81%BF%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%8E%A5%E7%AE%A1)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -9266,6 +9734,8 @@ worker_id 当执行代次；锁过期等于旧执行停止；没有下游边界�
 <a id="q-213"></a>
 
 #### 213. 超时、重试与重试放大
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.3 · 重试分类](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E9%87%8D%E8%AF%95%E5%88%86%E7%B1%BB)；[第12章 · 12.4 事故响应、人工修复与责任升级](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#124-%E4%BA%8B%E6%95%85%E5%93%8D%E5%BA%94%E4%BA%BA%E5%B7%A5%E4%BF%AE%E5%A4%8D%E4%B8%8E%E8%B4%A3%E4%BB%BB%E5%8D%87%E7%BA%A7)
 
 **题型：** 专项题，P0
 
@@ -9300,6 +9770,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 #### 214. 模型与工具限流熔断
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.7 平台路由、隔离与发布](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#97-%E5%B9%B3%E5%8F%B0%E8%B7%AF%E7%94%B1%E9%9A%94%E7%A6%BB%E4%B8%8E%E5%8F%91%E5%B8%83)；[第11章 · 11.7 隔离、预算、观测与回放](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#117-%E9%9A%94%E7%A6%BB%E9%A2%84%E7%AE%97%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%9B%9E%E6%94%BE)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9333,6 +9805,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 #### 215. 流式断线与结果恢复
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 · 11.6 任务交付、流式恢复与查询](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#116-%E4%BB%BB%E5%8A%A1%E4%BA%A4%E4%BB%98%E6%B5%81%E5%BC%8F%E6%81%A2%E5%A4%8D%E4%B8%8E%E6%9F%A5%E8%AF%A2)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -9360,6 +9834,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 #### 216. 死信、卡住任务与人工修复
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.8 · 故障窗口与人工修复矩阵](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%95%85%E9%9A%9C%E7%AA%97%E5%8F%A3%E4%B8%8E%E4%BA%BA%E5%B7%A5%E4%BF%AE%E5%A4%8D%E7%9F%A9%E9%98%B5)；[第12章 · 12.4 事故响应、人工修复与责任升级](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#124-%E4%BA%8B%E6%95%85%E5%93%8D%E5%BA%94%E4%BA%BA%E5%B7%A5%E4%BF%AE%E5%A4%8D%E4%B8%8E%E8%B4%A3%E4%BB%BB%E5%8D%87%E7%BA%A7)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -9386,6 +9862,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 <a id="q-217"></a>
 
 #### 217. Webhook 与完成通知
+
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.6 · 持久事件、水位与游标过期](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%8C%81%E4%B9%85%E4%BA%8B%E4%BB%B6%E6%B0%B4%E4%BD%8D%E4%B8%8E%E6%B8%B8%E6%A0%87%E8%BF%87%E6%9C%9F)
 
 **题型：** 专项题，P1
 
@@ -9417,6 +9895,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 <a id="q-218"></a>
 
 #### 218. 高并发 Agent 容量设计
+
+**书稿定位：已覆盖（原理与设计）。** [第7章 · 7.2 工作负载与资源模型：先算清楚再选组件](https://wxquare.github.io/ai-book/part1/07-llm-boundaries.html#72-%E5%B7%A5%E4%BD%9C%E8%B4%9F%E8%BD%BD%E4%B8%8E%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9E%8B%E5%85%88%E7%AE%97%E6%B8%85%E6%A5%9A%E5%86%8D%E9%80%89%E7%BB%84%E4%BB%B6)；[第9章 · 9.2 显存与容量模型](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#92-%E6%98%BE%E5%AD%98%E4%B8%8E%E5%AE%B9%E9%87%8F%E6%A8%A1%E5%9E%8B)；[第11章 · 11.7 隔离、预算、观测与回放](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#117-%E9%9A%94%E7%A6%BB%E9%A2%84%E7%AE%97%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%9B%9E%E6%94%BE)
 
 **题型：** 核心案例，P0，45 分钟
 
@@ -9461,6 +9941,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 #### 219. 语义缓存与误命中治理
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.3 · 四种缓存不能共用一套命中语义](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E5%9B%9B%E7%A7%8D%E7%BC%93%E5%AD%98%E4%B8%8D%E8%83%BD%E5%85%B1%E7%94%A8%E4%B8%80%E5%A5%97%E5%91%BD%E4%B8%AD%E8%AF%AD%E4%B9%89)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9487,6 +9969,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 <a id="q-220"></a>
 
 #### 220. 精确缓存与前缀缓存
+
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.3 · 四种缓存不能共用一套命中语义](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E5%9B%9B%E7%A7%8D%E7%BC%93%E5%AD%98%E4%B8%8D%E8%83%BD%E5%85%B1%E7%94%A8%E4%B8%80%E5%A5%97%E5%91%BD%E4%B8%AD%E8%AF%AD%E4%B9%89)；[第9章 §9.3 · Prefix Cache](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#prefix-cache)
 
 **题型：** 专项题，P1
 
@@ -9519,6 +10003,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 
 #### 221. 模型路由与质量门禁
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.7 · 路由与降级](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E8%B7%AF%E7%94%B1%E4%B8%8E%E9%99%8D%E7%BA%A7)；[第10章 · 10.8 质量门禁、发布与验收](https://wxquare.github.io/ai-book/part2/infra-10-data-eval.html#108-%E8%B4%A8%E9%87%8F%E9%97%A8%E7%A6%81%E5%8F%91%E5%B8%83%E4%B8%8E%E9%AA%8C%E6%94%B6)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9545,6 +10031,8 @@ SDK、网关和 Worker 都重试，如何避免一次失败变成数十次调用
 <a id="q-222"></a>
 
 #### 222. LLM Serving 性能优化
+
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.4 Batching、背压与公平调度](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#94-batching%E8%83%8C%E5%8E%8B%E4%B8%8E%E5%85%AC%E5%B9%B3%E8%B0%83%E5%BA%A6)；[第9章 · 9.5 执行优化与解耦](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#95-%E6%89%A7%E8%A1%8C%E4%BC%98%E5%8C%96%E4%B8%8E%E8%A7%A3%E8%80%A6)
 
 **题型：** 专项题，P2
 
@@ -9585,6 +10073,8 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 
 #### 223. GPU 显存与并发估算
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.2 显存与容量模型](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#92-%E6%98%BE%E5%AD%98%E4%B8%8E%E5%AE%B9%E9%87%8F%E6%A8%A1%E5%9E%8B)；[第9章 §9.3 · KV 的内存账本](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#kv-%E7%9A%84%E5%86%85%E5%AD%98%E8%B4%A6%E6%9C%AC)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -9615,6 +10105,8 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 <a id="q-224"></a>
 
 #### 224. 背压、队列与公平调度
+
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.4 Batching、背压与公平调度](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#94-batching%E8%83%8C%E5%8E%8B%E4%B8%8E%E5%85%AC%E5%B9%B3%E8%B0%83%E5%BA%A6)；[第11章 §11.7 · 多租户资源](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E5%A4%9A%E7%A7%9F%E6%88%B7%E8%B5%84%E6%BA%90)
 
 **题型：** 专项题，P1
 
@@ -9648,6 +10140,8 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 <a id="q-225"></a>
 
 #### 225. 成本拆解与预算控制
+
+**书稿定位：已覆盖（原理与设计）。** [第12章 · 12.6 成本、容量与资源治理](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#126-%E6%88%90%E6%9C%AC%E5%AE%B9%E9%87%8F%E4%B8%8E%E8%B5%84%E6%BA%90%E6%B2%BB%E7%90%86)；[第11章 §11.7 · 成本与计费](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E6%88%90%E6%9C%AC%E4%B8%8E%E8%AE%A1%E8%B4%B9)
 
 **题型：** 专项题，P1
 
@@ -9684,6 +10178,8 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 
 #### 226. 多供应商 Fallback
 
+**书稿定位：已覆盖（原理与设计）。** [第17章 · 17.4 供应商适配与错误分类](https://wxquare.github.io/ai-book/part2/05-llm-api-protocol.html#174-%E4%BE%9B%E5%BA%94%E5%95%86%E9%80%82%E9%85%8D%E4%B8%8E%E9%94%99%E8%AF%AF%E5%88%86%E7%B1%BB)；[第9章 §9.7 · 路由与降级](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E8%B7%AF%E7%94%B1%E4%B8%8E%E9%99%8D%E7%BA%A7)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -9716,6 +10212,8 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 <a id="q-227"></a>
 
 #### 227. AI Gateway 架构
+
+**书稿定位：已覆盖（原理与设计）。** [第17章 · 17.4 供应商适配与错误分类](https://wxquare.github.io/ai-book/part2/05-llm-api-protocol.html#174-%E4%BE%9B%E5%BA%94%E5%95%86%E9%80%82%E9%85%8D%E4%B8%8E%E9%94%99%E8%AF%AF%E5%88%86%E7%B1%BB)；[第9章 §9.7 · 网关的尝试、额度与部分输出](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E7%BD%91%E5%85%B3%E7%9A%84%E5%B0%9D%E8%AF%95%E9%A2%9D%E5%BA%A6%E4%B8%8E%E9%83%A8%E5%88%86%E8%BE%93%E5%87%BA)；[第12章 · 12.6 成本、容量与资源治理](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#126-%E6%88%90%E6%9C%AC%E5%AE%B9%E9%87%8F%E4%B8%8E%E8%B5%84%E6%BA%90%E6%B2%BB%E7%90%86)
 
 **题型：** 核心案例，P2，45 分钟
 
@@ -9761,6 +10259,8 @@ GPU 利用率高就认为用户体验好；量化无损假设；无真实长度�
 
 #### 228. AI 应用的测试分层
 
+**书稿定位：已覆盖（原理与设计）。** [第22章 · 22.2 Agent Evals：从样例测试到质量体系](https://wxquare.github.io/ai-book/part2/10-agent-evals-guardrails-observability.html#222-agent-evals%E4%BB%8E%E6%A0%B7%E4%BE%8B%E6%B5%8B%E8%AF%95%E5%88%B0%E8%B4%A8%E9%87%8F%E4%BD%93%E7%B3%BB)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9795,6 +10295,8 @@ LLM 输出不固定，哪些部分仍能写确定性测试？
 <a id="q-229"></a>
 
 #### 229. Golden Set 与数据泄漏
+
+**书稿定位：已覆盖（原理与设计）。** [第10章 · 10.2 数据版本、血缘与划分边界](https://wxquare.github.io/ai-book/part2/infra-10-data-eval.html#102-%E6%95%B0%E6%8D%AE%E7%89%88%E6%9C%AC%E8%A1%80%E7%BC%98%E4%B8%8E%E5%88%92%E5%88%86%E8%BE%B9%E7%95%8C)；[第10章 · 10.4 评估集、指标与统计不确定性](https://wxquare.github.io/ai-book/part2/infra-10-data-eval.html#104-%E8%AF%84%E4%BC%B0%E9%9B%86%E6%8C%87%E6%A0%87%E4%B8%8E%E7%BB%9F%E8%AE%A1%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7)
 
 **题型：** 专项题，P0
 
@@ -9834,6 +10336,8 @@ LLM 输出不固定，哪些部分仍能写确定性测试？
 
 #### 230. Agent 轨迹与任务成功评测
 
+**书稿定位：已覆盖（原理与设计）。** [第22章 · 22.2 Agent Evals：从样例测试到质量体系](https://wxquare.github.io/ai-book/part2/10-agent-evals-guardrails-observability.html#222-agent-evals%E4%BB%8E%E6%A0%B7%E4%BE%8B%E6%B5%8B%E8%AF%95%E5%88%B0%E8%B4%A8%E9%87%8F%E4%BD%93%E7%B3%BB)；[第10章 · 10.6 RAG、Agent与线上反馈闭环](https://wxquare.github.io/ai-book/part2/infra-10-data-eval.html#106-ragagent%E4%B8%8E%E7%BA%BF%E4%B8%8A%E5%8F%8D%E9%A6%88%E9%97%AD%E7%8E%AF)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -9871,6 +10375,8 @@ Agent 最终答案正确但曾越权调用工具，应如何评分？
 
 #### 231. LLM-as-a-Judge 校准
 
+**书稿定位：已覆盖（原理与设计）。** [第10章 · 10.5 LLM-as-Judge与人工校准](https://wxquare.github.io/ai-book/part2/infra-10-data-eval.html#105-llm-as-judge%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%A0%A1%E5%87%86)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -9905,6 +10411,8 @@ Agent 最终答案正确但曾越权调用工具，应如何评分？
 <a id="q-232"></a>
 
 #### 232. AI Trace 与敏感数据治理
+
+**书稿定位：已覆盖（原理与设计）。** [第22章 · 22.4 可观测性：让每一步都有证据](https://wxquare.github.io/ai-book/part2/10-agent-evals-guardrails-observability.html#224-%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7%E8%AE%A9%E6%AF%8F%E4%B8%80%E6%AD%A5%E9%83%BD%E6%9C%89%E8%AF%81%E6%8D%AE)；[第12章 · 12.5 安全、数据最小化与AI风险治理](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#125-%E5%AE%89%E5%85%A8%E6%95%B0%E6%8D%AE%E6%9C%80%E5%B0%8F%E5%8C%96%E4%B8%8Eai%E9%A3%8E%E9%99%A9%E6%B2%BB%E7%90%86)
 
 **题型：** 专项题，P0
 
@@ -9941,6 +10449,8 @@ Agent 最终答案正确但曾越权调用工具，应如何评分？
 
 #### 233. Agent 故障定位与止血
 
+**书稿定位：已覆盖（原理与设计）。** [第22章 · 22.7 失败诊断：从现象回到根因](https://wxquare.github.io/ai-book/part2/10-agent-evals-guardrails-observability.html#227-%E5%A4%B1%E8%B4%A5%E8%AF%8A%E6%96%AD%E4%BB%8E%E7%8E%B0%E8%B1%A1%E5%9B%9E%E5%88%B0%E6%A0%B9%E5%9B%A0)；[第12章 · 12.4 事故响应、人工修复与责任升级](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#124-%E4%BA%8B%E6%95%85%E5%93%8D%E5%BA%94%E4%BA%BA%E5%B7%A5%E4%BF%AE%E5%A4%8D%E4%B8%8E%E8%B4%A3%E4%BB%BB%E5%8D%87%E7%BA%A7)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -9976,6 +10486,8 @@ Agent 最终答案正确但曾越权调用工具，应如何评分？
 
 #### 234. AI 服务 SLI、SLO 与告警
 
+**书稿定位：已覆盖（原理与设计）。** [第12章 · 12.1 可靠性目标：从服务可用到任务成功](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#121-%E5%8F%AF%E9%9D%A0%E6%80%A7%E7%9B%AE%E6%A0%87%E4%BB%8E%E6%9C%8D%E5%8A%A1%E5%8F%AF%E7%94%A8%E5%88%B0%E4%BB%BB%E5%8A%A1%E6%88%90%E5%8A%9F)；[第12章 · 12.2 可观测性：信号、质量与告警](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#122-%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7%E4%BF%A1%E5%8F%B7%E8%B4%A8%E9%87%8F%E4%B8%8E%E5%91%8A%E8%AD%A6)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -10002,6 +10514,8 @@ HTTP 200 当任务成功；只看 GPU 利用率；样本评分当全量实时事
 <a id="q-235"></a>
 
 #### 235. 模型、Prompt 与索引发布
+
+**书稿定位：已覆盖（原理与设计）。** [第10章 · 10.8 质量门禁、发布与验收](https://wxquare.github.io/ai-book/part2/infra-10-data-eval.html#108-%E8%B4%A8%E9%87%8F%E9%97%A8%E7%A6%81%E5%8F%91%E5%B8%83%E4%B8%8E%E9%AA%8C%E6%94%B6)；[第12章 · 12.3 发布、变更与供应链治理](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#123-%E5%8F%91%E5%B8%83%E5%8F%98%E6%9B%B4%E4%B8%8E%E4%BE%9B%E5%BA%94%E9%93%BE%E6%B2%BB%E7%90%86)
 
 **题型：** 专项题，P1
 
@@ -10034,6 +10548,8 @@ HTTP 200 当任务成功；只看 GPU 利用率；样本评分当全量实时事
 
 #### 236. Prompt Injection 防御
 
+**书稿定位：已覆盖（原理与设计）。** [第14章 · 14.14 Prompt 安全：指令冲突与 Prompt Injection](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#1414-prompt-%E5%AE%89%E5%85%A8%E6%8C%87%E4%BB%A4%E5%86%B2%E7%AA%81%E4%B8%8E-prompt-injection)；[第18章 · 18.6 Sandbox 与权限边界](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#186-sandbox-%E4%B8%8E%E6%9D%83%E9%99%90%E8%BE%B9%E7%95%8C)；[第22章 · 22.3 Guardrails：把安全边界放进系统](https://wxquare.github.io/ai-book/part2/10-agent-evals-guardrails-observability.html#223-guardrails%E6%8A%8A%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%94%BE%E8%BF%9B%E7%B3%BB%E7%BB%9F)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -10061,6 +10577,8 @@ HTTP 200 当任务成功；只看 GPU 利用率；样本评分当全量实时事
 
 #### 237. SSRF 与数据外泄防护
 
+**书稿定位：已覆盖（原理与设计）。** [第18章 §18.6 · URL、重定向、DNS与出口控制矩阵](https://wxquare.github.io/ai-book/part2/06-tool-calling-mcp.html#url%E9%87%8D%E5%AE%9A%E5%90%91dns%E4%B8%8E%E5%87%BA%E5%8F%A3%E6%8E%A7%E5%88%B6%E7%9F%A9%E9%98%B5)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -10087,6 +10605,8 @@ Agent 可访问 URL 和上传文件，如何防止访问内网或把数据发送
 <a id="q-238"></a>
 
 #### 238. PII 与模型数据最小化
+
+**书稿定位：已覆盖（原理与设计）。** [第12章 · 12.5 安全、数据最小化与AI风险治理](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#125-%E5%AE%89%E5%85%A8%E6%95%B0%E6%8D%AE%E6%9C%80%E5%B0%8F%E5%8C%96%E4%B8%8Eai%E9%A3%8E%E9%99%A9%E6%B2%BB%E7%90%86)
 
 **题型：** 专项题，P0
 
@@ -10121,6 +10641,8 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 
 #### 239. Guardrails 与误杀治理
 
+**书稿定位：已覆盖（原理与设计）。** [第22章 · 22.3 Guardrails：把安全边界放进系统](https://wxquare.github.io/ai-book/part2/10-agent-evals-guardrails-observability.html#223-guardrails%E6%8A%8A%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%94%BE%E8%BF%9B%E7%B3%BB%E7%BB%9F)
+
 **题型：** 专项题，P0
 
 ##### 题干与约束
@@ -10148,6 +10670,8 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 
 #### 240. 多租户隔离与资源公平
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 §11.7 · 多租户资源](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#%E5%A4%9A%E7%A7%9F%E6%88%B7%E8%B5%84%E6%BA%90)；[第12章 · 12.6 成本、容量与资源治理](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#126-%E6%88%90%E6%9C%AC%E5%AE%B9%E9%87%8F%E4%B8%8E%E8%B5%84%E6%BA%90%E6%B2%BB%E7%90%86)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -10174,6 +10698,8 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 <a id="q-241"></a>
 
 #### 241. 对话、记忆与派生数据删除
+
+**书稿定位：已覆盖（原理与设计）。** [第12章 · 12.8 删除、备份、供应商与交付证据](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#128-%E5%88%A0%E9%99%A4%E5%A4%87%E4%BB%BD%E4%BE%9B%E5%BA%94%E5%95%86%E4%B8%8E%E4%BA%A4%E4%BB%98%E8%AF%81%E6%8D%AE)；[第20章 · 20.10 记忆污染、安全与隐私](https://wxquare.github.io/ai-book/part2/08-agent-memory.html#2010-%E8%AE%B0%E5%BF%86%E6%B1%A1%E6%9F%93%E5%AE%89%E5%85%A8%E4%B8%8E%E9%9A%90%E7%A7%81)
 
 **题型：** 专项题，P1
 
@@ -10211,6 +10737,10 @@ Agent 需要处理客户资料，如何减少不必要的数据暴露？
 <a id="q-242"></a>
 
 #### 242. DeepSpeed、DDP、FlashAttention 各有什么功能与原理？
+
+**书稿定位：已覆盖（原理与设计）。** [第8章 · 8.3 并行策略与资源账本](https://wxquare.github.io/ai-book/part2/infra-08-training.html#83-%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5%E4%B8%8E%E8%B5%84%E6%BA%90%E8%B4%A6%E6%9C%AC)；[第8章 · 8.4 Kernel、通信与数值稳定性](https://wxquare.github.io/ai-book/part2/infra-08-training.html#84-kernel%E9%80%9A%E4%BF%A1%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7)
+
+**覆盖边界：** DDP/ZeRO/分布式训练在 §8.3；FlashAttention 的 Online Softmax 与 IO 边界在 §8.4，三者属于不同层次。
 
 **题型：** 专项题，P1
 
@@ -10253,6 +10783,8 @@ DDP 通常在各数据并行 rank 复制模型，以梯度 bucket 和 All-Reduce
 
 #### 243. ZeRO 的核心思想及各阶段区别是什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.3 · ZeRO 与 FSDP](https://wxquare.github.io/ai-book/part2/infra-08-training.html#zero-%E4%B8%8E-fsdp)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -10291,6 +10823,8 @@ ZeRO 的核心思想及各阶段区别是什么？ 回答时明确所用版本�
 <a id="q-244"></a>
 
 #### 244. 3D 并行如何组合？适合什么场景？
+
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.3 · 3D、sequence与context的切分轴](https://wxquare.github.io/ai-book/part2/infra-08-training.html#3dsequence%E4%B8%8Econtext%E7%9A%84%E5%88%87%E5%88%86%E8%BD%B4)
 
 **题型：** 专项题，P2
 
@@ -10331,6 +10865,8 @@ microbatch 数太少时为什么流水线并行利用率低？
 
 #### 245. 流水线并行中，各卡显存、计算量和激活值分布是否相同？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.3 · 张量并行与流水线并行](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E5%BC%A0%E9%87%8F%E5%B9%B6%E8%A1%8C%E4%B8%8E%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%B9%B6%E8%A1%8C)；[第8章 §8.3 · 显存账本：分片状态与瞬时峰值](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E6%98%BE%E5%AD%98%E8%B4%A6%E6%9C%AC%E5%88%86%E7%89%87%E7%8A%B6%E6%80%81%E4%B8%8E%E7%9E%AC%E6%97%B6%E5%B3%B0%E5%80%BC)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10369,6 +10905,8 @@ microbatch 数太少时为什么流水线并行利用率低？
 <a id="q-246"></a>
 
 #### 246. All-Reduce、All-Gather、All-to-All 各做什么数据交换？适合哪些并行策略？
+
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.3 · 集合通信的元素语义与字节账本](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%9A%84%E5%85%83%E7%B4%A0%E8%AF%AD%E4%B9%89%E4%B8%8E%E5%AD%97%E8%8A%82%E8%B4%A6%E6%9C%AC)
 
 **题型：** 专项题，P1
 
@@ -10409,6 +10947,8 @@ Reduce-Scatter 先归约再只保留对应分片，常与 All-Gather 组合。co
 
 #### 247. 序列并行如何实现？通信开销如何优化？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.3 · 3D、sequence与context的切分轴](https://wxquare.github.io/ai-book/part2/infra-08-training.html#3dsequence%E4%B8%8Econtext%E7%9A%84%E5%88%87%E5%88%86%E8%BD%B4)；[第8章 §8.4 · Overlap 的前提](https://wxquare.github.io/ai-book/part2/infra-08-training.html#overlap-%E7%9A%84%E5%89%8D%E6%8F%90)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10448,6 +10988,8 @@ Reduce-Scatter 先归约再只保留对应分片，常与 All-Gather 组合。co
 
 #### 248. 千卡集群出现 NCCL Timeout 时如何定位和解决？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.7 · NCCL timeout先找未到达的rank](https://wxquare.github.io/ai-book/part2/infra-08-training.html#nccl-timeout%E5%85%88%E6%89%BE%E6%9C%AA%E5%88%B0%E8%BE%BE%E7%9A%84rank)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10486,6 +11028,10 @@ Reduce-Scatter 先归约再只保留对应分片，常与 All-Gather 组合。co
 <a id="q-249"></a>
 
 #### 249. DDP 与 DeepSpeed 的异步保存机制如何实现？
+
+**书稿定位：部分覆盖。** [第8章 §8.5 · 异步快照时间线与完整性发布](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E5%BC%82%E6%AD%A5%E5%BF%AB%E7%85%A7%E6%97%B6%E9%97%B4%E7%BA%BF%E4%B8%8E%E5%AE%8C%E6%95%B4%E6%80%A7%E5%8F%91%E5%B8%83)
+
+**覆盖边界：** 覆盖一致快照、异步 staging、完整性提交与恢复语义；没有 DDP/DeepSpeed 各版本异步保存 API 的可运行对照实现。
 
 **题型：** 专项题，P2
 
@@ -10530,6 +11076,8 @@ DDP 并不自动提供全部异步 Checkpoint；可用 PyTorch DCP 等实现，D
 
 #### 250. 什么时候算子融合有收益？哪些场景适合融合？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · 融合、编译与瓶颈的受控实验](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E8%9E%8D%E5%90%88%E7%BC%96%E8%AF%91%E4%B8%8E%E7%93%B6%E9%A2%88%E7%9A%84%E5%8F%97%E6%8E%A7%E5%AE%9E%E9%AA%8C)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10568,6 +11116,8 @@ DDP 并不自动提供全部异步 Checkpoint；可用 PyTorch DCP 等实现，D
 <a id="q-251"></a>
 
 #### 251. Kernel Fusion 后性能反而变差，可能是什么原因？
+
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · 融合、编译与瓶颈的受控实验](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E8%9E%8D%E5%90%88%E7%BC%96%E8%AF%91%E4%B8%8E%E7%93%B6%E9%A2%88%E7%9A%84%E5%8F%97%E6%8E%A7%E5%AE%9E%E9%AA%8C)
 
 **题型：** 专项题，P2
 
@@ -10608,6 +11158,10 @@ Kernel Fusion 后性能反而变差，可能是什么原因？ 回答时明确�
 
 #### 252. Triton 与 CUDA 开发算子有什么区别？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · 编译工具比较：抽象层次与验收对象](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E6%AF%94%E8%BE%83%E6%8A%BD%E8%B1%A1%E5%B1%82%E6%AC%A1%E4%B8%8E%E9%AA%8C%E6%94%B6%E5%AF%B9%E8%B1%A1)；[第8章 §8.4 · 融合、编译与瓶颈的受控实验](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E8%9E%8D%E5%90%88%E7%BC%96%E8%AF%91%E4%B8%8E%E7%93%B6%E9%A2%88%E7%9A%84%E5%8F%97%E6%8E%A7%E5%AE%9E%E9%AA%8C)
+
+**覆盖边界：** 比较 CUDA/Triton 的线程与分块程序抽象、控制对象和调优成本；性能收益必须通过同条件实验判断。
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10646,6 +11200,8 @@ Triton 以块级张量操作、显式 mask 和编译调度简化部分 GPU kerne
 <a id="q-253"></a>
 
 #### 253. Thread、Warp、Block、SM、Grid 的层级关系是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · GPU层级、Stream与Shared Memory](https://wxquare.github.io/ai-book/part2/infra-08-training.html#gpu%E5%B1%82%E7%BA%A7stream%E4%B8%8Eshared-memory)
 
 **题型：** 专项题，P2
 
@@ -10686,6 +11242,8 @@ Block 之间执行顺序一般无保证，普通 kernel 不能用全局忙等当
 
 #### 254. CUDA Stream 如何异步执行？需要满足什么前提？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · GPU层级、Stream与Shared Memory](https://wxquare.github.io/ai-book/part2/infra-08-training.html#gpu%E5%B1%82%E7%BA%A7stream%E4%B8%8Eshared-memory)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10724,6 +11282,8 @@ CUDA Stream 如何异步执行？需要满足什么前提？ 回答时明确所�
 <a id="q-255"></a>
 
 #### 255. 特定 Shape 下 Shared Memory 导致结果错误，如何排查？
+
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · Shared Memory故障：先证明正确，再诊断bank冲突](https://wxquare.github.io/ai-book/part2/infra-08-training.html#shared-memory%E6%95%85%E9%9A%9C%E5%85%88%E8%AF%81%E6%98%8E%E6%AD%A3%E7%A1%AE%E5%86%8D%E8%AF%8A%E6%96%ADbank%E5%86%B2%E7%AA%81)
 
 **题型：** 专项题，P2
 
@@ -10764,6 +11324,8 @@ CUDA Stream 如何异步执行？需要满足什么前提？ 回答时明确所�
 
 #### 256. Shared Memory Bank Conflict 为什么产生？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · GPU层级、Stream与Shared Memory](https://wxquare.github.io/ai-book/part2/infra-08-training.html#gpu%E5%B1%82%E7%BA%A7stream%E4%B8%8Eshared-memory)
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10802,6 +11364,8 @@ Shared Memory Bank Conflict 为什么产生？ 回答时明确所用版本、输
 <a id="q-257"></a>
 
 #### 257. 如何通过 Padding 或内存布局避免 Bank Conflict？
+
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · GPU层级、Stream与Shared Memory](https://wxquare.github.io/ai-book/part2/infra-08-training.html#gpu%E5%B1%82%E7%BA%A7stream%E4%B8%8Eshared-memory)
 
 **题型：** 专项题，P2
 
@@ -10842,6 +11406,10 @@ Shared Memory Bank Conflict 为什么产生？ 回答时明确所用版本、输
 
 #### 258. TVM、XLA、TensorRT 等编译框架有什么异同？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · 编译工具比较：抽象层次与验收对象](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E6%AF%94%E8%BE%83%E6%8A%BD%E8%B1%A1%E5%B1%82%E6%AC%A1%E4%B8%8E%E9%AA%8C%E6%94%B6%E5%AF%B9%E8%B1%A1)
+
+**覆盖边界：** 新增按控制对象、用途与验收代价的工具比较表；不提供特定模型跨框架的无条件性能排名。
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10881,6 +11449,10 @@ TVM 面向多后端的张量程序/模型编译与调度生态，XLA 针对张�
 
 #### 259. TVM 图级优化与算子级优化如何实现？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · 编译工具比较：抽象层次与验收对象](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E6%AF%94%E8%BE%83%E6%8A%BD%E8%B1%A1%E5%B1%82%E6%AC%A1%E4%B8%8E%E9%AA%8C%E6%94%B6%E5%AF%B9%E8%B1%A1)
+
+**覆盖边界：** 给出图级依赖/融合与算子级分块/线程/存储的分层路径及 matmul-bias-activation 示例；具体 Pass API 随 TVM 版本核验。
+
 **题型：** 专项题，P2
 
 ##### 题干与约束
@@ -10919,6 +11491,8 @@ TVM 图级优化与算子级优化如何实现？ 回答时明确所用版本、
 <a id="q-260"></a>
 
 #### 260. 静态图与动态图有何特点？为何融合前常转静态图？如何处理转换开销？
+
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · 融合、编译与瓶颈的受控实验](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E8%9E%8D%E5%90%88%E7%BC%96%E8%AF%91%E4%B8%8E%E7%93%B6%E9%A2%88%E7%9A%84%E5%8F%97%E6%8E%A7%E5%AE%9E%E9%AA%8C)
 
 **题型：** 专项题，P2
 
@@ -10962,6 +11536,10 @@ TVM 图级优化与算子级优化如何实现？ 回答时明确所用版本、
 <a id="q-261"></a>
 
 #### 261. 手写 GQA（Grouped Query Attention）。
+
+**书稿定位：部分覆盖。** [第1章 §1.8 · 练习卡 Q261：GQA 与增量缓存的一致性](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E7%BB%83%E4%B9%A0%E5%8D%A1-q261gqa-%E4%B8%8E%E5%A2%9E%E9%87%8F%E7%BC%93%E5%AD%98%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7)
+
+**覆盖边界：** 有 GQA 公式、形状与独立验收练习卡；书中未提供完整手写实现及运行结果。
 
 **题型：** 手写实践，P1
 
@@ -11014,6 +11592,10 @@ def gqa_sample(q, k, v):
 <a id="q-262"></a>
 
 #### 262. 手写 Multi-Head Attention（MHA）。
+
+**书稿定位：部分覆盖。** [第1章 §1.8 · 练习卡 Q262：手写缩放点积与多头注意力](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E7%BB%83%E4%B9%A0%E5%8D%A1-q262%E6%89%8B%E5%86%99%E7%BC%A9%E6%94%BE%E7%82%B9%E7%A7%AF%E4%B8%8E%E5%A4%9A%E5%A4%B4%E6%B3%A8%E6%84%8F%E5%8A%9B)
+
+**覆盖边界：** 有 MHA 推导、mask 边界与独立验收练习卡；书中未提供完整手写实现及运行结果。
 
 **题型：** 手写实践，P1
 
@@ -11081,6 +11663,10 @@ MHA 取 Hq=Hkv；省略 QKV/W_O 投影、padding mask 和增量缓存。若加�
 
 #### 263. 用 PyTorch 编写 SFT Loss，注意原文要求的标签 shift right 对齐。
 
+**书稿定位：部分覆盖。** [第3章 §3.8 · 练习卡 Q263：SFT标签与工具轨迹对齐](https://wxquare.github.io/ai-book/part1/03-post-training-alignment.html#%E7%BB%83%E4%B9%A0%E5%8D%A1-q263sft%E6%A0%87%E7%AD%BE%E4%B8%8E%E5%B7%A5%E5%85%B7%E8%BD%A8%E8%BF%B9%E5%AF%B9%E9%BD%90)
+
+**覆盖边界：** 有监督 mask、单次 shift、Loss 定义与对齐验收卡；没有配套 PyTorch 实现及执行结果。
+
 **题型：** 手写实践，P1
 
 ##### 题干与约束
@@ -11141,6 +11727,10 @@ def sft_loss(logits, labels):
 <a id="q-264"></a>
 
 #### 264. 手写 K-means。
+
+**书稿定位：不纳入。** [第19章 · 19.3.3 Flat、HNSW、IVF与PQ的取舍](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1933-flathnswivf%E4%B8%8Epq%E7%9A%84%E5%8F%96%E8%88%8D)
+
+**覆盖边界：** 通用无监督学习的手写入门题，不属于本书模型能力交付与 Agent 主线；§19.3.3 仅提供 IVF/PQ 的聚类背景，不能当作 K-means 手写答案。
 
 **题型：** 手写实践，P1
 
@@ -11210,6 +11800,10 @@ def kmeans(x, k, steps=50, seed=0):
 <a id="q-265"></a>
 
 #### 265. 实现简单 MLP，并从 CSV 读取数据。
+
+**书稿定位：不纳入。** [第1章 §1.4 · 残差与逐位置前馈](https://wxquare.github.io/ai-book/part1/01-llm-foundations-transformer.html#%E6%AE%8B%E5%B7%AE%E4%B8%8E%E9%80%90%E4%BD%8D%E7%BD%AE%E5%89%8D%E9%A6%88)
+
+**覆盖边界：** CSV 读取与基础 MLP 训练属于通用机器学习编程入门；§1.4 的 FFN 是相关背景，不能替代数据划分、训练循环和完整实现。
 
 **题型：** 手写实践，P1
 
@@ -11286,6 +11880,10 @@ with torch.no_grad():
 
 #### 266. 分别实现 minmax 校准和 percentile 校准算法。
 
+**书稿定位：部分覆盖。** [第5章 §5.5 · 校准练习卡：先实现可检查的范围估计](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E6%A0%A1%E5%87%86%E7%BB%83%E4%B9%A0%E5%8D%A1%E5%85%88%E5%AE%9E%E7%8E%B0%E5%8F%AF%E6%A3%80%E6%9F%A5%E7%9A%84%E8%8C%83%E5%9B%B4%E4%BC%B0%E8%AE%A1)
+
+**覆盖边界：** 有 minmax/percentile 的计算约定、边界和验收卡；没有配套校准函数代码与运行结果。
+
 **题型：** 手写实践，P1
 
 ##### 题干与约束
@@ -11349,6 +11947,10 @@ def calibrate_int8(x, percentile=None):
 <a id="q-267"></a>
 
 #### 267. 用 CUDA 对大数组求和：Shared Memory 块内归约，多级 Kernel 完成全局汇总。
+
+**书稿定位：部分覆盖。** [第8章 §8.8 · GPU与规约练习卡组（设计，未实现未实测）](https://wxquare.github.io/ai-book/part2/infra-08-training.html#gpu%E4%B8%8E%E8%A7%84%E7%BA%A6%E7%BB%83%E4%B9%A0%E5%8D%A1%E7%BB%84%E8%AE%BE%E8%AE%A1%E6%9C%AA%E5%AE%9E%E7%8E%B0%E6%9C%AA%E5%AE%9E%E6%B5%8B)
+
+**覆盖边界：** 有 GPU 同步与多级归约约束及练习卡；没有 CUDA 代码、编译和设备测试结果。
 
 **题型：** 手写实践，P2
 
@@ -11415,6 +12017,10 @@ Host 端反复执行：申请不重叠 scratch，设 blocks=ceil(n/256)，启动
 <a id="q-268"></a>
 
 #### 268. 编写 CUDA 算子，计算矩阵每一行的 Reduce Sum。
+
+**书稿定位：部分覆盖。** [第8章 §8.8 · GPU与规约练习卡组（设计，未实现未实测）](https://wxquare.github.io/ai-book/part2/infra-08-training.html#gpu%E4%B8%8E%E8%A7%84%E7%BA%A6%E7%BB%83%E4%B9%A0%E5%8D%A1%E7%BB%84%E8%AE%BE%E8%AE%A1%E6%9C%AA%E5%AE%9E%E7%8E%B0%E6%9C%AA%E5%AE%9E%E6%B5%8B)
+
+**覆盖边界：** 有行归约、stride/尾块与分段策略验收卡；没有 CUDA 代码、编译和设备测试结果。
 
 **题型：** 手写实践，P2
 
@@ -11487,6 +12093,8 @@ rows=0 时不启动；cols=0 每行得到 0。调用方保证 buffer、grid 范�
 
 #### 269. KV Cache 如何起作用？为什么对长上下文推理关键？
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.3 KV 与缓存的层次](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#93-kv-%E4%B8%8E%E7%BC%93%E5%AD%98%E7%9A%84%E5%B1%82%E6%AC%A1)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -11518,6 +12126,8 @@ GQA 的 KV 头减少四倍，模型权重也会整体减少四倍吗？
 <a id="q-270"></a>
 
 #### 270. vLLM 推理框架有哪些核心机制与特点？
+
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.3 KV 与缓存的层次](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#93-kv-%E4%B8%8E%E7%BC%93%E5%AD%98%E7%9A%84%E5%B1%82%E6%AC%A1)；[第9章 · 9.4 Batching、背压与公平调度](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#94-batching%E8%83%8C%E5%8E%8B%E4%B8%8E%E5%85%AC%E5%B9%B3%E8%B0%83%E5%BA%A6)
 
 **题型：** 专项题，P1
 
@@ -11551,6 +12161,8 @@ vLLM 是模型推理服务框架，重点包括块式 KV 管理、连续批处�
 
 #### 271. vLLM 如何设计推理调度与 KV Cache 管理？
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 · 9.4 Batching、背压与公平调度](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#94-batching%E8%83%8C%E5%8E%8B%E4%B8%8E%E5%85%AC%E5%B9%B3%E8%B0%83%E5%BA%A6)；[第9章 · 9.3 KV 与缓存的层次](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#93-kv-%E4%B8%8E%E7%BC%93%E5%AD%98%E7%9A%84%E5%B1%82%E6%AC%A1)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -11582,6 +12194,8 @@ vLLM 如何设计推理调度与 KV Cache 管理？ 说明理论机制、具体�
 <a id="q-272"></a>
 
 #### 272. PagedAttention 的原理与工作方式是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.3 · 分页分配与碎片](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E5%88%86%E9%A1%B5%E5%88%86%E9%85%8D%E4%B8%8E%E7%A2%8E%E7%89%87)
 
 **题型：** 专项题，P1
 
@@ -11615,6 +12229,8 @@ PagedAttention 将每个序列的 KV 分成固定大小逻辑块，通过块表�
 
 #### 273. FlashAttention 的核心原理是什么？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · Online Softmax与IO优化的数学边界](https://wxquare.github.io/ai-book/part2/infra-08-training.html#online-softmax%E4%B8%8Eio%E4%BC%98%E5%8C%96%E7%9A%84%E6%95%B0%E5%AD%A6%E8%BE%B9%E7%95%8C)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -11646,6 +12262,10 @@ FlashAttention 分块加载 Q/K/V 到片上存储，在线维护行最大值和�
 <a id="q-274"></a>
 
 #### 274. Prefill-Decode 分离与 AF 分离分别为了解决什么问题？为什么已有 PD 分离仍需要 AF 分离？
+
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.5 · PD与AF：两种不同的解耦边界](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#pd%E4%B8%8Eaf%E4%B8%A4%E7%A7%8D%E4%B8%8D%E5%90%8C%E7%9A%84%E8%A7%A3%E8%80%A6%E8%BE%B9%E7%95%8C)
+
+**覆盖边界：** 区分 Prefill/Decode 与 Attention/FFN 两个切分轴；不声称组合解耦对所有工作负载都有收益。
 
 **题型：** 专项题，P1
 
@@ -11679,6 +12299,10 @@ AF 术语未确认；PD 解决所有不均衡；分离永远更快。
 
 #### 275. 估算 Qwen3-8B 推理所需显存。
 
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.2 · Qwen3-8B：从配置到候选并发](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#qwen3-8b%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%88%B0%E5%80%99%E9%80%89%E5%B9%B6%E5%8F%91)；[第9章 §9.8 · 显存账本练习卡（Q275）](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E6%98%BE%E5%AD%98%E8%B4%A6%E6%9C%AC%E7%BB%83%E4%B9%A0%E5%8D%A1q275)
+
+**覆盖边界：** 提供固定配置下的权重/KV/运行时账本与敏感性练习；示例推导不是某台 GPU 的已测峰值或吞吐保证。
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -11710,6 +12334,8 @@ GB/GiB 混淆；8B 就能精确估全部；漏 KV 并发；直接把 TP 卡数�
 <a id="q-276"></a>
 
 #### 276. per-tensor、per-channel、per-group 量化有什么区别？哪种粒度最细？
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.4 · 明确共享轴才谈粒度](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E6%98%8E%E7%A1%AE%E5%85%B1%E4%BA%AB%E8%BD%B4%E6%89%8D%E8%B0%88%E7%B2%92%E5%BA%A6)
 
 **题型：** 专项题，P1
 
@@ -11743,6 +12369,8 @@ per-group 的 group 跨哪些轴，会怎样改变元数据量？
 
 #### 277. minmax 与 percentile 校准有什么差异？
 
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.5 · 四种范围选择优化不同的代理](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E5%9B%9B%E7%A7%8D%E8%8C%83%E5%9B%B4%E9%80%89%E6%8B%A9%E4%BC%98%E5%8C%96%E4%B8%8D%E5%90%8C%E7%9A%84%E4%BB%A3%E7%90%86)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -11774,6 +12402,8 @@ percentile 无损；校准集越常见越够；不区分对称非对称。
 <a id="q-278"></a>
 
 #### 278. KL 散度校准与 MSE 校准的原理是什么？
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.5 · 四种范围选择优化不同的代理](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E5%9B%9B%E7%A7%8D%E8%8C%83%E5%9B%B4%E9%80%89%E6%8B%A9%E4%BC%98%E5%8C%96%E4%B8%8D%E5%90%8C%E7%9A%84%E4%BB%A3%E7%90%86)
 
 **题型：** 专项题，P1
 
@@ -11807,6 +12437,8 @@ KL 天然更准；直方图随意；不做任务回归；零概率无处理。
 
 #### 279. SmoothQuant 的粒度与原理是什么？与 AWQ、GPTQ 如何比较？
 
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.5 · 方法差别与反量化的成本账本](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E6%96%B9%E6%B3%95%E5%B7%AE%E5%88%AB%E4%B8%8E%E5%8F%8D%E9%87%8F%E5%8C%96%E7%9A%84%E6%88%90%E6%9C%AC%E8%B4%A6%E6%9C%AC)；[第5章 §5.5 · SmoothQuant 与 W8A8](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#smoothquant-%E4%B8%8E-w8a8)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -11838,6 +12470,10 @@ SmoothQuant 就是统一 per-tensor；AWQ 全保留高精度；GPTQ 等同直接
 <a id="q-280"></a>
 
 #### 280. FP8 与 NV FP4 分别适合什么部署场景？
+
+**书稿定位：部分覆盖。** [第5章 §5.4 · NVFP4：表示、缩放轴与存储账本](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#nvfp4%E8%A1%A8%E7%A4%BA%E7%BC%A9%E6%94%BE%E8%BD%B4%E4%B8%8E%E5%AD%98%E5%82%A8%E8%B4%A6%E6%9C%AC)；[第9章 §9.5 · 量化的系统影响](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E9%87%8F%E5%8C%96%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%BD%B1%E5%93%8D)
+
+**覆盖边界：** 补充 FP8/NVFP4 表示、缩放与部署决策边界；没有完整设备/驱动/引擎兼容矩阵及同质量端到端基准，实际部署仍需验证。
 
 **题型：** 专项题，P1
 
@@ -11871,6 +12507,8 @@ FP8 比 FP16 减少存储和带宽，有 E4M3/E5M2 等格式；NVFP4 位宽更�
 
 #### 281. AWQ 增加反量化步骤后，为什么推理仍能加速？
 
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.5 · 方法差别与反量化的成本账本](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E6%96%B9%E6%B3%95%E5%B7%AE%E5%88%AB%E4%B8%8E%E5%8F%8D%E9%87%8F%E5%8C%96%E7%9A%84%E6%88%90%E6%9C%AC%E8%B4%A6%E6%9C%AC)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -11902,6 +12540,10 @@ AWQ 常见低 bit 权重可减少 HBM 传输及缓存占用；优化 kernel 在�
 <a id="q-282"></a>
 
 #### 282. 如何从零推进模型量化，选择粒度和校准方法，并验证精度与性能？
+
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.8 · 一次完整量化实验的交付规格](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E9%87%8F%E5%8C%96%E5%AE%9E%E9%AA%8C%E7%9A%84%E4%BA%A4%E4%BB%98%E8%A7%84%E6%A0%BC)
+
+**覆盖边界：** 给出完整量化实验的输入、指标与发布验收规格；该规格不等于已量化具体模型并测得性能。
 
 **题型：** 专项题，P1
 
@@ -11935,6 +12577,8 @@ AWQ 常见低 bit 权重可减少 HBM 传输及缓存占用；优化 kernel 在�
 
 #### 283. 如何用 Profiling 判断 GPU 算子受限于访存还是计算？
 
+**书稿定位：已覆盖（原理与设计）。** [第8章 §8.4 · 融合、编译与瓶颈的受控实验](https://wxquare.github.io/ai-book/part2/infra-08-training.html#%E8%9E%8D%E5%90%88%E7%BC%96%E8%AF%91%E4%B8%8E%E7%93%B6%E9%A2%88%E7%9A%84%E5%8F%97%E6%8E%A7%E5%AE%9E%E9%AA%8C)；[第9章 §9.8 · 性能剖析要形成因果假设](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E6%80%A7%E8%83%BD%E5%89%96%E6%9E%90%E8%A6%81%E5%BD%A2%E6%88%90%E5%9B%A0%E6%9E%9C%E5%81%87%E8%AE%BE)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -11966,6 +12610,8 @@ GPU 利用率低但 DRAM 也低，可能是什么瓶颈？
 <a id="q-284"></a>
 
 #### 284. 长轮次推理显存异常增长、OOM 或随机崩溃，如何排查？
+
+**书稿定位：已覆盖（原理与设计）。** [第9章 §9.8 · 可回放的OOM教学调查](https://wxquare.github.io/ai-book/part2/infra-09-inference.html#%E5%8F%AF%E5%9B%9E%E6%94%BE%E7%9A%84oom%E6%95%99%E5%AD%A6%E8%B0%83%E6%9F%A5)
 
 **题型：** 专项题，P1
 
@@ -12009,6 +12655,10 @@ reserved 都算泄漏；OOM 全因参数大；只 empty_cache；忽略取消与�
 
 #### 285. 企业知识助手
 
+**书稿定位：已覆盖（原理与设计）。** [第24章 · 24.2 端到端架构：两条链路和四个控制面](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#242-%E7%AB%AF%E5%88%B0%E7%AB%AF%E6%9E%B6%E6%9E%84%E4%B8%A4%E6%9D%A1%E9%93%BE%E8%B7%AF%E5%92%8C%E5%9B%9B%E4%B8%AA%E6%8E%A7%E5%88%B6%E9%9D%A2)；[第24章 · 24.14 设计评审表达与设计清单](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#2414-%E8%AE%BE%E8%AE%A1%E8%AF%84%E5%AE%A1%E8%A1%A8%E8%BE%BE%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%B8%85%E5%8D%95)；[第24章 · 24.8 企业权限模型：ACL、身份映射与安全裁剪](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#248-%E4%BC%81%E4%B8%9A%E6%9D%83%E9%99%90%E6%A8%A1%E5%9E%8Bacl%E8%BA%AB%E4%BB%BD%E6%98%A0%E5%B0%84%E4%B8%8E%E5%AE%89%E5%85%A8%E8%A3%81%E5%89%AA)
+
+**覆盖边界：** 企业案例覆盖离线/在线链路、ACL、生命周期、评估和落地路线；容量数字需要结合题设自行代入。
+
 **题型：** 核心案例，P0，45 分钟
 
 ##### 目标与规模假设
@@ -12050,6 +12700,10 @@ reserved 都算泄漏；OOM 全因参数大；只 empty_cache；忽略取消与�
 
 #### 286. 客服与工单 Agent
 
+**书稿定位：已覆盖（原理与设计）。** [第24章 §24.12 · 客服与工单：从渠道请求到业务收敛](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E5%AE%A2%E6%9C%8D%E4%B8%8E%E5%B7%A5%E5%8D%95%E4%BB%8E%E6%B8%A0%E9%81%93%E8%AF%B7%E6%B1%82%E5%88%B0%E4%B8%9A%E5%8A%A1%E6%94%B6%E6%95%9B)；[第24章 §24.12 · 客服短案例：转人工后的迟到结果](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E5%AE%A2%E6%9C%8D%E7%9F%AD%E6%A1%88%E4%BE%8B%E8%BD%AC%E4%BA%BA%E5%B7%A5%E5%90%8E%E7%9A%84%E8%BF%9F%E5%88%B0%E7%BB%93%E6%9E%9C)
+
+**覆盖边界：** 新增渠道鉴权、事项/工单关联、创建超时核验、人工执行权和分层指标；日均十万会话为教学题设，峰值容量需另行澄清。
+
 **题型：** 核心案例，P0，45 分钟
 
 ##### 目标与规模假设
@@ -12086,6 +12740,10 @@ reserved 都算泄漏；OOM 全因参数大；只 empty_cache；忽略取消与�
 <a id="q-287"></a>
 
 #### 287. Coding Agent 平台
+
+**书稿定位：已覆盖（原理与设计）。** [第23章 · 23.5 从 MVP 到生产级 Coding Agent](https://wxquare.github.io/ai-book/part3/01-coding-agent-systems.html#235-%E4%BB%8E-mvp-%E5%88%B0%E7%94%9F%E4%BA%A7%E7%BA%A7-coding-agent)；[第23章 · 23.6.3 设计评审表达：如何讲清一个 Coding Agent 系统](https://wxquare.github.io/ai-book/part3/01-coding-agent-systems.html#2363-%E8%AE%BE%E8%AE%A1%E8%AF%84%E5%AE%A1%E8%A1%A8%E8%BE%BE%E5%A6%82%E4%BD%95%E8%AE%B2%E6%B8%85%E4%B8%80%E4%B8%AA-coding-agent-%E7%B3%BB%E7%BB%9F)；[第29章 · 29.14 Verifier：不要让模型自己宣布完成](https://wxquare.github.io/ai-book/part3/08-mini-agent-observability.html#2914-verifier%E4%B8%8D%E8%A6%81%E8%AE%A9%E6%A8%A1%E5%9E%8B%E8%87%AA%E5%B7%B1%E5%AE%A3%E5%B8%83%E5%AE%8C%E6%88%90)
+
+**覆盖边界：** 可组合第23章产品化路线、第29章最小教学案例及第11章平台恢复机制；不是一个已部署平台的交付记录。
 
 **题型：** 核心案例，P1，45 分钟
 
@@ -12130,6 +12788,10 @@ reserved 都算泄漏；OOM 全因参数大；只 empty_cache；忽略取消与�
 
 #### 288. 研究与报告 Agent
 
+**书稿定位：已覆盖（原理与设计）。** [第32章 §32.6 · 研究报告：预算、状态与故障闭环](https://wxquare.github.io/ai-book/part4/01-agent-frontier-research.html#%E7%A0%94%E7%A9%B6%E6%8A%A5%E5%91%8A%E9%A2%84%E7%AE%97%E7%8A%B6%E6%80%81%E4%B8%8E%E6%95%85%E9%9A%9C%E9%97%AD%E7%8E%AF)；[第32章 §32.6 · 研究/报告短案例：浏览器Agent能否自主承担企业工作](https://wxquare.github.io/ai-book/part4/01-agent-frontier-research.html#%E7%A0%94%E7%A9%B6%E6%8A%A5%E5%91%8A%E7%9F%AD%E6%A1%88%E4%BE%8B%E6%B5%8F%E8%A7%88%E5%99%A8agent%E8%83%BD%E5%90%A6%E8%87%AA%E4%B8%BB%E6%89%BF%E6%8B%85%E4%BC%81%E4%B8%9A%E5%B7%A5%E4%BD%9C)；[第21章 §21.3 · 漫剧创作工作流：从需求到可审查产物](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#%E6%BC%AB%E5%89%A7%E5%88%9B%E4%BD%9C%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%BB%8E%E9%9C%80%E6%B1%82%E5%88%B0%E5%8F%AF%E5%AE%A1%E6%9F%A5%E4%BA%A7%E7%89%A9)
+
+**覆盖边界：** 新增有界并行、来源与主张状态、关键来源缺失、网页注入、断点和超时交付；200个来源/20分钟为教学假设，无平台运行实测。
+
 **题型：** 核心案例，P1，45 分钟
 
 ##### 目标与规模假设
@@ -12171,6 +12833,10 @@ reserved 都算泄漏；OOM 全因参数大；只 empty_cache；忽略取消与�
 
 #### 289. 有副作用的业务操作 Agent
 
+**书稿定位：已覆盖（原理与设计）。** [第11章 · 11.3 Operation 与工具副作用](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#113-operation-%E4%B8%8E%E5%B7%A5%E5%85%B7%E5%89%AF%E4%BD%9C%E7%94%A8)；[第11章 · 11.4 Checkpoint、恢复与补偿](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#114-checkpoint%E6%81%A2%E5%A4%8D%E4%B8%8E%E8%A1%A5%E5%81%BF)；[第11章 · 11.8 故障矩阵与最小交付契约](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#118-%E6%95%85%E9%9A%9C%E7%9F%A9%E9%98%B5%E4%B8%8E%E6%9C%80%E5%B0%8F%E4%BA%A4%E4%BB%98%E5%A5%91%E7%BA%A6)
+
+**覆盖边界：** 完整答案须组合 Operation/Attempt、unknown、幂等、补偿、审批及故障窗口；工具调用成功不能替代业务收敛。
+
 **题型：** 核心案例，P0，45 分钟
 
 ##### 目标与规模假设
@@ -12211,6 +12877,10 @@ Agent 根据用户请求创建订单、申请退款或发送通知，每秒接�
 <a id="q-290"></a>
 
 #### 290. 多租户 Agent 平台
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.8.2 控制面、执行面、集成面与治理面](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2182-%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%89%A7%E8%A1%8C%E9%9D%A2%E9%9B%86%E6%88%90%E9%9D%A2%E4%B8%8E%E6%B2%BB%E7%90%86%E9%9D%A2)；[第11章 · 11.7 隔离、预算、观测与回放](https://wxquare.github.io/ai-book/part2/infra-11-runtime.html#117-%E9%9A%94%E7%A6%BB%E9%A2%84%E7%AE%97%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%9B%9E%E6%94%BE)；[第12章 · 12.5 安全、数据最小化与AI风险治理](https://wxquare.github.io/ai-book/part2/infra-12-reliability-governance.html#125-%E5%AE%89%E5%85%A8%E6%95%B0%E6%8D%AE%E6%9C%80%E5%B0%8F%E5%8C%96%E4%B8%8Eai%E9%A3%8E%E9%99%A9%E6%B2%BB%E7%90%86)
+
+**覆盖边界：** 通过编排控制面、运行时租户隔离与生产治理组合回答；框架能力名称不能替代平台验收。
 
 **题型：** 核心案例，P2，45 分钟
 
@@ -12262,6 +12932,10 @@ Agent 根据用户请求创建订单、申请退款或发送通知，每秒接�
 
 #### 291. 如何使用 Agent 自动生成 CUDA Kernel？
 
+**书稿定位：部分覆盖。** [第29章 §29.14 · 选做练习卡：让 Agent 生成 CUDA Kernel](https://wxquare.github.io/ai-book/part3/08-mini-agent-observability.html#%E9%80%89%E5%81%9A%E7%BB%83%E4%B9%A0%E5%8D%A1%E8%AE%A9-agent-%E7%94%9F%E6%88%90-cuda-kernel)
+
+**覆盖边界：** 有 Agent 生成 CUDA 的编译、正确性、Sanitizer、性能四层验收设计；没有真实 GPU 实验及自动优化平台实现。
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -12293,6 +12967,8 @@ Agent 为了通过测试修改了参考答案，如何阻止？
 <a id="q-292"></a>
 
 #### 292. 设计词包 Agent，对 10 万余词分类：给出架构并指出模型方案的坑点，是否需要子 Agent 或专用模块？
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 · 21.3.8 十万词分类：用批处理代替十万次自主规划](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#2138-%E5%8D%81%E4%B8%87%E8%AF%8D%E5%88%86%E7%B1%BB%E7%94%A8%E6%89%B9%E5%A4%84%E7%90%86%E4%BB%A3%E6%9B%BF%E5%8D%81%E4%B8%87%E6%AC%A1%E8%87%AA%E4%B8%BB%E8%A7%84%E5%88%92)
 
 **题型：** 专项题，P1
 
@@ -12328,6 +13004,10 @@ Agent 为了通过测试修改了参考答案，如何阻止？
 
 #### 293. 设计行程规划 Agent：周末南京两天、预算 2000 元，如何编排工具、处理异常和多轮澄清？
 
+**书稿定位：已覆盖（原理与设计）。** [第31章 §31.1 · 行程短案例：两轮澄清与字段合并](https://wxquare.github.io/ai-book/part3/10-daily-life-evolving-agent.html#%E8%A1%8C%E7%A8%8B%E7%9F%AD%E6%A1%88%E4%BE%8B%E4%B8%A4%E8%BD%AE%E6%BE%84%E6%B8%85%E4%B8%8E%E5%AD%97%E6%AE%B5%E5%90%88%E5%B9%B6)；[第31章 §31.4 · 约束变更轨迹：下雨、两天改一天与晚到预约](https://wxquare.github.io/ai-book/part3/10-daily-life-evolving-agent.html#%E7%BA%A6%E6%9D%9F%E5%8F%98%E6%9B%B4%E8%BD%A8%E8%BF%B9%E4%B8%8B%E9%9B%A8%E4%B8%A4%E5%A4%A9%E6%94%B9%E4%B8%80%E5%A4%A9%E4%B8%8E%E6%99%9A%E5%88%B0%E9%A2%84%E7%BA%A6)
+
+**覆盖边界：** 以明确标注的教学行程说明澄清、字段合并、约束验证与交易授权；不提供今天的营业时间、天气或价格。
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -12359,6 +13039,8 @@ LLM 自由排满；价格当常量；不确认预算口径；问路等同授权�
 <a id="q-294"></a>
 
 #### 294. 行程中遇到下雨或用户将两天改成一天时，Agent 如何调整？
+
+**书稿定位：已覆盖（原理与设计）。** [第31章 §31.4 · 约束变更轨迹：下雨、两天改一天与晚到预约](https://wxquare.github.io/ai-book/part3/10-daily-life-evolving-agent.html#%E7%BA%A6%E6%9D%9F%E5%8F%98%E6%9B%B4%E8%BD%A8%E8%BF%B9%E4%B8%8B%E9%9B%A8%E4%B8%A4%E5%A4%A9%E6%94%B9%E4%B8%80%E5%A4%A9%E4%B8%8E%E6%99%9A%E5%88%B0%E9%A2%84%E7%BA%A6)
 
 **题型：** 专项题，P1
 
@@ -12392,6 +13074,8 @@ LLM 自由排满；价格当常量；不确认预算口径；问路等同授权�
 
 #### 295. 面对“想找个好吃的”等模糊需求，如何通过多轮对话澄清？
 
+**书稿定位：已覆盖（原理与设计）。** [第31章 §31.1 · 行程短案例：两轮澄清与字段合并](https://wxquare.github.io/ai-book/part3/10-daily-life-evolving-agent.html#%E8%A1%8C%E7%A8%8B%E7%9F%AD%E6%A1%88%E4%BE%8B%E4%B8%A4%E8%BD%AE%E6%BE%84%E6%B8%85%E4%B8%8E%E5%AD%97%E6%AE%B5%E5%90%88%E5%B9%B6)；[第14章 · 14.4 Task Protocol：把需求变成可执行协议](https://wxquare.github.io/ai-book/part2/02-prompt-engineering.html#144-task-protocol%E6%8A%8A%E9%9C%80%E6%B1%82%E5%8F%98%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E5%8D%8F%E8%AE%AE)
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -12423,6 +13107,10 @@ LLM 自由排满；价格当常量；不确认预算口径；问路等同授权�
 <a id="q-296"></a>
 
 #### 296. 设计全自动 AI 漫剧创作 Agent：从给定场景生成内容，按创作节点反馈并迭代。
+
+**书稿定位：已覆盖（原理与设计）。** [第21章 §21.3 · 漫剧创作工作流：从需求到可审查产物](https://wxquare.github.io/ai-book/part2/09-workflow-orchestration.html#%E6%BC%AB%E5%89%A7%E5%88%9B%E4%BD%9C%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%BB%8E%E9%9C%80%E6%B1%82%E5%88%B0%E5%8F%AF%E5%AE%A1%E6%9F%A5%E4%BA%A7%E7%89%A9)
+
+**覆盖边界：** 新增需求到成片的产物 DAG、节点契约、反馈、局部重算和发布门禁；覆盖设计思路，无生成后端接入或平台运行证据。
 
 **题型：** 专项题，P1
 
@@ -12458,6 +13146,10 @@ LLM 自由排满；价格当常量；不确认预算口径；问路等同授权�
 
 #### 297. AI 漫剧如何保证人物前后一致？片段质量如何评估？
 
+**书稿定位：已覆盖（原理与设计）。** [第5章 §5.7 · 音频、视频证据与可选创作延伸](https://wxquare.github.io/ai-book/part1/05-finetuning-compression-multimodal.html#%E9%9F%B3%E9%A2%91%E8%A7%86%E9%A2%91%E8%AF%81%E6%8D%AE%E4%B8%8E%E5%8F%AF%E9%80%89%E5%88%9B%E4%BD%9C%E5%BB%B6%E4%BC%B8)
+
+**覆盖边界：** 覆盖资产版本、身份条件、跨镜头检查和人工校准；这是风险控制方法，不能保证人物永不漂移。
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -12490,6 +13182,10 @@ seed 等同身份锁；单帧漂亮即整片正确；无人工校准；只用一
 
 #### 298. 设计百万或千万级商品知识库问答系统。
 
+**书稿定位：已覆盖（原理与设计）。** [第24章 §24.4 · 商品变体：SKU × 版本 × chunk 的容量账本](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E5%95%86%E5%93%81%E5%8F%98%E4%BD%93sku--%E7%89%88%E6%9C%AC--chunk-%E7%9A%84%E5%AE%B9%E9%87%8F%E8%B4%A6%E6%9C%AC)；[第24章 §24.3 · 增量更新、撤权与索引迁移](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%E6%92%A4%E6%9D%83%E4%B8%8E%E7%B4%A2%E5%BC%95%E8%BF%81%E7%A7%BB)
+
+**覆盖边界：** 提供 SKU×版本×chunk 的容量推导、增量/撤权与实时事实边界；不是千万 SKU 的实测报告。
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -12521,6 +13217,10 @@ seed 等同身份锁；单帧漂亮即整片正确；无人工校准；只用一
 <a id="q-299"></a>
 
 #### 299. Text-to-SQL 如何实现？如何提高准确率？
+
+**书稿定位：已覆盖（原理与设计）。** [第24章 §24.12 · 受控 Text-to-SQL：语法安全和业务正确分别验收](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E5%8F%97%E6%8E%A7-text-to-sql%E8%AF%AD%E6%B3%95%E5%AE%89%E5%85%A8%E5%92%8C%E4%B8%9A%E5%8A%A1%E6%AD%A3%E7%A1%AE%E5%88%86%E5%88%AB%E9%AA%8C%E6%94%B6)
+
+**覆盖边界：** 覆盖 Schema linking、业务口径、AST/权限与结果核验；不把 SQL 可执行等同业务正确。
 
 **题型：** 专项题，P1
 
@@ -12556,6 +13256,10 @@ Prompt 决定租户；拼接参数；SELECT 开头就安全；无限试 SQL。
 
 #### 300. 长视频问答中，如何检索相关片段并组装 Prompt？
 
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.7.2 时间定位的多模态证据](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1972-%E6%97%B6%E9%97%B4%E5%AE%9A%E4%BD%8D%E7%9A%84%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AF%81%E6%8D%AE)；[第24章 §24.4 · 视频变体：证据位置与权限沿同一链路传播](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E8%A7%86%E9%A2%91%E5%8F%98%E4%BD%93%E8%AF%81%E6%8D%AE%E4%BD%8D%E7%BD%AE%E4%B8%8E%E6%9D%83%E9%99%90%E6%B2%BF%E5%90%8C%E4%B8%80%E9%93%BE%E8%B7%AF%E4%BC%A0%E6%92%AD)
+
+**覆盖边界：** 覆盖 ASR/OCR/视觉证据、时间定位、预算和回看；不存在仅凭字幕即可覆盖全部视频事件的保证。
+
 **题型：** 专项题，P1
 
 ##### 题干与约束
@@ -12587,6 +13291,10 @@ Prompt 决定租户；拼接参数；SELECT 开头就安全；无限试 SQL。
 <a id="q-301"></a>
 
 #### 301. 如何支持跨多个视频的资源库检索？
+
+**书稿定位：已覆盖（原理与设计）。** [第19章 · 19.7.2 时间定位的多模态证据](https://wxquare.github.io/ai-book/part2/07-agent-knowledge-systems.html#1972-%E6%97%B6%E9%97%B4%E5%AE%9A%E4%BD%8D%E7%9A%84%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AF%81%E6%8D%AE)；[第24章 §24.4 · 视频变体：证据位置与权限沿同一链路传播](https://wxquare.github.io/ai-book/part3/02-enterprise-knowledge-assistant.html#%E8%A7%86%E9%A2%91%E5%8F%98%E4%BD%93%E8%AF%81%E6%8D%AE%E4%BD%8D%E7%BD%AE%E4%B8%8E%E6%9D%83%E9%99%90%E6%B2%BF%E5%90%8C%E4%B8%80%E9%93%BE%E8%B7%AF%E4%BC%A0%E6%92%AD)
+
+**覆盖边界：** 覆盖跨视频来源、时间与权限传播；跨片段事件合并仍需证据，不能因同名自动合并。
 
 **题型：** 专项题，P1
 
