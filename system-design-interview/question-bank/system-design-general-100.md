@@ -317,21 +317,277 @@
 #### 16. 分布式限流
 
 ##### 题干与约束
-设计面向多实例服务的分布式限流能力。
+
+设计面向多实例服务的分布式限流能力。例如，同一团队的某类 API 在一个 60 秒窗口内最多准入 50 次请求；可选地，在超限后冻结 5 秒。需要明确算法语义、Redis 原子操作、冻结后的恢复条件，以及 Redis 故障时的策略。
+
+先区分三类控制：请求限流约束单位时间内的准入次数；并发限制约束尚未结束的执行数量，需要占位与释放；费用预算约束累计消耗，硬预算还需要预占与结算。它们不能共用一个含义不清的计数器。
 
 ##### 答案骨架
-**算法对比**：
 
-| 算法 | 优点 | 缺点 |
-|------|------|------|
-| **固定窗口计数器** | 实现简单 | 临界突发：窗口交界处可能 2 倍流量 |
-| **滑动窗口** | 解决临界突发 | 内存开销大（需存每个请求时间戳） |
-| **漏桶** | 平滑输出 | 无法应对合理突发 |
-| **令牌桶** | 允许突发 | 实现稍复杂 |
+**算法选择与计量口径。**
 
-**分布式实现**：Redis + Lua（ZSet 滑动窗口 / Token Bucket）。
+| 算法 | 核心状态 | 收益 | 成本与边界 |
+| --- | --- | --- | --- |
+| 固定窗口计数器 | 每个窗口一个计数及截止时间 | 状态小、实现简单，适合粗粒度配额 | 窗口交界附近的短时间内可能准入接近两倍额度，不保证任意滑动区间都满足上限 |
+| 精确滑动窗口日志 | ZSET 保存窗口内每次准入的时间戳 | 精确限制最近 W 时间内的准入次数，消除固定窗口交界问题 | 每个限流对象的记录数随额度增长，清理记录也消耗 CPU |
+| 近似滑动窗口计数 | 分桶计数或前后窗口加权 | 用较少状态近似最近窗口的流量 | 存在桶粒度或分布假设带来的误差，不能称为精确滑动窗口 |
+| 漏桶 | 整形用有界队列与调度器；计量可用水位及时间等状态 | 排队整形可平滑输出，计量可控制准入 | 计量本身不匀速执行请求；排队必须限制容量和最长等待 |
+| 令牌桶 | 可用令牌数、补充时间和速率 | 在长期速率受控时允许桶容量内突发 | 不直接承诺任意 W 时间内最多 L 次；需要解释桶容量与补充速率 |
 
-**动态限流**：基于 CPU、RT、错误率自适应调整阈值（Sentinel / Hystrix）。
+以下两份 Lua 示例统一按**成功准入的请求次数**计量，被拒绝的尝试不消耗窗口额度。防暴力请求若需要统计全部尝试，应另设计数和策略，不能在代码与监控中混用口径。请求已获准但业务执行失败，仍算一次准入；是否返还额度需要独立定义，避免失败重试制造无限流量。
+
+**分布式执行与返回协议。**
+
+可信网关或服务端根据已验证的团队、用户、API 和规则版本构造 key，并从服务端配置读取阈值。不能让客户端任意指定限流身份或额度。所有共享同一额度的服务实例访问同一 Redis 主节点上的 key，通过 Lua 把读取、判断和状态更新合成原子操作。
+
+Redis 提供跨实例共享的内存状态，Lua 执行期间其他客户端命令不会穿插执行，因此可以避免同一份额度被并发检查后重复发放。这里依赖的是数据操作与脚本执行的串行化，不能概括为 Redis 的所有工作都由一个线程完成；原子执行也不等于脚本错误自动回滚，或故障切换后状态绝不丢失。
+
+统一返回 `{allowed, frozen, count, retry_after_ms}`：`allowed` 表示本次是否准入，`frozen` 表示是否被独立冷却状态冻结，`count` 表示当前窗口内已准入次数，`retry_after_ms` 是按当前状态计算的建议重试等待时间；它不预留未来名额。
+
+`frozen` 与窗口额度分别管理：超限时可设置冷却 key，冻结期间不再准入；**冻结结束后仍检查原窗口，不能删除计数或清空 ZSET 重新发放额度**。原窗口也可能在冻结期间自然过期。若窗口仍满而冷却已结束，下一次拒绝可以重新触发冷却，这是下面示例选择的策略。
+
+##### 固定窗口：计数器与冻结状态
+
+固定窗口有两种常见起点：按时钟对齐的窗口，例如 `floor(now / W)`；以及从首次请求开始、用 TTL 计时的窗口。下面实现后一种：首次准入创建计数，后续准入不刷新窗口 TTL。它不是滑动窗口。
+
+```lua
+-- fixed_window.lua
+-- KEYS[1]: 计数 key
+-- KEYS[2]: frozen key
+-- ARGV[1]: limit，正整数
+-- ARGV[2]: window_ms，正整数
+-- ARGV[3]: frozen_ms，非负整数；0 表示不启用冻结
+-- 返回: {allowed, frozen, count, retry_after_ms}
+
+local function is_integer(n, minimum)
+    return n and n >= minimum and n == math.floor(n)
+end
+
+local limit = tonumber(ARGV[1])
+local window_ms = tonumber(ARGV[2])
+local frozen_ms = tonumber(ARGV[3])
+if not is_integer(limit, 1)
+    or not is_integer(window_ms, 1)
+    or not is_integer(frozen_ms, 0) then
+    return redis.error_reply("invalid rate limit arguments")
+end
+
+local count = tonumber(redis.call("GET", KEYS[1]) or "0")
+if not is_integer(count, 0) then
+    return redis.error_reply("invalid counter state")
+end
+
+local window_ttl = redis.call("PTTL", KEYS[1])
+local frozen_ttl = redis.call("PTTL", KEYS[2])
+if window_ttl == -1 or frozen_ttl == -1 then
+    return redis.error_reply("rate limit state has no expiration")
+end
+
+local slot_wait = 0
+if count >= limit then
+    slot_wait = math.max(0, window_ttl)
+end
+
+-- 已冻结，即使窗口还有额度也拒绝
+if frozen_ttl >= 0 then
+    return {0, 1, count, math.max(frozen_ttl, slot_wait)}
+end
+
+-- 原窗口满额：保留计数，按配置设置冷却
+if count >= limit then
+    if frozen_ms > 0 then
+        redis.call("SET", KEYS[2], "1", "PX", frozen_ms)
+    end
+    local frozen = frozen_ms > 0 and 1 or 0
+    return {0, frozen, count, math.max(frozen_ms, slot_wait)}
+end
+
+count = redis.call("INCR", KEYS[1])
+if count == 1 then
+    redis.call("PEXPIRE", KEYS[1], window_ms)
+end
+return {1, 0, count, 0}
+```
+
+`INCR` 与首次 `PEXPIRE` 在同一脚本中完成，避免客户端在两条命令之间退出而留下永久计数。脚本遇到遗留的无过期状态会返回错误，不能把数据损坏默认为无限放行；调用方应按业务约定处理并告警。示例假设 key 专用于该规则、类型正确，且单个窗口计数在 Redis 整数及 Lua 精确整数范围内。
+
+例如某窗口结束前准入 50 次，下一个窗口开始后又快速准入 50 次，跨边界短时间内仍可能出现接近 100 次。Lua 保证同一窗口内的并发更新原子，并不改变固定窗口算法的这一边界。
+
+##### 精确滑动窗口：ZSET 与冻结状态
+
+ZSET 的 score 是 Redis 时间戳，member 是每次准入尝试的唯一 ID。窗口采用 `(now - W, now]`，清除截止时刻及之前的记录，再判断是否已满。通过 `TIME` 使用 Redis 服务端时间，减少各应用实例时钟不同造成的误差。
+
+```lua
+-- sliding_window.lua
+-- KEYS[1]: 窗口 ZSET key
+-- KEYS[2]: frozen key
+-- ARGV[1]: limit，正整数
+-- ARGV[2]: window_ms，正整数
+-- ARGV[3]: frozen_ms，非负整数；0 表示不启用冻结
+-- ARGV[4]: 每次尝试的唯一 request_id，由服务端生成
+-- 返回: {allowed, frozen, count, retry_after_ms}
+
+local function is_integer(n, minimum)
+    return n and n >= minimum and n == math.floor(n)
+end
+
+local limit = tonumber(ARGV[1])
+local window_ms = tonumber(ARGV[2])
+local frozen_ms = tonumber(ARGV[3])
+local request_id = ARGV[4]
+if not is_integer(limit, 1)
+    or not is_integer(window_ms, 1)
+    or not is_integer(frozen_ms, 0)
+    or not request_id or request_id == "" then
+    return redis.error_reply("invalid rate limit arguments")
+end
+
+local frozen_ttl = redis.call("PTTL", KEYS[2])
+if frozen_ttl == -1 then
+    return redis.error_reply("frozen state has no expiration")
+end
+
+local t = redis.call("TIME")
+local now = tonumber(t[1]) * 1000
+    + math.floor(tonumber(t[2]) / 1000)
+
+redis.call("ZREMRANGEBYSCORE", KEYS[1], "-inf", now - window_ms)
+local count = redis.call("ZCARD", KEYS[1])
+
+local slot_wait = 0
+if count >= limit then
+    local oldest = redis.call("ZRANGE", KEYS[1], 0, 0, "WITHSCORES")
+    slot_wait = math.max(0, tonumber(oldest[2]) + window_ms - now)
+end
+
+if frozen_ttl >= 0 then
+    return {0, 1, count, math.max(frozen_ttl, slot_wait)}
+end
+
+if count >= limit then
+    if frozen_ms > 0 then
+        redis.call("SET", KEYS[2], "1", "PX", frozen_ms)
+    end
+    local frozen = frozen_ms > 0 and 1 or 0
+    return {0, frozen, count, math.max(frozen_ms, slot_wait)}
+end
+
+-- 同毫秒请求必须使用不同 member，重复 ID 不得覆盖旧记录
+if redis.call("ZSCORE", KEYS[1], request_id) then
+    return redis.error_reply("request_id must be unique within the window")
+end
+redis.call("ZADD", KEYS[1], now, request_id)
+redis.call("PEXPIRE", KEYS[1], window_ms)
+return {1, 0, count + 1, 0}
+```
+
+时间戳不能单独用作 member，同一毫秒的多个请求会被覆盖，造成少计数。request_id 应由服务端为每次准入尝试生成；业务请求是否幂等需要另一套机制，不能通过重用 member 获得不计数的重复放行。
+
+每次准入刷新 ZSET 的 TTL，是为了让最近准入的记录至少保存完整窗口；准入时仍清理 `now - W` 之前的记录，所以不会退化成固定窗口。单条记录的插入约为 `O(log L)`，清理约为 `O(log L + M)`，M 为本次移除的记录数；阈值稳定时每个对象保存至多 L 条准入记录。它解决窗口交界问题，但允许 L 次请求集中在很短时间内，不保证均匀速率；需要平滑输出时另选漏桶或排队策略。
+
+##### 令牌桶：惰性补充与突发额度
+
+令牌桶适合“长期限制平均速率，同时允许短时突发”的 API。用 Hash 保存剩余令牌 `tokens` 和上次计算时间 `last_time_ms`，配置桶容量 B、每秒补充速率 r、单次消耗 c。Hash 是一种实现选择，也可以使用同 slot 的多个 STRING key，不能把具体框架的底层结构一概称为 Hash。
+
+无需后台定时补令牌。请求到来时，在 Lua 内使用 Redis 时间计算补充量、判断额度并保存状态：
+
+```text
+首次创建：tokens = B，last_time_ms = now_ms
+effective_now = max(now_ms, last_time_ms)
+elapsed_seconds = (effective_now - last_time_ms) / 1000
+available = min(B, tokens + elapsed_seconds * r)
+allowed = available >= c
+tokens = allowed ? available - c : available
+last_time_ms = effective_now
+保存 tokens 与 last_time_ms，返回准入结果
+```
+
+上面是算法伪代码，不是可直接执行的 Lua。要求 `B > 0`、`r > 0`、`0 < c <= B`，明确小数令牌精度或采用整数定点数。拒绝时也同步保存计算后的令牌与时间，避免只更新其中一个字段导致重复补充。时间回拨时保留逻辑时间，不能使用负时间差扣减或重复发放令牌。
+
+没有足够令牌时，当前状态下建议等待 `ceil((c - available) / r * 1000)` 毫秒；等待不预留额度。若为空闲状态设置 TTL，过期必须不早于桶恢复满额所需的时间，例如至少 `ceil(B / r * 1000)` 毫秒，否则删除后按满桶初始化会额外发放额度。
+
+以每次消耗 1 为例，B=20、r=10/s，满桶时允许立即准入 20 次，之后按每秒 10 个令牌补充。长度 T 秒的区间内准入量上界约为 `B + r × T`，所以它不等价于“最近任意 1 秒最多 10 次”。如需 `frozen`，仍使用独立冷却状态，解冻后按正常补充逻辑计算，不能强行把桶重置为满桶。
+
+##### 漏桶：排队整形、计量与 GCRA
+
+漏桶需要先讲清楚是**调度实际请求**，还是**只判断请求是否准入**：
+
+| 方式 | Redis 状态与执行方式 | 能保证什么 |
+| --- | --- | --- |
+| 排队整形（shaping） | List 或 ZSET 存任务引用及计划时间，由调度器按间隔取出并提交下游 | 在调度能力允许时平滑实际发出流量；需要有界队列、最长等待和过载拒绝 |
+| 漏桶计量（policing） | Hash 保存水位与时间；每次请求惰性计算流出量，未超容量才增加水位并放行 | 控制准入的速率与突发额度；已经放行的请求仍可能同时执行 |
+| GCRA | 保存理论到达时间，根据间隔与突发容忍度判断是否接收，再原子更新 | 用少量状态执行速率计量；不需要保存每个请求或后台滴漏线程 |
+
+漏桶计量可用 `water = max(0, old_water - elapsed_seconds × drain_rate)` 计算当前水位，再检查 `water + cost <= capacity`。整段判断与更新仍要原子执行。允许多少突发取决于容量与配置，不能笼统地说漏桶无法允许突发。
+
+真实排队还要处理多消费者的统一调度、任务所有权、失败恢复、重试和积压；仅把请求写入 Redis List 不会自动形成匀速消费。定时器抖动、下游延迟和任务执行并发也会影响实际流量，因此不能承诺“绝对均匀”的处理或完成速率。
+
+`redis-cell` 是需要单独安装和加载的 Redis 扩展模块，**不是 Redis 4.0+ 默认内置的命令**。它提供 `CL.THROTTLE`，内部采用 GCRA，并可配置突发容忍度：
+
+```text
+CL.THROTTLE <key> <max_burst> <count_per_period> <period_seconds> [quantity]
+```
+
+该命令原子返回是否受限、剩余额度与重试时间等信息，不会替应用保存真实业务队列，也不会强制所有已放行请求匀速执行。采用前要确认部署平台支持加载该模块，并按其文档解释容量与突发参数。
+
+##### 调用、接入与分布式边界
+
+两份脚本可分别保存到 `fixed_window.lua`、`sliding_window.lua` 进行演练；本文代码块是规范来源，不在题库外另建长期维护的副本。示例均为 60 秒最多准入 50 次、超限冷却 5 秒：
+
+```bash
+redis-cli --eval fixed_window.lua \
+  'rl:{team-a:qa:fixed:v1}:count' \
+  'rl:{team-a:qa:fixed:v1}:frozen' \
+  , 50 60000 5000
+
+redis-cli --eval sliding_window.lua \
+  'rl:{team-a:qa:sliding:v1}:window' \
+  'rl:{team-a:qa:sliding:v1}:frozen' \
+  , 50 60000 5000 '<每次尝试生成的唯一ID>'
+```
+
+| 接入问题 | 建议处理 |
+| --- | --- |
+| HTTP 拒绝 | 返回 `429 Too Many Requests`，将 `retry_after_ms` 向上取整为秒写入 `Retry-After`；客户端退避并加入抖动 |
+| 冻结与窗口同时限制 | 重试等待取两者较大值；等待结束仍要重新申请，不保证届时名额未被其他请求占用 |
+| Redis Cluster | 单个脚本使用的 key 必须同 slot；通过一致的 `{...}` hash tag 保证，且不同算法使用不同 key，避免 STRING / ZSET 类型冲突 |
+| 多条规则 | 依次执行多个脚本只保证每条规则内部原子，前面窗口已计数而后面拒绝时不会自动回滚；若要求整体准入语义，需要同 slot 内统一检查、全部通过后再写入 |
+| 脚本加载 | 生产可用 `SCRIPT LOAD` / `EVALSHA` 复用脚本；遇到 `NOSCRIPT` 重新加载后再调用，网络超时则属于执行结果未知，不能按同一种情况盲目重试 |
+| Redis 异常 | 根据业务明确拒绝、使用保守本地额度或降级；资金、安全等严格边界不能在 Redis 失败时直接放行并仍宣称全局上限成立 |
+| 故障切换与时间 | Lua 不保证 Redis 主从切换后已确认状态永不丢失；`TIME` 统一时钟来源，但不消除主机校时与切换时的时钟问题 |
+| 热点与容量 | 精确 ZSET 使用有限额度并监控 key 数、内存和脚本耗时；脚本清理过多记录会阻塞 Redis，超高流量可考虑近似分桶、令牌桶或分层限流 |
+| Lua 错误 | Lua 原子执行不等于数据库事务回滚；运行时错误前已完成的写入不会自动撤销，因此先校验参数和 key 类型约定 |
+| 动态限流 | 可结合 CPU、延迟、错误率调整阈值，但配置需一致并有滞回和灰度；Sentinel 等流量治理与熔断工具不能替代算法及计量语义说明 |
+
+##### 递进追问
+
+- 两个实例同时看到还有一个额度，怎样只准入一个？Lua 内完成检查与写入，不能在应用里先查后改；脚本只覆盖 Redis 内的状态，不包含后续业务 HTTP 请求。
+- 为什么固定窗口可能在边界放入近两倍流量？用窗口结束前和新窗口开始后的两批请求说明；不能把 Lua 原子性当作滑动窗口保证。
+- 冻结 5 秒后一定能恢复吗？不一定；原窗口未释放额度时继续拒绝，冻结状态不负责重置额度。
+- 同一毫秒多个请求怎样避免滑动窗口少计数？使用不同 member，时间只放 score；禁止重复 request_id 覆盖记录。
+- 重试如何影响计数？示例对每次成功准入计一次；下游失败仍占该次准入，业务幂等与限流分别处理。
+- Redis 请求超时，能否立即重复执行脚本？首次脚本可能已成功；固定计数重试可能多消耗额度，滑动 member 重用按示例会报错。需要精确重试语义时额外记录准入请求 ID 与决策，不能把网络超时当作没有执行。
+- 扩容服务实例是否自动扩大额度？不会；相同身份和规则使用共享 key。将全局额度随意拆到本地会改变上限，需要租用额度、回收和故障策略。
+- 怎样验证？多客户端并发下成功准入数不超阈值；固定窗口跨边界体现其突发特征；滑动窗口保留未过期记录；冻结不计数且不清空窗口；过期后恢复；覆盖 key 隔离、重复 member、非法参数和 Redis 故障。
+
+##### 常见失分点
+
+- 未区分请求频率、并发数、排队容量和费用预算。
+- 分开 `GET` 判断与 `INCR`，或将首次 `INCR` 与 `EXPIRE` 留在客户端的两个独立步骤。
+- 用滑动窗口名义描述首次请求 TTL；把所有滑动实现都说成必须保存每个请求。
+- 冻结时删除计数、解冻后重发完整额度，却声称原滑动窗口上限仍成立。
+- 用同毫秒时间戳当 ZSET member，或接受客户端重用 ID 覆盖记录。
+- 忽略 Cluster 同 slot、热点 key、状态丢失和故障放行造成的全局保证边界。
+- 将固定窗口、滑动窗口的准入限制，夸大为均匀输出或业务恰好执行一次。
+- 把令牌桶补充速率当成任意时间窗口的严格次数上限，或更新令牌和时间时重复计算补充量。
+- 把 `redis-cell` 说成 Redis 默认内置命令，或把 GCRA 准入判断说成真实业务排队和匀速执行。
+
+参考回答：我会先明确计量对象、窗口和失败策略。低成本的粗粒度控制可以用 Redis 计数器固定窗口，并用 Lua 原子完成判断、计数与首次过期；若要求最近任意 W 时间最多 L 次，使用 ZSET 保存准入日志，Lua 清理窗口外记录、检查冻结与容量后再加入唯一请求。需要受控突发时选令牌桶并惰性补充；需要平滑实际发出流量时用有界队列与调度器，漏桶计量或 GCRA 本身只负责准入。冻结是额外冷却，不重置原额度。分布式原子性建立在同一 Redis 主节点和 key 上，仍要说明主从切换、重试未知结果、热点与降级边界。
+
+##### 延伸资料
+
+- [Redis Lua 脚本原子性与脚本缓存](https://redis.io/docs/latest/develop/programmability/eval-intro/)
+- [redis-cell：GCRA、模块加载与 CL.THROTTLE](https://github.com/brandur/redis-cell)
 
 ---
 
