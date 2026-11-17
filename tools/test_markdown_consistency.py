@@ -131,7 +131,7 @@ class MarkdownConsistencyTest(unittest.TestCase):
             self.write(root, "algorithm-interview/leetcode/数组/2_b.sql", "-- source\n")
             self.write(root, "algorithm-interview/剑指offer/src/offer1_a.cc", "// source\n")
             self.write(root, "algorithm-interview/implementations/src/example.go", "package main\n")
-            self.write(root, "system-design-interview/examples/src/concurrency.go", "package main\n")
+            self.write(root, "algorithm-interview/implementations/src/concurrency.go", "package main\n")
             statistics = repository_statistics(root, readme)
             self.assertEqual(statistics.leetcode_sources, 2)
             self.assertEqual(statistics.readme_problems, 1)
@@ -235,8 +235,6 @@ class MarkdownConsistencyTest(unittest.TestCase):
                 "algorithm-interview/implementations/src",
                 "algorithm-interview/templates",
                 "system-design-interview/README.md",
-                "system-design-interview/examples/README.md",
-                "system-design-interview/examples/src",
                 "system-design-interview/question-bank/backend-1000-foundations.md",
                 "system-design-interview/question-bank/system-design-ecommerce-180.md",
                 "system-design-interview/question-bank/system-design-general-100.md",

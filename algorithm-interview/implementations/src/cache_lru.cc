@@ -1,57 +1,51 @@
-
-#include <list>
-#include <unordered_map>
+// 题目：实现 LRU 缓存。练习约定：int 键值；get 未命中返回 -1；容量为零不缓存。
+// 哈希表定位 + 双向链表；get/put 平均 O(1)，空间 O(capacity)。
+// 运行：g++ -std=c++17 cache_lru.cc -o lru && ./lru
 #include <iostream>
-using namespace std;
-
-// least recently used.
-class LRU {
+#include <list>
+#include <stdexcept>
+#include <unordered_map>
+#include <utility>
+class LRUCache {
+    using Items = std::list<std::pair<int,int>>;
+    std::size_t capacity_;
+    Items items_;
+    std::unordered_map<int, Items::iterator> index_;
 public:
-    int cap;
-    list<pair<int,int>> l;
-    unordered_map<int,list<pair<int,int>>::iterator> m;
-    LRU(int cap):cap(cap){}
-
-    int get(int key){
-        if(m.count(key) == 0) return -1;
-        auto it = m[key];
-        l.push_front(make_pair(it->first,it->second));
-        l.erase(it);
-        m[key] = l.begin();
-        return l.begin()->second;
+    explicit LRUCache(int capacity) : capacity_(0) {
+        if (capacity < 0) throw std::invalid_argument("negative capacity");
+        capacity_ = static_cast<std::size_t>(capacity);
     }
-
-    void put(int key,int val){
-        if(m.count(key)){
-            auto it = m[key];
-            int ans = it->second;
-            l.push_front(make_pair(it->first,val));
-            l.erase(it);
-            m[key] = l.begin();
-        } else {
-            l.push_front(make_pair(key,val));
-            m[key] = l.begin();
-            if(m.size() > cap){
-                auto it = l.back();
-                m.erase(it.first);
-                l.pop_back();
-            }
+    LRUCache(const LRUCache&) = delete; // 默认复制会使索引指向原链表。
+    LRUCache& operator=(const LRUCache&) = delete;
+    int get(int key) {
+        auto it = index_.find(key);
+        if (it == index_.end()) return -1;
+        items_.splice(items_.begin(), items_, it->second);
+        return it->second->second;
+    }
+    void put(int key, int value) {
+        auto it = index_.find(key);
+        if (it != index_.end()) {
+            it->second->second = value;
+            items_.splice(items_.begin(), items_, it->second); return;
+        }
+        if (!capacity_) return;
+        items_.emplace_front(key,value);
+        try { index_.emplace(key, items_.begin()); }
+        catch (...) { items_.pop_front(); throw; }
+        if (items_.size() > capacity_) {
+            index_.erase(items_.back().first); items_.pop_back();
         }
     }
-    
-    void print(){
-        for(auto it = l.begin();it!=l.end();it++){
-            std::cout << it->first << '\t' << it->second << std::endl;
-        }
+    void print() const {
+        for (const auto& [key,value] : items_) std::cout << key << ':' << value << ' ';
+        std::cout << '\n';
     }
 };
-
-int main(){
-    LRU l = LRU(3);
-    l.put(1,1);
-    l.put(2,2);
-    l.put(3,3);
-    l.get(2);
-    l.put(4,4);
-    l.print();
+using LRU = LRUCache;
+int main() {
+    LRUCache cache(2); cache.put(1,10); cache.put(2,20);
+    std::cout << cache.get(1) << '\n'; cache.put(3,30);
+    std::cout << cache.get(2) << '\n'; cache.print();
 }

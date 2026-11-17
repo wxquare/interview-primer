@@ -61,8 +61,6 @@ REQUIRED_PATHS = (
     SYSTEM_DESIGN_ROOT / "question-bank" / "system-design-ecommerce-180.md",
     SYSTEM_DESIGN_ROOT / "question-bank" / "system-design-general-100.md",
     SYSTEM_DESIGN_ROOT / "question-bank" / "ai-agent-engineering.md",
-    SYSTEM_DESIGN_ROOT / "examples" / "README.md",
-    SYSTEM_DESIGN_ROOT / "examples" / "src",
 )
 
 
@@ -203,10 +201,7 @@ def repository_statistics(root: Path, readme: Path) -> RepositoryStatistics:
         leetcode_sources=len(leetcode_sources),
         leetcode_languages=languages,
         offer_sources=len(_source_files(root / ALGORITHM_ROOT / "剑指offer")),
-        other_sources=(
-            len(_source_files(root / IMPLEMENTATION_ROOT))
-            + len(_source_files(root / SYSTEM_DESIGN_ROOT / "examples"))
-        ),
+        other_sources=len(_source_files(root / IMPLEMENTATION_ROOT)),
         readme_problems=len(readme_ids),
         local_only_problems=len(local_ids - readme_ids),
         index_only_problems=len(index_ids - expected_ids),

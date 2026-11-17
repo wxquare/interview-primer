@@ -81,8 +81,8 @@
 
 | 模板 | 内容 |
 | --- | --- |
-| [integer_conversion.cc](../../system-design-interview/examples/src/integer_conversion.cc) | 提供带越界检查的 `parse` 与支持 2–36 进制的 `format`。 |
-| [c_string_operations.cc](../../system-design-interview/examples/src/c_string_operations.cc) | 在 `cstring_ops` 命名空间提供复制、重叠移动、填充、拼接、比较和长度实现。 |
+| [integer_conversion.cc](../implementations/src/integer_conversion.cc) | 提供带越界检查的 `parse` 与支持 2–36 进制的 `format`。 |
+| [c_string_operations.cc](../implementations/src/c_string_operations.cc) | 在 `cstring_ops` 命名空间提供复制、重叠移动、填充、拼接、比较和长度实现。 |
 | [string_algorithms_collection.cc](../implementations/src/string_algorithms_collection.cc) | 包含 KMP、Trie 的插入/查询，以及 AC 自动机的构建、失败指针和多模式匹配。 |
 | [string_kmp_template.cc](../implementations/src/string_kmp_template.cc) | KMP 前缀函数与匹配模板。 |
 | [string_aho_corasick_array.cc](../implementations/src/string_aho_corasick_array.cc) | 数组子节点版 AC 自动机。 |
@@ -96,11 +96,11 @@
 | --- | --- |
 | [lis_with_fenwick_tree.cc](../implementations/src/lis_with_fenwick_tree.cc) | 包含树状数组的更新/查询，以及用树状数组求最长递增子序列的示例。 |
 | [lru_cache_design.cc](../implementations/src/lru_cache_design.cc) | 包含 LRU 缓存、LFU 缓存、自定义哈希表和跳表的实现。 |
-| [string_raii.cc](../../system-design-interview/examples/src/string_raii.cc) | 自定义字符串类的拷贝控制与内存管理。 |
-| [string_raii_copy_move.cc](../../system-design-interview/examples/src/string_raii_copy_move.cc) | 当前内容为自定义字符串类实现，文件名可能需后续调整。 |
-| [factory_pattern.cc](../../system-design-interview/examples/src/factory_pattern.cc) | 工厂模式示例。 |
-| [visitor_pattern.cc](../../system-design-interview/examples/src/visitor_pattern.cc) | 当前内容为访问者模式示例。 |
-| [singleton_pattern.cc](../../system-design-interview/examples/src/singleton_pattern.cc) | 单例模式与线程安全初始化。 |
-| [bounded_producer_consumer.cc](../../system-design-interview/examples/src/bounded_producer_consumer.cc) | 多线程生产者—消费者模型。 |
-| [read_write_locker.cc](../../system-design-interview/examples/src/read_write_locker.cc) | 读写锁实现。 |
+| [string_raii.cc](../implementations/src/string_raii.cc) | 自定义字符串类的拷贝控制与内存管理。 |
+| [string_raii_copy_move.cc](../implementations/src/string_raii_copy_move.cc) | 当前内容为自定义字符串类实现，文件名可能需后续调整。 |
+| [factory_pattern.cc](../implementations/src/factory_pattern.cc) | 工厂模式示例。 |
+| [visitor_pattern.cc](../implementations/src/visitor_pattern.cc) | 当前内容为访问者模式示例。 |
+| [singleton_pattern.cc](../implementations/src/singleton_pattern.cc) | 单例模式与线程安全初始化。 |
+| [bounded_producer_consumer.cc](../implementations/src/bounded_producer_consumer.cc) | 多线程生产者—消费者模型。 |
+| [read_write_locker.cc](../implementations/src/read_write_locker.cc) | 读写锁实现。 |
 | [fast_io_debug.hpp](../implementations/src/fast_io_debug.hpp) | 快速 I/O 初始化与仅在 `LOCAL` 宏下生效的调试输出宏。 |

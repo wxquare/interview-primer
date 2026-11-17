@@ -33,10 +33,10 @@
 | 内容 | Source | Status |
 | --- | --- | --- |
 | 随机 LeetCode 题号生成工具 | [generate.cc](../../leetcode/基础算法/模拟/random_problem_generator.cc) | `待整理` |
-| 轮流打印并发示例 | [concurrency_turn_based_print.go](../../../system-design-interview/examples/src/concurrency_turn_based_print.go) | `待整理` |
-| 轮流输出字符串并发示例 | [concurrency_turn_based_string.go](../../../system-design-interview/examples/src/concurrency_turn_based_string.go) | `待整理` |
-| 生产者消费者并发示例 | [concurrency_producer_consumer.go](../../../system-design-interview/examples/src/concurrency_producer_consumer.go) | `待整理` |
-| 零、偶、奇数并发示例 | [concurrency_zero_even_odd.go](../../../system-design-interview/examples/src/concurrency_zero_even_odd.go) | `待整理` |
+| 轮流打印并发示例 | [concurrency_turn_based_print.go](../../implementations/src/concurrency_turn_based_print.go) | `待整理` |
+| 轮流输出字符串并发示例 | [concurrency_turn_based_string.go](../../implementations/src/concurrency_turn_based_string.go) | `待整理` |
+| 生产者消费者并发示例 | [concurrency_producer_consumer.go](../../implementations/src/concurrency_producer_consumer.go) | `待整理` |
+| 零、偶、奇数并发示例 | [concurrency_zero_even_odd.go](../../implementations/src/concurrency_zero_even_odd.go) | `待整理` |
 | 数学练习片段 | [math_practice_snippets.cc](../../implementations/src/math_practice_snippets.cc) | `待整理` |
 | 归并排序 | [merge_sort.cc](../../implementations/src/merge_sort.cc) | `待整理` |
 | PDF 提取与重编号工具 | [pdf_extract_and_renumber.py](../../../tools/pdf_extract_and_renumber.py) | `待整理` |
